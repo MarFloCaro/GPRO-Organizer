@@ -1,0 +1,46 @@
+name: Build and Release GO
+
+on:
+  push:
+    branches:
+      - main
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    runs-on: windows-2025
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup MSBuild
+        uses: microsoft/setup-msbuild@v2
+
+      - name: Setup NuGet
+        uses: NuGet/setup-nuget@v2
+
+      - name: Restore NuGet packages
+        run: nuget restore Go.sln
+
+      - name: Build solution
+        run: msbuild Go.sln /p:Configuration=Release
+
+      - name: Show build output
+        shell: pwsh
+        run: |
+          Get-ChildItem -Recurse bin\Release
+
+      - name: Create portable ZIP
+        shell: pwsh
+        run: |
+          Compress-Archive -Path bin\Release\* -DestinationPath GPRO-Organizer.zip
+
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: release-${{ github.run_number }}
+          name: Release ${{ github.run_number }}
+          files: GPRO-Organizer.zip
