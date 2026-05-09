@@ -22,25 +22,32 @@ jobs:
       - name: Setup NuGet
         uses: NuGet/setup-nuget@v2
 
+      - name: Extract version
+        id: version
+        shell: pwsh
+        run: |
+          $version = Select-String -Path AssemblyInfo.cs -Pattern 'AssemblyFileVersion\("(.+)"\)' | ForEach-Object {
+            $_.Matches[0].Groups[1].Value
+          }
+
+          echo "VERSION=$version" >> $env:GITHUB_ENV
+
       - name: Restore NuGet packages
         run: nuget restore Go.sln
 
       - name: Build solution
         run: msbuild Go.sln /p:Configuration=Release
 
-      - name: Show build output
+      - name: Create ZIP
         shell: pwsh
         run: |
-          Get-ChildItem -Recurse bin\Release
-
-      - name: Create portable ZIP
-        shell: pwsh
-        run: |
-          Compress-Archive -Path bin\Release\* -DestinationPath GPRO-Organizer.zip
+          Compress-Archive -Path bin\Release\* -DestinationPath GPRO-Organizer-v${env:VERSION}.zip
 
       - name: Create GitHub Release
         uses: softprops/action-gh-release@v2
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          tag_name: release-${{ github.run_number }}
-          name: Release ${{ github.run_number }}
-          files: GPRO-Organizer.zip
+          tag_name: v${{ env.VERSION }}
+          name: GPRO Organizer v${{ env.VERSION }}
+          files: GPRO-Organizer-v${{ env.VERSION }}.zip
