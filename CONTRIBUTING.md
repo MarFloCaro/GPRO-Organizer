@@ -1,4 +1,3 @@
-````markdown
 # Contributing to GPRO Organizer
 
 First of all, thank you for your interest in contributing to GPRO Organizer.
@@ -156,4 +155,4 @@ When possible, include:
 This project exists thanks to the GPRO community and contributors who help keep the tool alive and evolving.
 
 Thank you for contributing.
-````
+
