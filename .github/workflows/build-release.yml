@@ -32,6 +32,30 @@ jobs:
 
           echo "VERSION=$version" >> $env:GITHUB_ENV
 
+      - name: Check if release already exists
+        id: check_release
+        shell: pwsh
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          $tag = "v${env:VERSION}"
+
+          $headers = @{
+            Authorization = "token $env:GITHUB_TOKEN"
+          }
+
+          $url = "https://api.github.com/repos/${{ github.repository }}/releases/tags/$tag"
+
+          try {
+            Invoke-RestMethod -Uri $url -Headers $headers -Method Get
+            echo "RELEASE_EXISTS=true" >> $env:GITHUB_ENV
+            Write-Host "Release already exists for $tag"
+          }
+          catch {
+            echo "RELEASE_EXISTS=false" >> $env:GITHUB_ENV
+            Write-Host "Release does not exist yet"
+          }
+
       - name: Restore NuGet packages
         run: nuget restore Go.sln
 
