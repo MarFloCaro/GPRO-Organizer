@@ -57,17 +57,21 @@ jobs:
           }
 
       - name: Restore NuGet packages
+        if: env.RELEASE_EXISTS == 'false'
         run: nuget restore Go.sln
 
       - name: Build solution
+        if: env.RELEASE_EXISTS == 'false'
         run: msbuild Go.sln /p:Configuration=Release
 
       - name: Create ZIP
+        if: env.RELEASE_EXISTS == 'false'
         shell: pwsh
         run: |
           Compress-Archive -Path bin\Release\* -DestinationPath GPRO-Organizer-v${env:VERSION}.zip
 
       - name: Create GitHub Release
+        if: env.RELEASE_EXISTS == 'false'
         uses: softprops/action-gh-release@v2
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
