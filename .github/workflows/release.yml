@@ -1,0 +1,38 @@
+name: Build and Release
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: windows-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup MSBuild
+        uses: microsoft/setup-msbuild@v2
+
+      - name: Setup NuGet
+        uses: NuGet/setup-nuget@v2
+
+      - name: Restore packages
+        run: nuget restore Go.sln
+
+      - name: Build solution
+        run: msbuild Go.sln /p:Configuration=Release
+
+      - name: Create ZIP package
+        run: |
+          powershell Compress-Archive `
+            -Path "bin\Release\*" `
+            -DestinationPath "GPRO-Organizer.zip"
+
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: GPRO-Organizer
+          path: GPRO-Organizer.zip
