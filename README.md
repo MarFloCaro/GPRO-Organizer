@@ -61,6 +61,8 @@ Navigate to:
 Tools -> Update tracks
 ```
 
+![Update Tracks](docs/screenshots/update-tracks.jpg)
+
 The application will generate the required `tracks.dat` file.
 
 When the update finishes, the application will request a restart.
@@ -78,14 +80,7 @@ Navigate to:
 ```text id="10m6m7"
 Online -> Get All Data
 ```
-
-If this is your first use, the application will generate:
-
-```text id="h6ghx5"
-go.dat
-```
-
-which stores your local data.
+![Get All Data](docs/screenshots/get-data.jpg)
 
 ---
 
@@ -99,7 +94,9 @@ Navigate to:
 File -> Save
 ```
 
-to save your local database.
+![Save](docs/screenshots/save.jpg)
+
+If this is your first use, the application will generate the `go.dat` file after saving, which stores your local data.
 
 ---
 
