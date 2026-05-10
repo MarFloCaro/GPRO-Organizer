@@ -4,20 +4,20 @@ on:
   push:
     tags:
       - 'v*'
-      
+
 permissions:
   contents: write
 
 env:
   FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
-  
+
 jobs:
   build:
-    runs-on: windows-2025
+    runs-on: windows-2025-vs2026
 
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
 
       - name: Setup MSBuild
         uses: microsoft/setup-msbuild@v2
@@ -25,60 +25,21 @@ jobs:
       - name: Setup NuGet
         uses: NuGet/setup-nuget@v2
 
-      - name: Extract version
-        id: version
-        shell: pwsh
-        run: |
-          $version = Select-String -Path AssemblyInfo.cs -Pattern 'AssemblyFileVersion\("(.+)"\)' | ForEach-Object {
-            $_.Matches[0].Groups[1].Value
-          }
-
-          echo "VERSION=$version" >> $env:GITHUB_ENV
-
-      - name: Check if release already exists
-        id: check_release
-        shell: pwsh
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: |
-          $tag = "v${env:VERSION}"
-
-          $headers = @{
-            Authorization = "token $env:GITHUB_TOKEN"
-          }
-
-          $url = "https://api.github.com/repos/${{ github.repository }}/releases/tags/$tag"
-
-          try {
-            Invoke-RestMethod -Uri $url -Headers $headers -Method Get
-            echo "RELEASE_EXISTS=true" >> $env:GITHUB_ENV
-            Write-Host "Release already exists for $tag"
-          }
-          catch {
-            echo "RELEASE_EXISTS=false" >> $env:GITHUB_ENV
-            Write-Host "Release does not exist yet"
-          }
-
       - name: Restore NuGet packages
-        if: env.RELEASE_EXISTS == 'false'
         run: nuget restore Go.sln
 
       - name: Build solution
-        if: env.RELEASE_EXISTS == 'false'
         run: msbuild Go.sln /p:Configuration=Release
 
       - name: Create ZIP
-        if: env.RELEASE_EXISTS == 'false'
         shell: pwsh
         run: |
-          Compress-Archive -Path bin\Release\* -DestinationPath GPRO-Organizer-v${env:VERSION}.zip
+          Compress-Archive -Path bin\Release\* -DestinationPath GPRO-Organizer-${{ github.ref_name }}.zip
 
       - name: Create GitHub Release
-        if: env.RELEASE_EXISTS == 'false'
         uses: softprops/action-gh-release@v2
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          tag_name: v${{ env.VERSION }}
-          name: GPRO Organizer v${{ env.VERSION }}
-          files: GPRO-Organizer-v${{ env.VERSION }}.zip
+          name: GPRO Organizer ${{ github.ref_name }}
+          files: GPRO-Organizer-${{ github.ref_name }}.zip
