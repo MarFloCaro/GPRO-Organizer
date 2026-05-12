@@ -1,0 +1,376 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <!--Project was exported from assembly: C:\Users\rafalcelejewski\AppData\Local\Programs\GPro Organiser\Go.exe-->
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{DE5C116A-B5E5-4D82-ACA4-CD2A4A92DA0F}</ProjectGuid>
+    <OutputType>WinExe</OutputType>
+    <AssemblyName>go</AssemblyName>
+    <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <RootNamespace>go</RootNamespace>
+    <IsWebBootstrapper>false</IsWebBootstrapper>
+    <PublishUrl>D:\Release\</PublishUrl>
+    <Install>true</Install>
+    <InstallFrom>Disk</InstallFrom>
+    <UpdateEnabled>false</UpdateEnabled>
+    <UpdateMode>Foreground</UpdateMode>
+    <UpdateInterval>7</UpdateInterval>
+    <UpdateIntervalUnits>Days</UpdateIntervalUnits>
+    <UpdatePeriodically>false</UpdatePeriodically>
+    <UpdateRequired>false</UpdateRequired>
+    <MapFileExtensions>true</MapFileExtensions>
+    <ApplicationRevision>0</ApplicationRevision>
+    <ApplicationVersion>4.0.0.0</ApplicationVersion>
+    <UseApplicationTrust>false</UseApplicationTrust>
+    <PublishWizardCompleted>true</PublishWizardCompleted>
+    <BootstrapperEnabled>true</BootstrapperEnabled>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <LangVersion>8</LangVersion>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <LangVersion>8</LangVersion>
+  </PropertyGroup>
+  <PropertyGroup>
+    <ApplicationIcon>car.ico</ApplicationIcon>
+  </PropertyGroup>
+  <PropertyGroup>
+    <ManifestCertificateThumbprint>1819390CBA14BEA17A835491B1F592565D745221</ManifestCertificateThumbprint>
+  </PropertyGroup>
+  <PropertyGroup>
+    <ManifestKeyFile>Go_TemporaryKey.pfx</ManifestKeyFile>
+  </PropertyGroup>
+  <PropertyGroup>
+    <GenerateManifests>true</GenerateManifests>
+  </PropertyGroup>
+  <PropertyGroup>
+    <SignManifests>true</SignManifests>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Newtonsoft.Json">
+      <HintPath>lib\Newtonsoft.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Web" />
+    <Reference Include="System.Windows.Forms" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="CalculatedFuelConsumption.cs" />
+    <Compile Include="CalculatedTyreWear.cs" />
+    <Compile Include="Car.cs" />
+    <Compile Include="Car2.cs" />
+    <Compile Include="CarPart.cs" />
+    <Compile Include="CarPartCosts.cs" />
+    <Compile Include="CarSetup.cs" />
+    <Compile Include="Date.cs" />
+    <Compile Include="Driver.cs" />
+    <Compile Include="Driver2.cs" />
+    <Compile Include="Driver3.cs" />
+    <Compile Include="Driver4.cs" />
+    <Compile Include="Driver5.cs" />
+    <Compile Include="DriverEnergy.cs" />
+    <Compile Include="DriverHistory.cs" />
+    <Compile Include="DriverHistory2.cs" />
+    <Compile Include="DriverHistoryItem.cs" />
+    <Compile Include="DriverHistoryItem2.cs" />
+    <Compile Include="FinanceItem.cs" />
+    <Compile Include="FinanceItem2.cs" />
+    <Compile Include="FinancialAnalysis.cs" />
+    <Compile Include="FinancialAnalysis2.cs" />
+    <Compile Include="Lap.cs" />
+    <Compile Include="Lap2.cs" />
+    <Compile Include="Manager.cs" />
+    <Compile Include="OngoingSponsors.cs" />
+    <Compile Include="OvertakingAttempts.cs" />
+    <Compile Include="PitStop.cs" />
+    <Compile Include="Practice.cs" />
+    <Compile Include="Practice2.cs" />
+    <Compile Include="Practice3.cs" />
+    <Compile Include="PracticeRun.cs" />
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+    <Compile Include="Qualify.cs" />
+    <Compile Include="Race.cs" />
+    <Compile Include="Race2.cs" />
+    <Compile Include="Race3.cs" />
+    <Compile Include="Race4.cs" />
+    <Compile Include="Race5.cs" />
+    <Compile Include="Race6.cs" />
+    <Compile Include="Race7.cs" />
+    <Compile Include="Race8.cs" />
+    <Compile Include="Race9.cs" />
+    <Compile Include="RaceEvent.cs" />
+    <Compile Include="RaceEvent10.cs" />
+    <Compile Include="RaceEvent11.cs" />
+    <Compile Include="RaceEvent12.cs" />
+    <Compile Include="RaceEvent13.cs" />
+    <Compile Include="RaceEvent14.cs" />
+    <Compile Include="RaceEvent15.cs" />
+    <Compile Include="RaceEvent16.cs" />
+    <Compile Include="RaceEvent17.cs" />
+    <Compile Include="RaceEvent18.cs" />
+    <Compile Include="RaceEvent19.cs" />
+    <Compile Include="RaceEvent2.cs" />
+    <Compile Include="RaceEvent20.cs" />
+    <Compile Include="RaceEvent3.cs" />
+    <Compile Include="RaceEvent4.cs" />
+    <Compile Include="RaceEvent5.cs" />
+    <Compile Include="RaceEvent6.cs" />
+    <Compile Include="RaceEvent7.cs" />
+    <Compile Include="RaceEvent8.cs" />
+    <Compile Include="RaceEvent9.cs" />
+    <Compile Include="RaceSummary.cs" />
+    <Compile Include="RaceSummaryLine.cs" />
+    <Compile Include="RaceWeather.cs" />
+    <Compile Include="Season.cs" />
+    <Compile Include="Season10.cs" />
+    <Compile Include="Season11.cs" />
+    <Compile Include="Season12.cs" />
+    <Compile Include="Season13.cs" />
+    <Compile Include="Season14.cs" />
+    <Compile Include="Season15.cs" />
+    <Compile Include="Season16.cs" />
+    <Compile Include="Season17.cs" />
+    <Compile Include="Season18.cs" />
+    <Compile Include="Season19.cs" />
+    <Compile Include="Season2.cs" />
+    <Compile Include="Season20.cs" />
+    <Compile Include="Season3.cs" />
+    <Compile Include="Season4.cs" />
+    <Compile Include="Season5.cs" />
+    <Compile Include="Season6.cs" />
+    <Compile Include="Season7.cs" />
+    <Compile Include="Season8.cs" />
+    <Compile Include="Season9.cs" />
+    <Compile Include="SponsorNegotiations.cs" />
+    <Compile Include="SponsorState.cs" />
+    <Compile Include="Staff.cs" />
+    <Compile Include="Strategy.cs" />
+    <Compile Include="Strategy2.cs" />
+    <Compile Include="Strategy3.cs" />
+    <Compile Include="Strategy4.cs" />
+    <Compile Include="TechnicalDirector.cs" />
+    <Compile Include="TechnicalProblem.cs" />
+    <Compile Include="Testing.cs" />
+    <Compile Include="TestingPoints.cs" />
+    <Compile Include="TestingRun.cs" />
+    <Compile Include="Track.cs" />
+    <Compile Include="TyreSupplier.cs" />
+    <Compile Include="Weather.cs" />
+    <Compile Include="WeatherForecast.cs" />
+    <Compile Include="WeatherHistory.cs" />
+    <Compile Include="Forms\AboutForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\AllTracks.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\CarHistoryForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\CarWearForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\ColumnChooser.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\DriverForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\DriverTrainingHistory.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\FinancePage.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Forms\FinancesForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\FormHandler.cs" />
+    <Compile Include="Forms\FormInfo.cs" />
+    <Compile Include="Forms\GoForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\HistoricalFuelConsumptionForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\HistoricalPracticeForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\HistoricalQ1SetupForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\HistoricalRaceSetupForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\HistoricalTyreWearForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\HistoricalWearForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\Logon.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\MainForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\OldRacesForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\PitstopsForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\PracticeDataExport.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\PracticeHelperForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\RaceForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\SeasonForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\Settings.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\StrategyToolForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\TrackNote.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\UpdateBox.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Utils\CarPartCosts.cs" />
+    <Compile Include="Utils\ColumnInfoCompare.cs" />
+    <Compile Include="Utils\ColumnInfoData.cs" />
+    <Compile Include="Utils\CSVWriter.cs" />
+    <Compile Include="Utils\DataMerger.cs" />
+    <Compile Include="Utils\Datas.cs" />
+    <Compile Include="Utils\EncDec.cs" />
+    <Compile Include="Utils\EnumToString.cs" />
+    <Compile Include="Utils\Errlog.cs" />
+    <Compile Include="Utils\IntPair.cs" />
+    <Compile Include="Utils\ListViewColumnSorter.cs" />
+    <Compile Include="Utils\Loader.cs" />
+    <Compile Include="Utils\PartsWear.cs" />
+    <Compile Include="Utils\String2Enum.cs" />
+    <Compile Include="Utils\StringToEnum.cs" />
+    <Compile Include="Utils\TrackNamesHandler.cs" />
+    <Compile Include="Utils\TypeBinder.cs" />
+    <Compile Include="Utils\Util.cs" />
+    <Compile Include="Utils\Sourceforge\PlatformReleases.cs" />
+    <Compile Include="Utils\Sourceforge\Release.cs" />
+    <Compile Include="Utils\Sourceforge\RootObject.cs" />
+    <Compile Include="Utils\Sourceforge\Windows.cs" />
+    <Compile Include="Parsers\CarParser.cs" />
+    <Compile Include="Parsers\DriverParser.cs" />
+    <Compile Include="Parsers\FinanceParser.cs" />
+    <Compile Include="Parsers\ForecastParser.cs" />
+    <Compile Include="Parsers\GenericParser.cs" />
+    <Compile Include="Parsers\ManagerParser.cs" />
+    <Compile Include="Parsers\PracticeParser.cs" />
+    <Compile Include="Parsers\QualifyParser.cs" />
+    <Compile Include="Parsers\RaceAnalysisParser.cs" />
+    <Compile Include="Parsers\RaceSummaryParser.cs" />
+    <Compile Include="Parsers\SeasonParser.cs" />
+    <Compile Include="Parsers\SponsorParser.cs" />
+    <Compile Include="Parsers\StaffParser.cs" />
+    <Compile Include="Parsers\StrategyParser.cs" />
+    <Compile Include="Parsers\TechnicalDirectorParser.cs" />
+    <Compile Include="Parsers\TestingParser.cs" />
+    <Compile Include="Parsers\TrackParser.cs" />
+    <Compile Include="Parsers\TyreSupplierParser.cs" />
+    <Compile Include="History\CarHistory.cs" />
+    <Compile Include="History\CarHistory2.cs" />
+    <Compile Include="History\CarHistoryItem.cs" />
+    <Compile Include="History\CarHistoryItem2.cs" />
+    <Compile Include="History\HistoryItem.cs" />
+    <Compile Include="History\StaffHistory.cs" />
+    <Compile Include="History\TechnicalDirectorHistory.cs" />
+    <Compile Include="History\TechnicalDirectorHistoryItem.cs" />
+    <Compile Include="Enums\CarPartType.cs" />
+    <Compile Include="Enums\Category.cs" />
+    <Compile Include="Enums\ColumnInfo.cs" />
+    <Compile Include="Enums\Downforce.cs" />
+    <Compile Include="Enums\DriverInfo.cs" />
+    <Compile Include="Enums\DriverTrainingType.cs" />
+    <Compile Include="Enums\FinanceItemType.cs" />
+    <Compile Include="Enums\FuelConsumption.cs" />
+    <Compile Include="Enums\Grip.cs" />
+    <Compile Include="Enums\Overtaking.cs" />
+    <Compile Include="Enums\PitStopReason.cs" />
+    <Compile Include="Enums\QualifyRisk.cs" />
+    <Compile Include="Enums\RaceStartStrategy.cs" />
+    <Compile Include="Enums\Skies.cs" />
+    <Compile Include="Enums\SponsorPriority.cs" />
+    <Compile Include="Enums\StaffTrainingType.cs" />
+    <Compile Include="Enums\StaffType.cs" />
+    <Compile Include="Enums\SupensionRigidity.cs" />
+    <Compile Include="Enums\TechnicalDirectorInfo.cs" />
+    <Compile Include="Enums\TestPriority.cs" />
+    <Compile Include="Enums\TyreType.cs" />
+    <Compile Include="Enums\TyreWear.cs" />
+    <Compile Include="Comms\Communication.cs" />
+    <Compile Include="Comms\NewVersion.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Forms\Logon.resx">
+      <DependentUpon>Logon.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <SubType>Designer</SubType>
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+      <CustomToolNamespace>Resources</CustomToolNamespace>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <BootstrapperPackage Include=".NETFramework,Version=v4.8">
+      <Visible>False</Visible>
+      <ProductName>Microsoft .NET Framework 4.8 %28x86 and x64%29</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Framework.3.5.SP1">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="car.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Go_TemporaryKey.pfx" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+</Project>
