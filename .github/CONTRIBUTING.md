@@ -12,7 +12,7 @@ Contributions, fixes and ideas are welcome.
 
 ---
 
-# Project Goals
+## Project Goals
 
 Current priorities include:
 
@@ -26,7 +26,7 @@ Current priorities include:
 
 ---
 
-# Development Environment
+## Development Environment
 
 Current legacy stack:
 
@@ -39,9 +39,9 @@ The application currently targets Windows desktop usage.
 
 ---
 
-# Repository Workflow
+## Repository Workflow
 
-## Main branch
+### Main branch
 
 The `main` branch is considered the stable branch.
 
@@ -49,17 +49,68 @@ Direct pushes should be limited to maintainers and collaborators.
 
 ---
 
-# Release Process
+## Release Process
 
 Releases are generated automatically through GitHub Actions.
 
 Releases are triggered through Git tags.
 
-Example:
+Example (considering a workflow that requires Pull Requests, and the working branch is develop):
+
+1. Checkout the develop branch and ensure code is upto date
 
 ```bash
-git tag v3.2.22
-git push origin v3.2.22
+git checkout develop
+git pull origin develop
+```
+
+2. Introduce the changes to the code; do not miss to update `AssemblyInfo.cs`
+
+```c#
+[assembly: AssemblyFileVersion("4.0.0")]
+[assembly: AssemblyVersion("4.0.0.32438")]
+```
+
+3. Commit Changes
+
+```bash
+git add .
+git commit -m "Release v4.0.0"
+```
+
+4. Push `develop` (or working branch)
+
+```bash
+git push origin develop
+```
+
+5. Open PR (Pull Request)
+
+6. Merge to main
+
+7. Update `main` locally
+
+```bash
+git checkout main
+git pull origin main
+```
+
+8. Create Release Tag
+
+```bash
+git tag v4.0.0
+```
+
+9. Push the tag
+
+```bash
+git push origin v4.0.0 # same as tag above
+```
+
+OR:
+
+```bash
+git push origin --tags
 ```
 
 The workflow will:
@@ -80,7 +131,7 @@ AssemblyInfo.cs
 Example:
 
 ```csharp
-[assembly: AssemblyFileVersion("3.2.22")]
+[assembly: AssemblyFileVersion("4.0.0")]
 ```
 
 Please keep version information updated before creating a release tag.
