@@ -1,0 +1,67 @@
+﻿ 
+// Type: go.Season9
+ 
+ 
+ 
+
+using System;
+
+#nullable disable
+namespace go
+{
+  [Serializable]
+  public class Season9
+  {
+    public int season;
+    public RaceEvent8[] events = new RaceEvent8[17];
+
+    public Season9(Season8 oldSeason)
+    {
+      this.season = oldSeason.season;
+      this.events = new RaceEvent8[oldSeason.events.Length];
+      for (int index = 0; index < oldSeason.events.Length; ++index)
+        this.events[index] = new RaceEvent8(oldSeason.events[index]);
+    }
+
+    public Season9(Season7 oldSeason)
+      : this(new Season8(oldSeason))
+    {
+    }
+
+    public Season9(Season6 oldSeason)
+      : this(new Season8(oldSeason))
+    {
+    }
+
+    public Season9(Season5 oldSeason)
+      : this(new Season8(oldSeason))
+    {
+    }
+
+    public Season9(Season4 oldSeason)
+      : this(new Season8(oldSeason))
+    {
+    }
+
+    public Season9(Season3 oldSeason)
+      : this(new Season8(oldSeason))
+    {
+    }
+
+    public Season9(Season2 oldSeason)
+      : this(new Season8(oldSeason))
+    {
+    }
+
+    public Season9(Season oldSeason)
+      : this(new Season8(oldSeason))
+    {
+    }
+
+    public Season9()
+    {
+      for (int index = 0; index < this.events.Length; ++index)
+        this.events[index] = new RaceEvent8();
+    }
+  }
+}

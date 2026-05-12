@@ -1,0 +1,107 @@
+﻿ 
+// Type: go.Season17
+ 
+ 
+ 
+
+using System;
+
+#nullable disable
+namespace go
+{
+  [Serializable]
+  public class Season17
+  {
+    public int season;
+    public RaceEvent16[] events = new RaceEvent16[17];
+
+    public Season17(Season16 oldSeason)
+    {
+      this.season = oldSeason.season;
+      this.events = new RaceEvent16[oldSeason.events.Length];
+      for (int index = 0; index < oldSeason.events.Length; ++index)
+        this.events[index] = new RaceEvent16(oldSeason.events[index]);
+    }
+
+    public Season17(Season15 oldSeason)
+      : this(new Season16(oldSeason))
+    {
+    }
+
+    public Season17(Season14 oldSeason)
+      : this(new Season15(oldSeason))
+    {
+    }
+
+    public Season17(Season13 oldSeason)
+      : this(new Season14(oldSeason))
+    {
+    }
+
+    public Season17(Season12 oldSeason)
+      : this(new Season13(oldSeason))
+    {
+    }
+
+    public Season17(Season11 oldSeason)
+      : this(new Season12(oldSeason))
+    {
+    }
+
+    public Season17(Season10 oldSeason)
+      : this(new Season11(oldSeason))
+    {
+    }
+
+    public Season17(Season9 oldSeason)
+      : this(new Season11(oldSeason))
+    {
+    }
+
+    public Season17(Season8 oldSeason)
+      : this(new Season11(oldSeason))
+    {
+    }
+
+    public Season17(Season7 oldSeason)
+      : this(new Season11(oldSeason))
+    {
+    }
+
+    public Season17(Season6 oldSeason)
+      : this(new Season11(oldSeason))
+    {
+    }
+
+    public Season17(Season5 oldSeason)
+      : this(new Season11(oldSeason))
+    {
+    }
+
+    public Season17(Season4 oldSeason)
+      : this(new Season11(oldSeason))
+    {
+    }
+
+    public Season17(Season3 oldSeason)
+      : this(new Season11(oldSeason))
+    {
+    }
+
+    public Season17(Season2 oldSeason)
+      : this(new Season11(oldSeason))
+    {
+    }
+
+    public Season17(Season oldSeason)
+      : this(new Season11(oldSeason))
+    {
+    }
+
+    public Season17()
+    {
+      for (int index = 0; index < this.events.Length; ++index)
+        this.events[index] = new RaceEvent16();
+    }
+  }
+}
