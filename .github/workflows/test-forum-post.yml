@@ -1,0 +1,39 @@
+name: Test Forum Notification
+
+on:
+  workflow_dispatch:
+
+jobs:
+  test-post:
+    runs-on: ubuntu-latest
+    environment: build-release
+
+    steps:
+      - name: Send test forum post
+        shell: pwsh
+        env:
+          API_GPRO_FORUM_TOPIC_ENDPOINT: ${{ vars.API_GPRO_FORUM_TOPIC_ENDPOINT }}
+          FLO_API_TOKEN : ${{ secrets.FLO_API_TOKEN }}
+          GO_FORUM_TOPIC_ID: ${{ vars.GO_FORUM_TOPIC_ID }}
+        run: |
+          $message = @"
+          New GPRO Organizer release available: v${env:VERSION}
+
+          Download:
+          https://github.com/${{ github.repository }}/releases/latest
+          "@
+
+          $headers = @{
+            Authorization = "Bearer $env:FLO_API_TOKEN"
+          }
+
+          $body = @{
+            TopicId = $env:GO_FORUM_TOPIC_ID
+            bodyShow = $message
+          }
+
+          Invoke-RestMethod `
+            -Uri $env:API_GPRO_FORUM_TOPIC_ENDPOINT `
+            -Method Post `
+            -Headers $headers `
+            -Body $body

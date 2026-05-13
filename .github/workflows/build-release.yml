@@ -50,9 +50,9 @@ jobs:
         shell: pwsh
         continue-on-error: true
         env:
-          FORUM_GO_TOPIC_URL: ${{ vars.API_GPRO_FORUM_TOPIC_ENDPOINT }}
-          FORUM_API_TOKEN: ${{ secrets.FLO_API_TOKEN }}
-          FORUM_TOPIC_ID: ${{ vars.GO_FORUM_TOPIC_ID }}
+          API_GPRO_FORUM_TOPIC_ENDPOINT: ${{ vars.API_GPRO_FORUM_TOPIC_ENDPOINT }}
+          FLO_API_TOKEN : ${{ secrets.FLO_API_TOKEN }}
+          GO_FORUM_TOPIC_ID: ${{ vars.GO_FORUM_TOPIC_ID }}
         run: |
           $message = @"
           New GPRO Organizer release available: v${env:VERSION}
