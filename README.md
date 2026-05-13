@@ -133,15 +133,34 @@ This project is community maintained and currently focused on:
 
 ## Maintainers
 
-Ongoing maintenance:
-
-- [Rafał Celejewski GitHub](https://github.com/Krumiasty)
-- [Rafał Celejewski GPRO](https://gpro.net/ManagerProfile.asp?IDM=47036)
-
-Community infrastructure, releases and distribution:
-
-- [Flo Caro GitHub](https://github.com/MarFloCaro)
-- [Flo Caro GPRO](https://gpro.net/ManagerProfile.asp?IDM=232105)
+<table>
+  <tr>
+    <td align="center" width="50%">
+      <a href="https://github.com/Krumiasty">
+        <img src="https://github.com/Krumiasty.png?size=100" width="100" alt="Rafał Celejewski"><br>
+        <strong>Rafał Celejewski</strong>
+      </a>
+      <br><br>
+      <a href="https://gpro.net/ManagerProfile.asp?IDM=47036">
+        GPRO Profile
+      </a>
+      <br>
+      Ongoing Maintenance
+    </td>
+    <td align="center" width="50%">
+      <a href="https://github.com/MarFloCaro">
+        <img src="https://github.com/MarFloCaro.png?size=100" width="100" alt="Flo Caro"><br>
+        <strong>Flo Caro</strong>
+      </a>
+      <br><br>
+      <a href="https://gpro.net/ManagerProfile.asp?IDM=232105">
+        GPRO Profile
+      </a>
+      <br>
+      Infrastructure & Releases
+    </td>
+  </tr>
+</table>
 
 ---
 
