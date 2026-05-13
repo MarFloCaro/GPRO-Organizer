@@ -10,7 +10,7 @@ This application helps managers collect, store and analyze game data locally on 
 
 ---
 
-## Download
+# Download
 
 Releases are available at:
 
@@ -20,9 +20,9 @@ Download the latest ZIP file from the **Assets** section of the most recent rele
 
 ---
 
-## Installation
+# Installation
 
-### New users
+## New users
 
 1. Download the latest release ZIP
 2. Create a folder where you want to keep the application
@@ -35,7 +35,7 @@ go.exe
 
 ---
 
-### Existing users
+## Existing users
 
 If you already use GPRO Organizer and already have a `go.dat` file:
 
@@ -47,13 +47,13 @@ Your local data should remain preserved.
 
 ---
 
-## First Startup
+# First Startup
 
 On first use — and usually after the first race of a new season — tracks data must be updated manually.
 
 After opening the application:
 
-### Step 1 — Update tracks
+## Step 1 — Update tracks
 
 Navigate to:
 
@@ -71,7 +71,7 @@ Close and reopen the application.
 
 ---
 
-### Step 2 — Download your game data
+## Step 2 — Download your game data
 
 After restarting:
 
@@ -84,7 +84,7 @@ Online -> Get All Data
 
 ---
 
-### Step 3 — Save your data
+## Step 3 — Save your data
 
 After data download completes:
 
@@ -100,7 +100,7 @@ If this is your first use, the application will generate the `go.dat` file after
 
 ---
 
-## Recommended Setup
+# Recommended Setup
 
 For easier access, it is recommended to:
 
@@ -110,7 +110,7 @@ For easier access, it is recommended to:
 
 ---
 
-## Notes
+# Notes
 
 * This application stores data locally on your computer.
 * No cloud synchronization is performed.
@@ -119,7 +119,7 @@ For easier access, it is recommended to:
 
 ---
 
-## Project Status
+# Project Status
 
 This project is community maintained and currently focused on:
 
@@ -131,20 +131,18 @@ This project is community maintained and currently focused on:
 
 ---
 
-## Maintainers
+# Maintainers
 
 Ongoing maintenance:
 
-- [Rafał Celejewski GitHub](https://github.com/Krumiasty)
-- [Rafał Celejewski GPRO](https://gpro.net/ManagerProfile.asp?IDM=47036)
+- [Rafał Celejewski](https://github.com/Krumiasty)
 
 Community infrastructure, releases and distribution:
 
-- [Flo Caro GitHub](https://github.com/MarFloCaro)
-- [Flo Caro GPRO](https://gpro.net/ManagerProfile.asp?IDM=232105)
+- [MarFloCaro](https://github.com/MarFloCaro)
 
 ---
 
-## License
+# License
 
 See the repository license file for details.
