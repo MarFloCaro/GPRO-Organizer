@@ -570,22 +570,68 @@ namespace go.Forms
         private Button LoadButton;
         private static readonly RegexOptions options = RegexOptions.ExplicitCapture | RegexOptions.Compiled | RegexOptions.Singleline;
         private static Regex reg = new Regex("((?<val>\\d{1,10})([.]?))", MainForm.options);
+        private bool _initialized;
 
         public MainForm()
         {
             Datas.KeepDataWithApp = false;
             Datas.AutoCheck = false;
-            //SetDefaultCulture();
-            this.InitializeComponent();
+
+            InitializeComponent();
+
             Cursor current = Cursor.Current;
             Cursor.Current = Cursors.AppStarting;
-            this.GetRegistrySettings();
+
+            GetRegistrySettings();
+
+            WireCommunication(); 
+
             Cursor.Current = current;
-            this.Shown += OnMainFormShown;
+
+            Shown += OnMainFormShown;
         }
 
+        private void WireCommunication()
+        {
+            Datas.Communications.CredentialProvider = () =>
+            {
+                return (Datas.Username, Datas.Password);
+            };
+        }
+        
         //public string ConvertToHtmlEncoding(string input) => HttpUtility.UrlEncode(input);
+        private bool _initializing;
+        
+        private void InitializeApplicationData()
+        {
+            if (_initializing) return;
 
+            try
+            {
+                _initializing = true;
+
+                Cursor.Current = Cursors.WaitCursor;
+
+                Datas.Communications.EnsureSession();
+                LoadTracks();
+                LoadData();
+
+                statusBarPanel3.Text = "Ready";
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(
+                    "Failed to initialize application:\n" + ex.Message,
+                    "Startup Error",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Error);
+            }
+            finally
+            {
+                Cursor.Current = Cursors.Default;
+                _initializing = false;
+            }
+        }
         private void OnMainFormShown(object sender, EventArgs e)
         {
             Cursor.Current = Cursors.WaitCursor;
@@ -618,9 +664,15 @@ namespace go.Forms
             //httpWebRequest2.Timeout = 20000;
             //Datas.Communications.GetData(Regex.Replace(new StreamReader(httpWebRequest2.GetResponse().GetResponseStream(), Encoding.UTF8).ReadToEnd(), "[\r\t\n]", ""));
 
+            if (_initialized)
+                return;
 
-            this.LoadTracks();
-            this.LoadData();
+            _initialized = true;
+
+            this.BeginInvoke(new Action(() =>
+            {
+                InitializeApplicationData();
+            }));
             this.statusBarPanel3.Text = "Ready";
             
             Cursor.Current = Cursors.AppStarting;
@@ -4602,25 +4654,17 @@ namespace go.Forms
 
         private Stream GetGoFile(string filename)
         {
-            try
+            string path = Path.Combine(Application.StartupPath, filename);
+        
+            if (!File.Exists(path))
             {
-                return (Stream)new FileStream(filename, FileMode.Open, FileAccess.Read, FileShare.Read);
+                Console.WriteLine($"[OPTIONAL FILE MISSING] {path}");
+                return null;
             }
-            catch (FileNotFoundException ex)
-            {
-                return (Stream)null;
-            }
-            catch (DirectoryNotFoundException ex1)
-            {
-                try
-                {
-                    return (Stream)new FileStream("go.dat", FileMode.Open, FileAccess.Read, FileShare.Read);
-                }
-                catch (FileNotFoundException ex2)
-                {
-                    return (Stream)null;
-                }
-            }
+        
+            Console.WriteLine($"[FILE LOAD] {path}");
+        
+            return new FileStream(path, FileMode.Open, FileAccess.Read, FileShare.Read);
         }
 
         private string GetDefaultFileName()

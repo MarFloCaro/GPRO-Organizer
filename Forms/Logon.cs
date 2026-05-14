@@ -21,19 +21,21 @@ namespace go.Forms
         private Label _passwordLabel;
         private Button _okButton;
         private Button _cancelButton;
+        private go.Comms.Communication _comms;
 
-        public Logon()
+        public (string user, string pass) Credentials { get; private set; }
+        
+        public Logon(go.Comms.Communication comms)
         {
             InitializeComponent();
 
             GetRegistrySettings();
-            if (!string.IsNullOrEmpty(Datas.Username) && !string.IsNullOrEmpty(Datas.Password))
-            {
-                TryLogin();
-            }
+
+            _comms = comms;
+
         }
 
-        [STAThread]
+/*        [STAThread]
         private static void Main()
         {
             // try read cached credentials
@@ -49,6 +51,7 @@ namespace go.Forms
                 Application.Run(new MainForm());
             }
         }
+*/
 
         public string ConvertToHtmlEncoding(string input) => HttpUtility.UrlEncode(input);
 
@@ -183,6 +186,7 @@ namespace go.Forms
             this.ResumeLayout(false);
             this.PerformLayout();
         }
+
 
         private void OnOkButtonClick(object sender, EventArgs e)
         {

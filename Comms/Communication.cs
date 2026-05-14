@@ -9,11 +9,8 @@ using System.Net.Configuration;
 using System.Reflection;
 using System.Text;
 using System.Text.RegularExpressions;
-using System.Web;
 using System.Windows.Forms;
-using System.Windows.Forms.VisualStyles;
 
-#nullable disable
 namespace go.Comms
 {
     public class Communication
@@ -33,7 +30,7 @@ namespace go.Comms
 
         internal Communication()
         {
-            ServicePointManager.SecurityProtocol = SecurityProtocolType.Ssl3 | SecurityProtocolType.Tls | SecurityProtocolType.Tls11 | SecurityProtocolType.Tls12 | SecurityProtocolType.Tls13;
+            ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12;
             Communication.SetAllowUnsafeHeaderParsing20();
         }
 
@@ -54,49 +51,179 @@ namespace go.Comms
 
         public bool IsLoggedIn { get; set; }
 
-        private void Login()
-        {
-            //var logon1 = new Logon();
+        private bool _loginInProgress;
 
-            //logon1.boxUsername.Text = Datas.Username;
-            //logon1.boxPassword.Text = Datas.Password;
-            //Logon logon2 = logon1;
-            //if (!Datas.Communications.rememberPassword || Datas.Password == "")
-            //{
-            //    logon2.ShowDialog();
-            //    //if (!logon2.ShouldLogin)
-            //    //{
-            //    //    throw new Exception("Login cancelled by user");
-            //    //}
-            //}
-            //Datas.Communications.rememberPassword = logon2._rememberPasswordCheckBox.Checked;
-            //Datas.Username = logon2.boxUsername.Text;
-            //Datas.Password = logon2.boxPassword.Text;
-            string s = "textLogin=" + this.ConvertToHtmlEncoding(Datas.Username) + "&textPassword=" + this.ConvertToHtmlEncoding(Datas.Password) + "&Logon=Login";
-            HttpWebRequest httpWebRequest1 = (HttpWebRequest)WebRequest.Create(go.Utils.Util.URI + "Login.asp?Redirect=gpro.asp");
-            httpWebRequest1.CookieContainer = this.cookieContainer;
-            httpWebRequest1.UserAgent = "GO";
-            httpWebRequest1.Method = "POST";
-            httpWebRequest1.ContentType = "application/x-www-form-urlencoded";
-            byte[] bytes = new UTF8Encoding().GetBytes(s);
-            httpWebRequest1.ContentLength = (long)bytes.Length;
-            Stream requestStream = httpWebRequest1.GetRequestStream();
-            requestStream.Write(bytes, 0, bytes.Length);
-            requestStream.Close();
-            if (new StreamReader(httpWebRequest1.GetResponse().GetResponseStream(), Encoding.UTF8).ReadToEnd().IndexOf("To access the site you have to sign in first") > 0)
+        public Func<(string username, string password)> CredentialProvider { get; set; }
+        
+        private HttpWebRequest CreateRequest(string url, string method = "GET")
+        {
+            // Prevent accidental double-prefixing
+            if (!url.StartsWith("http", StringComparison.OrdinalIgnoreCase))
+            {
+                url = go.Utils.Util.URI + url;
+            }
+
+            HttpWebRequest request =
+                (HttpWebRequest)WebRequest.Create(url);
+
+            request.CookieContainer = this.cookieContainer;
+            request.UserAgent = "GO";
+            request.Method = method.ToUpperInvariant();
+
+            request.Timeout = 20000;
+            request.ReadWriteTimeout = 20000;
+
+            request.AllowAutoRedirect = true;
+
+            request.KeepAlive = true;
+
+            request.AutomaticDecompression =
+                DecompressionMethods.GZip |
+                DecompressionMethods.Deflate;
+
+            return request;
+        }
+
+        public void EnsureSession()
+        {
+            if (this.IsLoggedIn)
+                return;
+
+            if (_loginInProgress)
+                return;
+
+            this.Login();
+        }
+
+        public void Login()
+        {
+            if (_loginInProgress)
+            return; 
+
+            _loginInProgress = true;
+            
+            string username = Datas.Username;
+            string password = Datas.Password;
+            
+            if (string.IsNullOrEmpty(username) || string.IsNullOrEmpty(password))
+            {
+                if (CredentialProvider == null)
+                    throw new Exception("No credential provider configured.");
+            
+                var creds = CredentialProvider();
+            
+                username = creds.username;
+                password = creds.password;
+            
+                if (string.IsNullOrEmpty(username) || string.IsNullOrEmpty(password))
+                {
+                    using (var login = new go.Forms.Logon(this))
+                    {
+                        if (login.ShowDialog() != DialogResult.OK)
+                            throw new Exception("User cancelled login");
+                    }
+            
+                    username = Datas.Username;
+                    password = Datas.Password;
+                }
+            }
+
+            string loginUrl = go.Utils.Util.URI + "Login.asp?Redirect=gpro.asp";
+
+            string postData =
+                "textLogin=" + this.ConvertToHtmlEncoding(username) +
+                "&textPassword=" + this.ConvertToHtmlEncoding(password) +
+                "&Logon=Login";
+
+            try
+            {
+                HttpWebRequest loginRequest =
+                    this.CreateRequest(loginUrl, "POST");
+
+                loginRequest.ContentType =
+                    "application/x-www-form-urlencoded";
+
+                byte[] bytes = Encoding.UTF8.GetBytes(postData);
+
+                loginRequest.ContentLength = bytes.Length;
+
+                using (Stream requestStream = loginRequest.GetRequestStream())
+                {
+                    requestStream.Write(bytes, 0, bytes.Length);
+                }
+
+                string loginResponse;
+
+                using (HttpWebResponse response =
+                    (HttpWebResponse)loginRequest.GetResponse())
+                using (StreamReader reader =
+                    new StreamReader(response.GetResponseStream(), Encoding.UTF8))
+                {
+                    loginResponse = reader.ReadToEnd();
+                }
+
+                // Detect failed login
+                if (
+                    loginResponse.Contains("Sign in") ||
+                    loginResponse.Contains("To access the site you have to sign in first")
+                )
+                {
+                    this.IsLoggedIn = false;
+
+                    throw new Exception("Login failed: invalid credentials or session not established.");
+                }
+
+                // Validate authenticated state
+                if (
+                    !loginResponse.Contains("Logout") &&
+                    !loginResponse.Contains("Log out") &&
+                    !loginResponse.Contains(Datas.Username)
+                )
+                {
+                    this.IsLoggedIn = false;
+
+                    throw new Exception("Login validation failed.");
+                }
+
+                // Load account data
+                HttpWebRequest homeRequest =
+                    this.CreateRequest("gpro.asp");
+
+                string homePage;
+
+                using (HttpWebResponse response =
+                    (HttpWebResponse)homeRequest.GetResponse())
+                using (StreamReader reader =
+                    new StreamReader(response.GetResponseStream(), Encoding.UTF8))
+                {
+                    homePage = reader.ReadToEnd();
+                }
+
+                this.GetData(
+                    Regex.Replace(homePage, "[\r\t\n]", "")
+                );
+
+                this.IsLoggedIn = true;
+            }
+            catch (Exception ex)
             {
                 this.IsLoggedIn = false;
-                Datas.Communications.rememberPassword = false;
-                //this.Login();
+
+                MessageBox.Show(
+                    "Login failed.\n\n" + ex.Message,
+                    "Authentication Error",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Error
+                );
+
+                throw;
             }
-            HttpWebRequest httpWebRequest2 = (HttpWebRequest)WebRequest.Create(go.Utils.Util.URI + "gpro.asp");
-            httpWebRequest2.CookieContainer = this.cookieContainer;
-            httpWebRequest2.UserAgent = "GO";
-            httpWebRequest2.Method = "GET";
-            httpWebRequest2.Timeout = 20000;
-            this.GetData(Regex.Replace(new StreamReader(httpWebRequest2.GetResponse().GetResponseStream(), Encoding.UTF8).ReadToEnd(), "[\r\t\n]", ""));
-            this.IsLoggedIn = true;
+            finally
+            {
+                _loginInProgress = false;
+            }
         }
+
 
         private void CheckPage(string page)
         {
@@ -156,22 +283,55 @@ namespace go.Comms
         {
             try
             {
-                if (!this.IsLoggedIn)
-                    this.Login();
-                url = go.Utils.Util.URI + url;
-                HttpWebRequest httpWebRequest = (HttpWebRequest)WebRequest.Create(url);
-                httpWebRequest.CookieContainer = this.cookieContainer;
-                httpWebRequest.UserAgent = "GO";
-                httpWebRequest.Method = "GET";
-                httpWebRequest.Timeout = 20000;
-                string end = new StreamReader(httpWebRequest.GetResponse().GetResponseStream(), Encoding.UTF8).ReadToEnd();
-                if (end.IndexOf("To access the site you have to sign in first") > 0)
+                HttpWebRequest httpWebRequest =
+                    this.CreateRequest(url);
+
+                string end =
+                    new StreamReader(
+                        httpWebRequest.GetResponse().GetResponseStream(),
+                        Encoding.UTF8
+                    ).ReadToEnd();
+
+                if (end.Contains("To access the site you have to sign in first"))
                 {
                     this.IsLoggedIn = false;
-                    return this.GetPage(url);
+
+                    throw new Exception(
+                        "Session expired or authentication failed."
+                    );
                 }
+                
+                if (
+                    end.Contains("Quick login") ||
+                    end.Contains("sign in first") ||
+                    end.Contains("Access denied") ||
+                    end.Length < 5000
+                )
+                {
+                    File.WriteAllText(
+                        "debug_" + url.Replace("/", "_").Replace("?", "_") + ".html",
+                        end
+                    );
+                }
+
                 this.CheckPage(end);
-                return Regex.Replace(Regex.Replace(Regex.Replace(end, "<ul(.*?)languages(.*?)>(.*?)</ul>", string.Empty, Communication.options), "[\r\t\n]", string.Empty, Communication.options), "[ ]{2,}", " ", Communication.options);
+
+                return Regex.Replace(
+                    Regex.Replace(
+                        Regex.Replace(
+                            end,
+                            "<ul(.*?)languages(.*?)>(.*?)</ul>",
+                            string.Empty,
+                            Communication.options
+                        ),
+                        "[\r\t\n]",
+                        string.Empty,
+                        Communication.options
+                    ),
+                    "[ ]{2,}",
+                    " ",
+                    Communication.options
+                );
             }
             catch
             {
@@ -272,10 +432,10 @@ namespace go.Comms
             return new StreamReader(httpWebRequest.GetResponse().GetResponseStream(), Encoding.UTF8).ReadToEnd();
         }
 
-        public string ConvertToHtmlEncoding(string input) => HttpUtility.UrlEncode(input);
+        private string ConvertToHtmlEncoding(string value) => Uri.EscapeDataString(value);
 
-        public string ConvertToPageEncoding(string input) => HttpUtility.HtmlEncode(input);
+        public string ConvertToPageEncoding(string input) => WebUtility.HtmlEncode(input);
 
-        public string ConvertFromUrlEncoding(string input) => HttpUtility.HtmlDecode(input);
+        public string ConvertFromUrlEncoding(string input) => WebUtility.HtmlDecode(input);
     }
 }
