@@ -612,9 +612,10 @@ namespace go.Forms
 
                 Cursor.Current = Cursors.WaitCursor;
 
-                Datas.Communications.EnsureSession();
+
                 LoadTracks();
                 LoadData();
+                Datas.Communications.EnsureSession();
 
                 statusBarPanel3.Text = "Ready";
             }
@@ -635,34 +636,6 @@ namespace go.Forms
         private void OnMainFormShown(object sender, EventArgs e)
         {
             Cursor.Current = Cursors.WaitCursor;
-
-            //string s = "textLogin=" + this.ConvertToHtmlEncoding(Datas.Username) + "&textPassword=" +
-            //           this.ConvertToHtmlEncoding(Datas.Password) + "&Logon=Login";
-            //HttpWebRequest httpWebRequest1 =
-            //    (HttpWebRequest)WebRequest.Create(go.Utils.Util.URI + "Login.asp?Redirect=gpro.asp");
-            //httpWebRequest1.CookieContainer = new CookieContainer();
-            //httpWebRequest1.UserAgent = "GO";
-            //httpWebRequest1.Method = "POST";
-            //httpWebRequest1.ContentType = "application/x-www-form-urlencoded";
-            //byte[] bytes = new UTF8Encoding().GetBytes(s);
-            //httpWebRequest1.ContentLength = (long)bytes.Length;
-            //Stream requestStream = httpWebRequest1.GetRequestStream();
-            //requestStream.Write(bytes, 0, bytes.Length);
-            //requestStream.Close();
-
-            //var response1 =
-            //    new StreamReader(httpWebRequest1.GetResponse().GetResponseStream(), Encoding.UTF8).ReadToEnd();
-            //Console.WriteLine(response1);
-
-
-
-            //Console.WriteLine("Creating httpWebRequest2");
-            //var httpWebRequest2 = (HttpWebRequest)WebRequest.Create(go.Utils.Util.URI + "gpro.asp");
-            //httpWebRequest2.CookieContainer = new CookieContainer();
-            //httpWebRequest2.UserAgent = "GO";
-            //httpWebRequest2.Method = "GET";
-            //httpWebRequest2.Timeout = 20000;
-            //Datas.Communications.GetData(Regex.Replace(new StreamReader(httpWebRequest2.GetResponse().GetResponseStream(), Encoding.UTF8).ReadToEnd(), "[\r\t\n]", ""));
 
             if (_initialized)
                 return;
@@ -4630,7 +4603,7 @@ namespace go.Forms
             }
             catch (FileNotFoundException e)
             {
-                Console.WriteLine("Couldn't find tracks.dat file");
+                Console.WriteLine(e.Message);
             }
             catch (Exception e)
             {
@@ -4655,15 +4628,15 @@ namespace go.Forms
         private Stream GetGoFile(string filename)
         {
             string path = Path.Combine(Application.StartupPath, filename);
-        
+
             if (!File.Exists(path))
             {
                 Console.WriteLine($"[OPTIONAL FILE MISSING] {path}");
                 return null;
             }
-        
+
             Console.WriteLine($"[FILE LOAD] {path}");
-        
+
             return new FileStream(path, FileMode.Open, FileAccess.Read, FileShare.Read);
         }
 
@@ -4696,6 +4669,7 @@ namespace go.Forms
                     string managerName = "";
                     string teamName = "";
                     Loader loader = new Loader();
+                    WireCommunication();
                     int num2;
                     switch (num1)
                     {
@@ -5279,6 +5253,7 @@ namespace go.Forms
                     }
                     this.statusBarPanel3.Text = "Data loaded";
                     Datas.Communications = new Communication(Datas.Communications.rememberPassword, managerName, teamName);
+                    WireCommunication();
                     if (Datas.Date.season <= 0)
                         return;
                     int index11 = Datas.Date.race == 18 ? 16 : Datas.Date.race - 1;
@@ -5399,22 +5374,47 @@ namespace go.Forms
         private void GetCommonData()
         {
             try
-            {
-                Datas.Date = Datas.Communications.GetDate();
-                if (Datas.Seasons.Count == 0)
+            {      
+                if (
+                    Datas.Seasons.Count == 0 ||
+                    Datas.Seasons[Datas.INDEX_CURRENTSEASON] == null ||
+                    Datas.Seasons[Datas.INDEX_CURRENTSEASON].Season == 0
+                )
                 {
-                    Datas.Seasons.Add(new Season20());
-                    Datas.INDEX_CURRENTSEASON = 0;
+                    if (Datas.Seasons.Count == 0)
+                    {
+                        Datas.Seasons.Add(new Season20());
+                        Datas.INDEX_CURRENTSEASON = 0;
+                    }
+
                     this.UpdateSeason();
                 }
-                else if (Datas.Seasons[Datas.INDEX_CURRENTSEASON].Season < Datas.Date.season)
-                {
+                else if (
+                    Datas.Seasons[Datas.INDEX_CURRENTSEASON].Season
+                    < Datas.Date.season
+                )
+                {      
                     Datas.Seasons.Add(new Season20());
+        
                     ++Datas.INDEX_CURRENTSEASON;
+        
+        
                     this.UpdateSeason();
                 }
+        
+                if (
+                    Datas.Seasons.Count > Datas.INDEX_CURRENTSEASON &&
+                    Datas.Seasons[Datas.INDEX_CURRENTSEASON] != null
+                )
+                {        
+                    var currentEvent =
+                        Datas.Seasons[Datas.INDEX_CURRENTSEASON]
+                            .Events[Datas.Date.race - 1];
+                }
+        
                 this.menuItemCurrentSeason.Enabled = true;
                 this.menuItemPitStrategy.Enabled = true;
+        
                 if (Datas.Date.race == 18)
                 {
                     Datas.NextRace = -1;
@@ -5422,18 +5422,30 @@ namespace go.Forms
                 }
                 else
                 {
-                    Datas.NextRace = Datas.Seasons[Datas.INDEX_CURRENTSEASON].Events[Datas.Date.race - 1].Trackid - 1;
-                    this.statusBarPanel2.Text = "Next race: " + Datas.Tracks[Datas.NextRace].name;
+                    var currentEvent =
+                        Datas.Seasons[Datas.INDEX_CURRENTSEASON]
+                            .Events[Datas.Date.race - 1];
+               
+                    Datas.NextRace = currentEvent.Trackid - 1;
+        
+                    this.statusBarPanel2.Text =
+                        "Next race: " + Datas.Tracks[Datas.NextRace].name;
                 }
+        
                 this.UpdateSeasonStats();
             }
             catch (Exception ex)
             {
-                int num = (int)MessageBox.Show((IWin32Window)this, "Error during extraction of common data", "Error", MessageBoxButtons.OK, MessageBoxIcon.Hand);
-                Errlog.AddToLog("GetCommondata: " + ex.Message);
+                MessageBox.Show(
+                    ex.ToString(),
+                    "GetCommonData Error",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Error
+                );
+        
+                Errlog.AddToLog(ex.ToString());
             }
         }
-
         private void UpdateAll()
         {
             if (!Datas.IsOkToUpdate)
@@ -5508,7 +5520,7 @@ namespace go.Forms
             {
                 this.statusBarPanel3.Text = "Tyre supplier";
                 TyreSupplier tyreSupplier = TyreSupplierParser.GetTyreSupplier();
-                this.GetCommonData();
+//
                 if (Datas.Date.race != 18 && (!Datas.Seasons[Datas.INDEX_CURRENTSEASON].Events[Datas.Date.race - 1].isTyreSupplierUpdated || !Datas.Seasons[Datas.INDEX_CURRENTSEASON].Events[Datas.Date.race - 1].Tyresupplier.isEqual(tyreSupplier)))
                 {
                     Datas.Seasons[Datas.INDEX_CURRENTSEASON].Events[Datas.Date.race - 1].Tyresupplier = tyreSupplier;
@@ -5634,7 +5646,7 @@ namespace go.Forms
             {
                 this.statusBarPanel3.Text = "Driver";
                 Driver5 driver = DriverParser.GetDriver(Datas.Communications.GetDriverID());
-                this.GetCommonData();
+//                this.GetCommonData();
                 if (Datas.Date.race != 18)
                     Datas.Seasons[Datas.INDEX_CURRENTSEASON].Events[Datas.Date.race - 1].Driver = Datas.Driver.CopyNoHistory();
                 if (driver != null && Datas.Driver.isSameDriver(driver.id) && !Datas.Driver.isEqual(driver))
@@ -5770,7 +5782,7 @@ label_7:
             try
             {
                 Race9 race = RaceAnalysisParser.ParseRace(raceEvent);
-                this.GetCommonData();
+//                this.GetCommonData();
                 if (race == null)
                 {
                     this.statusBarPanel3.Text = "Did not race";
@@ -5814,7 +5826,7 @@ label_7:
                     Datas.Seasons[Datas.INDEX_CURRENTSEASON].Events[Datas.Date.race - 1].Weather = wf;
                     this.FillWeatherTab(wf);
                 }
-                this.GetCommonData();
+//                this.GetCommonData();
                 this.statusBarPanel3.Text = "Practice downloaded";
                 int num2 = 0;
                 for (int index = 7; index >= 0; --index)
@@ -5855,7 +5867,7 @@ label_7:
                 this.statusBarPanel3.Text = "Qualify";
                 Qualify qualify1 = QualifyParser.ParseQualify1();
                 Qualify qualify2 = QualifyParser.ParseQualify2();
-                this.GetCommonData();
+//                this.GetCommonData();
                 if (qualify1.time > TimeSpan.Zero)
                 {
                     if (Datas.Seasons[Datas.INDEX_CURRENTSEASON].Events[Datas.Date.race - 1].Qualify1 == null)
@@ -5891,7 +5903,7 @@ label_7:
             {
                 this.statusBarPanel3.Text = "Strategy";
                 Strategy4 strategy = StrategyParser.ParseStrategy();
-                this.GetCommonData();
+//                this.GetCommonData();
                 bool flag = Datas.Seasons[Datas.INDEX_CURRENTSEASON].Events[Datas.Date.race - 1].Strat.IsEqual(strategy);
                 if (strategy.isStrategyUpdated && Datas.WarnWrongTyres)
                 {

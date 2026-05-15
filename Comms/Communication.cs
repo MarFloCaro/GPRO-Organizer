@@ -102,8 +102,8 @@ namespace go.Comms
 
             _loginInProgress = true;
             
-            string username = Datas.Username;
-            string password = Datas.Password;
+            string username = this.username;
+            string password = this.password;
             
             if (string.IsNullOrEmpty(username) || string.IsNullOrEmpty(password))
             {
@@ -111,10 +111,10 @@ namespace go.Comms
                     throw new Exception("No credential provider configured.");
             
                 var creds = CredentialProvider();
-            
+
                 username = creds.username;
                 password = creds.password;
-            
+
                 if (string.IsNullOrEmpty(username) || string.IsNullOrEmpty(password))
                 {
                     using (var login = new go.Forms.Logon(this))
@@ -122,9 +122,9 @@ namespace go.Comms
                         if (login.ShowDialog() != DialogResult.OK)
                             throw new Exception("User cancelled login");
                     }
-            
-                    username = Datas.Username;
-                    password = Datas.Password;
+
+                    username = this.username;
+                    password = this.password;
                 }
             }
 
@@ -154,6 +154,7 @@ namespace go.Comms
 
                 string loginResponse;
 
+
                 using (HttpWebResponse response =
                     (HttpWebResponse)loginRequest.GetResponse())
                 using (StreamReader reader =
@@ -177,7 +178,7 @@ namespace go.Comms
                 if (
                     !loginResponse.Contains("Logout") &&
                     !loginResponse.Contains("Log out") &&
-                    !loginResponse.Contains(Datas.Username)
+                    !loginResponse.Contains(this.username)
                 )
                 {
                     this.IsLoggedIn = false;
@@ -235,7 +236,6 @@ namespace go.Comms
             }
             if (page.IndexOf("<h1>Quick login</h1>") <= 0)
                 return;
-            this.Login();
         }
 
         private static bool SetAllowUnsafeHeaderParsing20()
@@ -343,41 +343,26 @@ namespace go.Comms
         public void GetData(string homePage)
         {
             this.CheckPage(homePage);
-            Console.WriteLine(homePage);
+
             try
             {
                 Date date = new Date();
-                int startIndex1 = homePage.IndexOf("Season") + 7;
-                if (homePage.IndexOf(",", startIndex1) == -1)
+
+                var match = Regex.Match(
+                    homePage,
+                    @"Season\s+(\d+),\s+Race\s+(\d+)"
+                );
+
+                if (!match.Success)
                 {
-                    date.season = Datas.Seasons.LastOrDefault<Season20>().Season;
+                    throw new Exception("Could not parse season/race from homepage.");
                 }
-                else
-                {
-                    string s = homePage.Substring(startIndex1, homePage.IndexOf(",", startIndex1) - startIndex1);
-                    try
-                    {
-                        date.season = int.Parse(s);
-                    }
-                    catch (FormatException ex)
-                    {
-                        date.season = Datas.Seasons.LastOrDefault<Season20>().Season;
-                        if (date.season == 0)
-                            date.season = 19;
-                    }
-                }
-                if (homePage.IndexOf("<strong>End of Season") > 0)
-                {
-                    date.race = 18;
-                }
-                else
-                {
-                    int startIndex2 = homePage.IndexOf("Race", startIndex1) + 5;
-                    string s = homePage.Substring(startIndex2, homePage.IndexOf(":", startIndex2) - startIndex2);
-                    date.race = int.Parse(s);
-                }
-                if (Datas.Date.race != date.race || Datas.Date.season != date.season)
-                    Datas.Date = date;
+
+                date.season = int.Parse(match.Groups[1].Value);
+                date.race = int.Parse(match.Groups[2].Value);
+
+                Datas.Date = date;
+
                 int startIndex3 = homePage.IndexOf("DriverProfile.asp") + 21;
                 this.driverid = startIndex3 <= 21 ? 0 : int.Parse(homePage.Substring(startIndex3, homePage.IndexOf("\"", startIndex3) - startIndex3));
                 if (homePage.IndexOf("TechDProfile.asp") > 0)
@@ -410,8 +395,6 @@ namespace go.Comms
 
         public int GetDriverID()
         {
-            if (!this.IsLoggedIn)
-                this.Login();
             return this.driverid;
         }
 
@@ -419,17 +402,7 @@ namespace go.Comms
 
         public Date GetDate()
         {
-            if (!this.IsLoggedIn)
-                this.Login();
             return Datas.Date;
-        }
-
-        public string GetRaw(string url)
-        {
-            HttpWebRequest httpWebRequest = (HttpWebRequest)WebRequest.Create(url);
-            httpWebRequest.UserAgent = "GO";
-            httpWebRequest.Method = "GET";
-            return new StreamReader(httpWebRequest.GetResponse().GetResponseStream(), Encoding.UTF8).ReadToEnd();
         }
 
         private string ConvertToHtmlEncoding(string value) => Uri.EscapeDataString(value);

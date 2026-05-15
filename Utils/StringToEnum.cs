@@ -115,31 +115,64 @@ namespace go.Utils
 
     public static TimeSpan String2Time(string noget)
     {
-      noget = noget.Trim();
-      int hours = 0;
-      int minutes = 0;
-      int seconds = 0;
-      try
-      {
-        if (noget[noget.Length - 1] == 's')
-          noget = noget.Substring(0, noget.Length - 1);
-        int startIndex1 = noget.IndexOf("h") + 1;
-        if (startIndex1 > 0)
-          hours = int.Parse(noget.Substring(0, startIndex1 - 1));
-        int num = noget.IndexOf(":") + 1;
-        if (num > 0)
-          minutes = int.Parse(noget.Substring(startIndex1, num - startIndex1 - 1));
-        int startIndex2 = num;
-        int startIndex3 = noget.IndexOf(".") + 1;
-        if (startIndex3 > 0)
-          seconds = int.Parse(noget.Substring(startIndex2, startIndex3 - startIndex2 - 1));
-        int milliseconds = int.Parse(noget.Substring(startIndex3));
-        return new TimeSpan(0, hours, minutes, seconds, milliseconds);
-      }
-      catch (Exception ex)
-      {
-        return TimeSpan.MinValue;
-      }
+        if (string.IsNullOrWhiteSpace(noget))
+            return TimeSpan.MinValue;
+    
+        noget = noget.Trim();
+    
+        int hours = 0;
+        int minutes = 0;
+        int seconds = 0;
+    
+        try
+        {
+            if (noget.EndsWith("s"))
+                noget = noget.Substring(0, noget.Length - 1);
+    
+            int startIndex1 = noget.IndexOf("h") + 1;
+    
+            if (startIndex1 > 0)
+                hours = int.Parse(
+                    noget.Substring(0, startIndex1 - 1)
+                );
+    
+            int num = noget.IndexOf(":") + 1;
+    
+            if (num > 0)
+                minutes = int.Parse(
+                    noget.Substring(
+                        startIndex1,
+                        num - startIndex1 - 1
+                    )
+                );
+    
+            int startIndex2 = num;
+    
+            int startIndex3 = noget.IndexOf(".") + 1;
+    
+            if (startIndex3 > 0)
+                seconds = int.Parse(
+                    noget.Substring(
+                        startIndex2,
+                        startIndex3 - startIndex2 - 1
+                    )
+                );
+    
+            int milliseconds =
+                int.Parse(noget.Substring(startIndex3));
+    
+            return new TimeSpan(
+                0,
+                hours,
+                minutes,
+                seconds,
+                milliseconds
+            );
+        }
+        catch
+        {
+            return TimeSpan.MinValue;
+        }
     }
 
     public static RaceStartStrategy String2Strategy(string noget)

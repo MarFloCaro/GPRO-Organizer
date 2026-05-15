@@ -190,18 +190,29 @@ namespace go.Forms
 
         private void OnOkButtonClick(object sender, EventArgs e)
         {
-            if (TryLogin())
+            try
             {
                 Datas.Communications.username = boxUsername.Text;
                 Datas.Communications.password = boxPassword.Text;
+        
+                Datas.Communications.Login();
+        
                 SaveRegistrySettings();
-                Datas.Communications.rememberPassword = _rememberPasswordCheckBox.Checked;
+        
+                Datas.Communications.rememberPassword =
+                    _rememberPasswordCheckBox.Checked;
+        
                 DialogResult = DialogResult.OK;
                 Close();
             }
-            else
+            catch (Exception ex)
             {
-                MessageBox.Show("Login error", "OK");
+                MessageBox.Show(
+                    ex.Message,
+                    "Login error",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Error
+                );
             }
         }
 
