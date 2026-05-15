@@ -7,6 +7,7 @@ using System;
 using System.Collections.Generic;
 using System.Text.RegularExpressions;
 using System.Windows.Forms;
+using System.Linq;
 
 namespace go.Parsers
 {
@@ -46,7 +47,9 @@ namespace go.Parsers
             }
         }
 
-        return tracks.ToArray();
+        return tracks
+          .OrderBy(t => t.number)
+          .ToArray();
     }
 
     private static Track parseTrackPage(int num)

@@ -43,6 +43,14 @@ namespace go.Utils
 
         public static List<Season20> Seasons { get; set; }
 
+        public static Track GetTrack(int id)
+        {
+            if (Tracks == null || id <= 0 || id > Tracks.Length)
+                return null;
+        
+            return Tracks[id - 1];
+        }
+
         internal static void InitialiseInternalvariables()
         {
             Datas.DataChanged = false;

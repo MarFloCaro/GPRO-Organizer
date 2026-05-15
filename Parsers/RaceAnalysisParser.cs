@@ -32,7 +32,7 @@ namespace go.Parsers
         string s1 = racePage.Substring(num2, racePage.IndexOf("\"", num2) - num2);
         int num1 = 0;
         int num3 = int.Parse(s1);
-        int laps = Datas.Tracks[num3 - 1].laps + 1;
+        int laps = Datas.GetTrack(num3).laps + 1;
         Race9 race = new Race9(laps);
         bool flag = false;
         if (racePage.IndexOf("Dropped out") > 0 || racePage.IndexOf("Tyre puncture") > 0 || racePage.IndexOf("Start accident") > 0)
@@ -389,7 +389,7 @@ label_17:
           int startIndex21 = racePage.IndexOf("$", startIndex20);
           race.Finances.currentBalance = RaceAnalysisParser.GetMoneyAmount(racePage.Substring(startIndex21, racePage.IndexOf("<", startIndex21) - startIndex21), "currentBalance");
         }
-        race.CalculateWear(Datas.Tracks[num3 - 1]);
+        race.CalculateWear(Datas.GetTrack(num3));
         return race;
 
         int nextCellValue(string escape = "")
