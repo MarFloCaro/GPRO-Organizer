@@ -18,9 +18,7 @@ namespace go.Parsers
         string partName,
         CarPart part
     )
-    {
-        Console.WriteLine("Parsing part: " + partName);
-          
+    {   
         int partIndex =
           carPage.IndexOf("<td><b>" + partName);
     
@@ -65,11 +63,6 @@ namespace go.Parsers
         part.level = int.Parse(levelText);
         part.wear = int.Parse(wearText);
     
-        Console.WriteLine(
-            partName +
-            " => Level " + part.level +
-            ", Wear " + part.wear + "%"
-        );
     }
     public static Car2 GetCar() => CarParser.GetCar(Datas.Communications.GetPage("UpdateCar.asp"));
 
@@ -121,7 +114,6 @@ namespace go.Parsers
         car.acceleration =
             int.Parse(characterMatches[2].Groups[1].Value);
 
-        Console.WriteLine(car.power + " " + car.handling + " " + car.acceleration);
 
         // --------------------------------------------------
         // PARTS

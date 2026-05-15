@@ -5772,10 +5772,19 @@ label_7:
         private bool UpdateLastrace()
         {
             this.statusBarPanel3.Text = "Last Race";
+
+            string page = Datas.Communications.GetPage("RaceAnalysis.asp");
+
+            // extract track from page
+            int trackStart = page.IndexOf("TrackDetails") + 20;
+            int trackId = int.Parse(
+                page.Substring(trackStart, page.IndexOf("\"", trackStart) - trackStart)
+            );
+
             RaceEvent20 raceEvent = (RaceEvent20)null;
             if (Datas.INDEX_CURRENTSEASON > 0)
                 raceEvent = Datas.Date.race == 1 ? Datas.Seasons[Datas.INDEX_CURRENTSEASON - 1].Events[16] : Datas.Seasons[Datas.INDEX_CURRENTSEASON].Events[Datas.Date.race - 2];
-            if (raceEvent == null || raceEvent.isRaceUpdated)
+            if (raceEvent == null || raceEvent.isRaceUpdated || raceEvent.Trackid != trackId)
                 return true;
             Cursor current = Cursor.Current;
             Cursor.Current = Cursors.WaitCursor;
