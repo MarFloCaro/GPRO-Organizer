@@ -10,29 +10,40 @@ using System.IO;
 #nullable disable
 namespace go.Utils
 {
-  internal static class Errlog
-  {
-    private static bool begun = false;
-    private static StreamWriter stream = new StreamWriter((Stream) new FileStream(Errlog.getFileName(), FileMode.Create, FileAccess.ReadWrite, FileShare.ReadWrite));
-
-    public static void Close() => Errlog.stream.Close();
-
-    public static void AddToLog(string noget)
+    internal static class Errlog
     {
-      if (!Errlog.begun)
-        Errlog.BeginLog();
-      Errlog.stream.WriteLine(noget);
+        private static readonly object _lock = new object();
+    
+        public static string getFileName()
+        {
+            return Path.Combine(
+                AppDomain.CurrentDomain.BaseDirectory,
+                "error.log");
+        }
+    
+        public static void AddToLog(string message)
+        {
+            try
+            {
+                lock (_lock)
+                {
+                    using (StreamWriter stream =
+                        new StreamWriter(getFileName(), true))
+                    {
+                        stream.WriteLine(
+                            $"[{DateTime.Now:yyyy-MM-dd HH:mm:ss}] {message}");
+                    }
+                }
+            }
+            catch
+            {
+                // Never throw from logger
+            }
+        }
+    
+        public static void Close()
+        {
+            // Compatibility with legacy code
+        }
     }
-
-    private static void BeginLog()
-    {
-      Errlog.stream.WriteLine();
-      Errlog.begun = true;
-    }
-
-    public static string getFileName()
-    {
-      return Datas.KeepDataWithApp ? "error.log" : Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\GO\\error.log";
-    }
-  }
 }

@@ -9,11 +9,8 @@ using System.Net.Configuration;
 using System.Reflection;
 using System.Text;
 using System.Text.RegularExpressions;
-using System.Web;
 using System.Windows.Forms;
-using System.Windows.Forms.VisualStyles;
 
-#nullable disable
 namespace go.Comms
 {
     public class Communication
@@ -33,16 +30,10 @@ namespace go.Comms
 
         internal Communication()
         {
-            ServicePointManager.SecurityProtocol = SecurityProtocolType.Ssl3 | SecurityProtocolType.Tls | SecurityProtocolType.Tls11 | SecurityProtocolType.Tls12 | SecurityProtocolType.Tls13;
+            ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12;
             Communication.SetAllowUnsafeHeaderParsing20();
         }
 
-        internal Communication(string username, string password)
-          : this()
-        {
-            this.username = username;
-            this.password = password;
-        }
 
         internal Communication(bool rememberPassword, string managerName, string teamName)
           : this()
@@ -54,49 +45,384 @@ namespace go.Comms
 
         public bool IsLoggedIn { get; set; }
 
-        private void Login()
-        {
-            //var logon1 = new Logon();
+        private bool _loginInProgress;
 
-            //logon1.boxUsername.Text = Datas.Username;
-            //logon1.boxPassword.Text = Datas.Password;
-            //Logon logon2 = logon1;
-            //if (!Datas.Communications.rememberPassword || Datas.Password == "")
-            //{
-            //    logon2.ShowDialog();
-            //    //if (!logon2.ShouldLogin)
-            //    //{
-            //    //    throw new Exception("Login cancelled by user");
-            //    //}
-            //}
-            //Datas.Communications.rememberPassword = logon2._rememberPasswordCheckBox.Checked;
-            //Datas.Username = logon2.boxUsername.Text;
-            //Datas.Password = logon2.boxPassword.Text;
-            string s = "textLogin=" + this.ConvertToHtmlEncoding(Datas.Username) + "&textPassword=" + this.ConvertToHtmlEncoding(Datas.Password) + "&Logon=Login";
-            HttpWebRequest httpWebRequest1 = (HttpWebRequest)WebRequest.Create(go.Utils.Util.URI + "Login.asp?Redirect=gpro.asp");
-            httpWebRequest1.CookieContainer = this.cookieContainer;
-            httpWebRequest1.UserAgent = "GO";
-            httpWebRequest1.Method = "POST";
-            httpWebRequest1.ContentType = "application/x-www-form-urlencoded";
-            byte[] bytes = new UTF8Encoding().GetBytes(s);
-            httpWebRequest1.ContentLength = (long)bytes.Length;
-            Stream requestStream = httpWebRequest1.GetRequestStream();
-            requestStream.Write(bytes, 0, bytes.Length);
-            requestStream.Close();
-            if (new StreamReader(httpWebRequest1.GetResponse().GetResponseStream(), Encoding.UTF8).ReadToEnd().IndexOf("To access the site you have to sign in first") > 0)
+        public Func<(string username, string password)> CredentialProvider { get; set; }
+
+        public static class AppInfo
+        {
+            public static string Version =>
+                Assembly.GetEntryAssembly()?.GetName().Version?.ToString() ?? "0.0.0.0";
+
+            public static string UserAgent =>
+                $"GPRO-Organizer/{Version} (.NET {Environment.Version})";
+        }
+
+        private HttpWebRequest CreateRequest(string url, string method = "GET")
+        {
+            // Prevent accidental double-prefixing
+            if (!url.StartsWith("http", StringComparison.OrdinalIgnoreCase))
+            {
+                url = go.Utils.Util.URI + url;
+            }
+
+            HttpWebRequest request =
+                (HttpWebRequest)WebRequest.Create(url);
+
+            request.CookieContainer = this.cookieContainer;
+            request.UserAgent = AppInfo.UserAgent;
+            request.Method = method.ToUpperInvariant();
+
+            request.Timeout = 20000;
+            request.ReadWriteTimeout = 20000;
+
+            request.AllowAutoRedirect = true;
+
+            request.KeepAlive = true;
+
+            request.AutomaticDecompression =
+                DecompressionMethods.GZip |
+                DecompressionMethods.Deflate;
+
+            return request;
+        }
+
+        public void EnsureSession()
+        {
+            if (this.IsLoggedIn)
+                return;
+
+            if (_loginInProgress)
+                return;
+
+            this.Login("Ensure Session");
+        }
+
+
+        private void EnsureCredentials()
+        {
+            if (CredentialProvider == null)
+                throw new Exception("No credential provider configured.");
+
+            var creds = CredentialProvider();
+
+            username = creds.username;
+            password = creds.password;
+
+            if (!string.IsNullOrWhiteSpace(username) &&
+                !string.IsNullOrWhiteSpace(password))
+            {
+                return;
+            }
+
+            using (var login = new go.Forms.Logon(Datas.Communications))
+            {
+                if (login.ShowDialog() != DialogResult.OK)
+                    throw new Exception("User cancelled login");
+            }
+
+            username = Datas.Username;
+            password = Datas.Password;
+
+            if (string.IsNullOrWhiteSpace(username) ||
+                string.IsNullOrWhiteSpace(password))
+            {
+                throw new Exception("No credentials provided");
+            }
+        }
+
+
+        private void ValidateLogin(string loginResponse)
+        {
+            if (
+                loginResponse.Contains("Sign in") ||
+                loginResponse.Contains("To access the site you have to sign in first")
+            )
+            {
+                throw new Exception(
+                    "Invalid username or password."
+                );
+            }
+
+            if (
+                !loginResponse.Contains("Logout") &&
+                !loginResponse.Contains("Log out") &&
+                !loginResponse.Contains(username)
+            )
+            {
+                throw new Exception(
+                    "Login validation failed."
+                );
+            }
+        }
+
+        private void ResetSession()
+        {
+            IsLoggedIn = false;
+
+            username = "";
+            password = "";
+
+            Datas.Username = "";
+            Datas.Password = "";
+
+            rememberPassword = false;
+        }
+
+        private void LoadAccountData()
+        {
+            HttpWebRequest homeRequest =
+                this.CreateRequest("gpro.asp");
+
+            string homePage;
+
+            using (HttpWebResponse response =
+                (HttpWebResponse)homeRequest.GetResponse())
+            using (StreamReader reader =
+                new StreamReader(response.GetResponseStream(), Encoding.UTF8))
+            {
+                homePage = reader.ReadToEnd();
+            }
+
+            this.GetData(
+                Regex.Replace(homePage, "[\r\t\n]", "")
+            );
+        }
+
+        private void PerformLogin()
+        {
+            string loginUrl =
+                go.Utils.Util.URI + "Login.asp?Redirect=gpro.asp";
+
+            string postData =
+                "textLogin=" + this.ConvertToHtmlEncoding(username) +
+                "&textPassword=" + this.ConvertToHtmlEncoding(password) +
+                "&Logon=Login";
+
+            HttpWebRequest loginRequest =
+                this.CreateRequest(loginUrl, "POST");
+
+            loginRequest.ContentType =
+                "application/x-www-form-urlencoded";
+
+            byte[] bytes = Encoding.UTF8.GetBytes(postData);
+
+            loginRequest.ContentLength = bytes.Length;
+
+            using (Stream requestStream = loginRequest.GetRequestStream())
+            {
+                requestStream.Write(bytes, 0, bytes.Length);
+            }
+
+            string loginResponse;
+
+            using (HttpWebResponse response =
+                (HttpWebResponse)loginRequest.GetResponse())
+            using (StreamReader reader =
+                new StreamReader(response.GetResponseStream(), Encoding.UTF8))
+            {
+                loginResponse = reader.ReadToEnd();
+            }
+
+            ValidateLogin(loginResponse);
+
+            LoadAccountData();
+        }
+
+
+        public void Login(string origin)
+        {
+            if (_loginInProgress)
+                return;
+        
+            _loginInProgress = true;
+        
+            try
+            {
+                EnsureCredentials();
+        
+                PerformLogin();
+        
+                IsLoggedIn = true;
+            }
+            catch (Exception ex)
+            {
+                ResetSession();
+        
+                MessageBox.Show(
+                    "Login failed.\n\n" + ex.Message,
+                    "Authentication Error",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Error
+                );
+            }
+            finally
+            {
+                _loginInProgress = false;
+            }
+        }
+
+
+
+        /*public void Login(string origin)
+        {       
+            if (_loginInProgress)
+            {
+                return; 
+            }
+            _loginInProgress = true;
+                      
+            if (CredentialProvider == null)
+                throw new Exception("No credential provider configured.");
+        
+            var creds = CredentialProvider();
+            username = creds.username;
+            password = creds.password;
+            
+            if (string.IsNullOrEmpty(username) || string.IsNullOrEmpty(password))
+            {
+                try
+                {
+                    using (var login = new go.Forms.Logon(Datas.Communications))
+                    {
+                        if (login.ShowDialog() != DialogResult.OK)
+                        {
+                            this.IsLoggedIn = false;
+                            Datas.Username = "";
+                            Datas.Password = "";
+                            Datas.Communications.rememberPassword = false;
+                            throw new Exception("User cancelled login");
+                        }   
+                    }
+                    username =  Datas.Username;
+                    password = Datas.Password;
+                }
+                catch (Exception ex)
+                {
+                    this.IsLoggedIn = false;
+
+                    Datas.Username = "";
+                    Datas.Password = "";
+                    Datas.Communications.rememberPassword = false;
+
+                    MessageBox.Show(
+                        "Login failed.\n\n" + ex.Message,
+                        "Authentication Error",
+                        MessageBoxButtons.OK,
+                        MessageBoxIcon.Error
+                    );
+                }
+                finally
+                {
+                    _loginInProgress = false;
+                }
+            }
+
+            string loginUrl = go.Utils.Util.URI + "Login.asp?Redirect=gpro.asp";
+
+            string postData =
+                "textLogin=" + this.ConvertToHtmlEncoding(username) +
+                "&textPassword=" + this.ConvertToHtmlEncoding(password) +
+                "&Logon=Login";
+
+            try
+            {
+                HttpWebRequest loginRequest =
+                    this.CreateRequest(loginUrl, "POST");
+
+                loginRequest.ContentType =
+                    "application/x-www-form-urlencoded";
+
+                byte[] bytes = Encoding.UTF8.GetBytes(postData);
+
+                loginRequest.ContentLength = bytes.Length;
+
+                using (Stream requestStream = loginRequest.GetRequestStream())
+                {
+                    requestStream.Write(bytes, 0, bytes.Length);
+                }
+
+                string loginResponse;
+
+
+                using (HttpWebResponse response =
+                    (HttpWebResponse)loginRequest.GetResponse())
+                using (StreamReader reader =
+                    new StreamReader(response.GetResponseStream(), Encoding.UTF8))
+                {
+                    loginResponse = reader.ReadToEnd();
+                }
+
+                // Detect failed login
+                if (
+                    loginResponse.Contains("Sign in") ||
+                    loginResponse.Contains("To access the site you have to sign in first")
+                )
+                {
+                    this.IsLoggedIn = false;
+                    Datas.Username = "";
+                    Datas.Password = "";
+                    Datas.Communications.rememberPassword = false;
+                    throw new Exception("Login failed: invalid credentials or session not established.");
+                }
+
+                // Validate authenticated state
+                if (
+                    !loginResponse.Contains("Logout") &&
+                    !loginResponse.Contains("Log out") &&
+                    !loginResponse.Contains(Datas.Username)
+                )
+                {
+                    this.IsLoggedIn = false;
+                    Datas.Username = "";
+                    Datas.Password = "";
+                    Datas.Communications.rememberPassword = false;
+                    throw new Exception("Login validation failed.");
+                }
+
+                // Load account data
+                HttpWebRequest homeRequest =
+                    this.CreateRequest("gpro.asp");
+
+                string homePage;
+
+                using (HttpWebResponse response =
+                    (HttpWebResponse)homeRequest.GetResponse())
+                using (StreamReader reader =
+                    new StreamReader(response.GetResponseStream(), Encoding.UTF8))
+                {
+                    homePage = reader.ReadToEnd();
+                }
+
+                this.GetData(
+                    Regex.Replace(homePage, "[\r\t\n]", "")
+                );
+
+                Datas.Communications.IsLoggedIn = true;
+            }
+            catch (Exception ex)
             {
                 this.IsLoggedIn = false;
+
+                Datas.Username = "";
+                Datas.Password = "";
                 Datas.Communications.rememberPassword = false;
-                //this.Login();
+
+                MessageBox.Show(
+                    "Login failed.\n\n" + ex.Message,
+                    "Authentication Error",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Error
+                );
+
+                //throw;
             }
-            HttpWebRequest httpWebRequest2 = (HttpWebRequest)WebRequest.Create(go.Utils.Util.URI + "gpro.asp");
-            httpWebRequest2.CookieContainer = this.cookieContainer;
-            httpWebRequest2.UserAgent = "GO";
-            httpWebRequest2.Method = "GET";
-            httpWebRequest2.Timeout = 20000;
-            this.GetData(Regex.Replace(new StreamReader(httpWebRequest2.GetResponse().GetResponseStream(), Encoding.UTF8).ReadToEnd(), "[\r\t\n]", ""));
-            this.IsLoggedIn = true;
-        }
+            finally
+            {
+                _loginInProgress = false;
+            }
+        } */
+
 
         private void CheckPage(string page)
         {
@@ -108,7 +434,6 @@ namespace go.Comms
             }
             if (page.IndexOf("<h1>Quick login</h1>") <= 0)
                 return;
-            this.Login();
         }
 
         private static bool SetAllowUnsafeHeaderParsing20()
@@ -156,22 +481,55 @@ namespace go.Comms
         {
             try
             {
-                if (!this.IsLoggedIn)
-                    this.Login();
-                url = go.Utils.Util.URI + url;
-                HttpWebRequest httpWebRequest = (HttpWebRequest)WebRequest.Create(url);
-                httpWebRequest.CookieContainer = this.cookieContainer;
-                httpWebRequest.UserAgent = "GO";
-                httpWebRequest.Method = "GET";
-                httpWebRequest.Timeout = 20000;
-                string end = new StreamReader(httpWebRequest.GetResponse().GetResponseStream(), Encoding.UTF8).ReadToEnd();
-                if (end.IndexOf("To access the site you have to sign in first") > 0)
+                HttpWebRequest httpWebRequest =
+                    this.CreateRequest(url);
+
+                string end =
+                    new StreamReader(
+                        httpWebRequest.GetResponse().GetResponseStream(),
+                        Encoding.UTF8
+                    ).ReadToEnd();
+
+                if (end.Contains("To access the site you have to sign in first"))
                 {
                     this.IsLoggedIn = false;
-                    return this.GetPage(url);
+
+                    throw new Exception(
+                        "Session expired or authentication failed."
+                    );
                 }
+                
+                if (
+                    end.Contains("Quick login") ||
+                    end.Contains("sign in first") ||
+                    end.Contains("Access denied") ||
+                    end.Length < 5000
+                )
+                {
+                    File.WriteAllText(
+                        "debug_" + url.Replace("/", "_").Replace("?", "_") + ".html",
+                        end
+                    );
+                }
+
                 this.CheckPage(end);
-                return Regex.Replace(Regex.Replace(Regex.Replace(end, "<ul(.*?)languages(.*?)>(.*?)</ul>", string.Empty, Communication.options), "[\r\t\n]", string.Empty, Communication.options), "[ ]{2,}", " ", Communication.options);
+
+                return Regex.Replace(
+                    Regex.Replace(
+                        Regex.Replace(
+                            end,
+                            "<ul(.*?)languages(.*?)>(.*?)</ul>",
+                            string.Empty,
+                            Communication.options
+                        ),
+                        "[\r\t\n]",
+                        string.Empty,
+                        Communication.options
+                    ),
+                    "[ ]{2,}",
+                    " ",
+                    Communication.options
+                );
             }
             catch
             {
@@ -183,41 +541,26 @@ namespace go.Comms
         public void GetData(string homePage)
         {
             this.CheckPage(homePage);
-            Console.WriteLine(homePage);
+
             try
             {
                 Date date = new Date();
-                int startIndex1 = homePage.IndexOf("Season") + 7;
-                if (homePage.IndexOf(",", startIndex1) == -1)
+
+                var match = Regex.Match(
+                    homePage,
+                    @"Season\s+(\d+),\s+Race\s+(\d+)"
+                );
+
+                if (!match.Success)
                 {
-                    date.season = Datas.Seasons.LastOrDefault<Season20>().Season;
+                    throw new Exception("Could not parse season/race from homepage.");
                 }
-                else
-                {
-                    string s = homePage.Substring(startIndex1, homePage.IndexOf(",", startIndex1) - startIndex1);
-                    try
-                    {
-                        date.season = int.Parse(s);
-                    }
-                    catch (FormatException ex)
-                    {
-                        date.season = Datas.Seasons.LastOrDefault<Season20>().Season;
-                        if (date.season == 0)
-                            date.season = 19;
-                    }
-                }
-                if (homePage.IndexOf("<strong>End of Season") > 0)
-                {
-                    date.race = 18;
-                }
-                else
-                {
-                    int startIndex2 = homePage.IndexOf("Race", startIndex1) + 5;
-                    string s = homePage.Substring(startIndex2, homePage.IndexOf(":", startIndex2) - startIndex2);
-                    date.race = int.Parse(s);
-                }
-                if (Datas.Date.race != date.race || Datas.Date.season != date.season)
-                    Datas.Date = date;
+
+                date.season = int.Parse(match.Groups[1].Value);
+                date.race = int.Parse(match.Groups[2].Value);
+
+                Datas.Date = date;
+
                 int startIndex3 = homePage.IndexOf("DriverProfile.asp") + 21;
                 this.driverid = startIndex3 <= 21 ? 0 : int.Parse(homePage.Substring(startIndex3, homePage.IndexOf("\"", startIndex3) - startIndex3));
                 if (homePage.IndexOf("TechDProfile.asp") > 0)
@@ -250,8 +593,6 @@ namespace go.Comms
 
         public int GetDriverID()
         {
-            if (!this.IsLoggedIn)
-                this.Login();
             return this.driverid;
         }
 
@@ -259,23 +600,13 @@ namespace go.Comms
 
         public Date GetDate()
         {
-            if (!this.IsLoggedIn)
-                this.Login();
             return Datas.Date;
         }
 
-        public string GetRaw(string url)
-        {
-            HttpWebRequest httpWebRequest = (HttpWebRequest)WebRequest.Create(url);
-            httpWebRequest.UserAgent = "GO";
-            httpWebRequest.Method = "GET";
-            return new StreamReader(httpWebRequest.GetResponse().GetResponseStream(), Encoding.UTF8).ReadToEnd();
-        }
+        private string ConvertToHtmlEncoding(string value) => Uri.EscapeDataString(value);
 
-        public string ConvertToHtmlEncoding(string input) => HttpUtility.UrlEncode(input);
+        public string ConvertToPageEncoding(string input) => WebUtility.HtmlEncode(input);
 
-        public string ConvertToPageEncoding(string input) => HttpUtility.HtmlEncode(input);
-
-        public string ConvertFromUrlEncoding(string input) => HttpUtility.HtmlDecode(input);
+        public string ConvertFromUrlEncoding(string input) => WebUtility.HtmlDecode(input);
     }
 }

@@ -1,27 +1,55 @@
 ﻿ 
 // Type: go.Parsers.TrackParser
- 
- 
- 
 
 using go.Enums;
 using go.Utils;
+using System;
+using System.Collections.Generic;
+using System.Text.RegularExpressions;
+using System.Windows.Forms;
+using System.Linq;
 
-#nullable disable
 namespace go.Parsers
 {
   public class TrackParser : GenericParser
   {
     public static Track[] GetAllTracks()
     {
-      string page = Datas.Communications.GetPage("ViewTracks.asp");
-      int length = 0;
-      for (int index = page.IndexOf("TrackDetails.asp?"); index > 0; index = page.IndexOf("TrackDetails.asp?", index + 1))
-        ++length;
-      Track[] allTracks = new Track[length];
-      for (int index = 0; index < length; ++index)
-        allTracks[index] = TrackParser.parseTrackPage(index + 1);
-      return allTracks;
+        string page =
+            Datas.Communications.GetPage("ViewTracks.asp");
+
+        MatchCollection matches =
+            Regex.Matches(
+                page,
+                @"TrackDetails\.asp\?id=(\d+)",
+                RegexOptions.IgnoreCase
+            );
+
+        List<Track> tracks = new List<Track>();
+
+        foreach (Match match in matches)
+        {
+            try
+            {
+                int id =
+                    int.Parse(match.Groups[1].Value);
+
+                tracks.Add(parseTrackPage(id));
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(
+                    "Failed parsing track ID: " +
+                    match.Groups[1].Value +
+                    "\n\n" +
+                    ex.Message
+                );
+            }
+        }
+
+        return tracks
+          .OrderBy(t => t.number)
+          .ToArray();
     }
 
     private static Track parseTrackPage(int num)

@@ -106,6 +106,7 @@
     <Compile Include="Practice2.cs" />
     <Compile Include="Practice3.cs" />
     <Compile Include="PracticeRun.cs" />
+    <Compile Include="Program.cs" />
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -370,7 +371,10 @@
     <Content Include="car.ico" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Go_TemporaryKey.pfx" />
+    <None Include="Data\tracks.dat">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <Link>tracks.dat</Link>
+    </None>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

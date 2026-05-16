@@ -13,6 +13,8 @@ namespace go.Utils
     {
         public static string Username = "";
         public static string Password = "";
+        public static string SettingsUsername = "";
+        public static string SettingsPassword = "";
         public static Communication Communications = new Communication();
         internal static Version Version = Assembly.GetExecutingAssembly().GetName().Version;
         public static bool AutoCheck;
@@ -42,6 +44,14 @@ namespace go.Utils
         public static FormHandler FormHandler = new FormHandler();
 
         public static List<Season20> Seasons { get; set; }
+
+        public static Track GetTrack(int id)
+        {
+            if (Tracks == null || id <= 0 || id > Tracks.Length)
+                return null;
+        
+            return Tracks[id - 1];
+        }
 
         internal static void InitialiseInternalvariables()
         {
