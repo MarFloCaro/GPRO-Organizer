@@ -27,76 +27,19 @@ namespace go.Forms
         
         public Logon(go.Comms.Communication comms)
         {
-            InitializeComponent();
 
             GetRegistrySettings();
+            InitializeComponent();
+
+            this.StartPosition = FormStartPosition.CenterParent;
+
+            boxUsername.Text = Datas.SettingsUsername;
+            boxPassword.Text = Datas.SettingsPassword;
 
             _comms = comms;
 
         }
 
-/*        [STAThread]
-        private static void Main()
-        {
-            // try read cached credentials
-            // if empty => show dialog
-            // else tryLogin
-            //GetRegistrySettings();
-
-            var app = new Logon();
-            Application.Run((Form)app);
-
-            if (_isLoginSuccessful)
-            {
-                Application.Run(new MainForm());
-            }
-        }
-*/
-
-        public string ConvertToHtmlEncoding(string input) => HttpUtility.UrlEncode(input);
-
-        public bool ShouldTryLogin()
-        {
-            // try read cached credentials
-            // if empty => show dialog
-
-            var result = this.ShowDialog();
-            return result == DialogResult.OK;
-        }
-
-        public bool TryLogin()
-        {
-            Console.WriteLine("Trying to Login");
-            Datas.Communications.rememberPassword = _rememberPasswordCheckBox.Checked;
-            Datas.Username = boxUsername.Text;
-            Datas.Password = boxPassword.Text;
-            string s = "textLogin=" + this.ConvertToHtmlEncoding(Datas.Username) + "&textPassword=" +
-                       this.ConvertToHtmlEncoding(Datas.Password) + "&Logon=Login";
-            HttpWebRequest httpWebRequest1 =
-                (HttpWebRequest) WebRequest.Create(go.Utils.Util.URI + "Login.asp?Redirect=gpro.asp");
-            httpWebRequest1.CookieContainer = new CookieContainer();
-            httpWebRequest1.UserAgent = "GO";
-            httpWebRequest1.Method = "POST";
-            httpWebRequest1.ContentType = "application/x-www-form-urlencoded";
-            byte[] bytes = new UTF8Encoding().GetBytes(s);
-            httpWebRequest1.ContentLength = (long) bytes.Length;
-            Stream requestStream = httpWebRequest1.GetRequestStream();
-            requestStream.Write(bytes, 0, bytes.Length);
-            requestStream.Close();
-
-            var response1 =
-                new StreamReader(httpWebRequest1.GetResponse().GetResponseStream(), Encoding.UTF8).ReadToEnd();
-            Console.WriteLine(response1);
-
-            if (response1.IndexOf("To access the site you have to sign in first") > 0)
-            {
-                return false;
-            }
-
-            Datas.Communications.IsLoggedIn = true;
-            _isLoginSuccessful = true;
-            return true;
-        }
 
         private void InitializeComponent()
         {
@@ -192,21 +135,27 @@ namespace go.Forms
         {
             try
             {
-                Datas.Communications.username = boxUsername.Text;
-                Datas.Communications.password = boxPassword.Text;
+
+                Datas.Username = boxUsername.Text;
+                Datas.Password = boxPassword.Text;
         
-                Datas.Communications.Login();
-        
-                SaveRegistrySettings();
+                Datas.Communications.Login("Login Dialogue");
         
                 Datas.Communications.rememberPassword =
                     _rememberPasswordCheckBox.Checked;
-        
+                
+                SaveRegistrySettings();
+               
                 DialogResult = DialogResult.OK;
                 Close();
             }
             catch (Exception ex)
             {
+                Datas.Communications.IsLoggedIn = false;
+                Datas.Username = "";
+                Datas.Password = "";
+                Datas.Communications.rememberPassword = false;
+
                 MessageBox.Show(
                     ex.Message,
                     "Login error",
@@ -219,9 +168,9 @@ namespace go.Forms
         private void SaveRegistrySettings()
         {
             var registry = Registry.CurrentUser.CreateSubKey("Software\\go");
-            registry.SetValue("Username", (object)Datas.Communications.username);
+            registry.SetValue("Username", (object)Datas.SettingsUsername);
             if (Datas.Communications.rememberPassword)
-                registry.SetValue("Password", (object)EncDec.Encrypt(Datas.Communications.password, "phdsp98q4tæqæræosalæx-lkdsvjipo.LKLDUSFÆIREp98 w3rp98y<ÆH æFp9843æiohfp9y<ftg"));
+                registry.SetValue("Password", (object)EncDec.Encrypt(Datas.SettingsPassword, "phdsp98q4tæqæræosalæx-lkdsvjipo.LKLDUSFÆIREp98 w3rp98y<ÆH æFp9843æiohfp9y<ftg"));
             else
                 registry.SetValue("Password", (object)"none");
             registry.SetValue("AutoCheck", Datas.AutoCheck ? (object)"Yes" : (object)"No");
@@ -239,7 +188,7 @@ namespace go.Forms
         {
             //Datas.Communications.rememberPassword = false;
             RegistryKey subKey1 = Registry.CurrentUser.CreateSubKey("Software\\go");
-            Datas.Username = (string)subKey1.GetValue("Username");
+            Datas.SettingsUsername = (string)subKey1.GetValue("Username");
             string cipherText = (string)subKey1.GetValue("Password");
             if (cipherText != null)
             {
@@ -247,9 +196,7 @@ namespace go.Forms
                 {
                     try
                     {
-                        Datas.Password = EncDec.Decrypt(cipherText, "phdsp98q4tæqæræosalæx-lkdsvjipo.LKLDUSFÆIREp98 w3rp98y<ÆH æFp9843æiohfp9y<ftg");
-                        if (Datas.Password != "")
-                            Datas.Communications.rememberPassword = true;
+                        Datas.SettingsPassword = EncDec.Decrypt(cipherText, "phdsp98q4tæqæræosalæx-lkdsvjipo.LKLDUSFÆIREp98 w3rp98y<ÆH æFp9843æiohfp9y<ftg");
                     }
                     catch (Exception ex)
                     {

@@ -577,10 +577,13 @@ namespace go.Forms
             Datas.KeepDataWithApp = false;
             Datas.AutoCheck = false;
 
+            Datas.InitialiseInternalvariables();
             InitializeComponent();
 
             Cursor current = Cursor.Current;
             Cursor.Current = Cursors.AppStarting;
+
+
 
             GetRegistrySettings();
 
@@ -595,7 +598,10 @@ namespace go.Forms
         {
             Datas.Communications.CredentialProvider = () =>
             {
-                return (Datas.Username, Datas.Password);
+                return (
+                    Datas.Username,
+                    Datas.Password
+                );
             };
         }
         
@@ -615,7 +621,6 @@ namespace go.Forms
 
                 LoadTracks();
                 LoadData();
-                Datas.Communications.EnsureSession();
 
                 statusBarPanel3.Text = "Ready";
             }
@@ -633,6 +638,7 @@ namespace go.Forms
                 _initializing = false;
             }
         }
+        
         private void OnMainFormShown(object sender, EventArgs e)
         {
             Cursor.Current = Cursors.WaitCursor;
@@ -4512,25 +4518,54 @@ namespace go.Forms
 
         private void MniAllTracksClick(object sender, EventArgs e)
         {
-            Cursor current = Cursor.Current;
+            Cursor previousCursor = Cursor.Current;
             Cursor.Current = Cursors.AppStarting;
+
             try
             {
                 this.CheckComms();
+
+                Datas.Communications.EnsureSession();
+
+                if (!Datas.Communications.IsLoggedIn)
+                    throw new Exception("No session established, cannot connect to GPRO");
+
                 Datas.Tracks = TrackParser.GetAllTracks();
+
                 BinaryFormatter binaryFormatter = new BinaryFormatter();
                 binaryFormatter.Binder = (SerializationBinder)new TypeBinder();
-                Stream serializationStream = (Stream)new FileStream("tracks.dat", FileMode.Create, FileAccess.Write, FileShare.None);
-                binaryFormatter.Serialize(serializationStream, (object)Datas.Tracks);
-                serializationStream.Close();
-                int num = (int)MessageBox.Show((IWin32Window)this, "To enable the new tracks you must restart GO", "Restart GO", MessageBoxButtons.OK, MessageBoxIcon.Asterisk);
+
+                using (Stream serializationStream = new FileStream(
+                    "tracks.dat",
+                    FileMode.Create,
+                    FileAccess.Write,
+                    FileShare.None))
+                {
+                    binaryFormatter.Serialize(serializationStream, Datas.Tracks);
+                }
+
+                MessageBox.Show(
+                    this,
+                    "To enable the new tracks you must restart GO",
+                    "Restart GO",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Information);
             }
             catch (Exception ex)
             {
-                int num = (int)MessageBox.Show((IWin32Window)this, ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Hand);
-                Errlog.AddToLog("button1_click: " + ex.Message);
+                MessageBox.Show(
+                    this,
+                    ex.Message,
+                    "Error",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Error);
+
+                Errlog.AddToLog("MniAllTracksClick: " + ex.Message);
             }
-            Cursor.Current = current;
+            finally
+            {
+                Cursor.Current = previousCursor;
+            }
         }
 
         private void SaveData()
@@ -4669,7 +4704,7 @@ namespace go.Forms
                     string managerName = "";
                     string teamName = "";
                     Loader loader = new Loader();
-                    WireCommunication();
+                    //WireCommunication();
                     int num2;
                     switch (num1)
                     {
@@ -5252,8 +5287,8 @@ namespace go.Forms
                             season20.Events[8].Trackid = 36;
                     }
                     this.statusBarPanel3.Text = "Data loaded";
-                    Datas.Communications = new Communication(Datas.Communications.rememberPassword, managerName, teamName);
-                    WireCommunication();
+                    Datas.Communications.managerName = managerName;
+                    Datas.Communications.teamName = teamName;
                     if (Datas.Date.season <= 0)
                         return;
                     int index11 = Datas.Date.race == 18 ? 16 : Datas.Date.race - 1;
@@ -5312,7 +5347,7 @@ namespace go.Forms
         {
             //Datas.Communications.rememberPassword = false;
             RegistryKey subKey1 = Registry.CurrentUser.CreateSubKey("Software\\go");
-            Datas.Username = (string)subKey1.GetValue("Username");
+            Datas.SettingsUsername = (string)subKey1.GetValue("Username");
             string cipherText = (string)subKey1.GetValue("Password");
             if (cipherText != null)
             {
@@ -5320,9 +5355,7 @@ namespace go.Forms
                 {
                     try
                     {
-                        Datas.Password = EncDec.Decrypt(cipherText, "phdsp98q4tæqæræosalæx-lkdsvjipo.LKLDUSFÆIREp98 w3rp98y<ÆH æFp9843æiohfp9y<ftg");
-                        if (Datas.Password != "")
-                            Datas.Communications.rememberPassword = true;
+                        Datas.SettingsPassword = EncDec.Decrypt(cipherText, "phdsp98q4tæqæræosalæx-lkdsvjipo.LKLDUSFÆIREp98 w3rp98y<ÆH æFp9843æiohfp9y<ftg");
                     }
                     catch (Exception ex)
                     {
@@ -5351,9 +5384,9 @@ namespace go.Forms
         private void SaveRegistrySettings()
         {
             RegistryKey subKey1 = Registry.CurrentUser.CreateSubKey("Software\\go");
-            subKey1.SetValue("Username", (object)Datas.Communications.username);
+            subKey1.SetValue("Username", (object)Datas.Username);
             if (Datas.Communications.rememberPassword)
-                subKey1.SetValue("Password", (object)EncDec.Encrypt(Datas.Communications.password, "phdsp98q4tæqæræosalæx-lkdsvjipo.LKLDUSFÆIREp98 w3rp98y<ÆH æFp9843æiohfp9y<ftg"));
+                subKey1.SetValue("Password", (object)EncDec.Encrypt(Datas.Password, "phdsp98q4tæqæræosalæx-lkdsvjipo.LKLDUSFÆIREp98 w3rp98y<ÆH æFp9843æiohfp9y<ftg"));
             else
                 subKey1.SetValue("Password", (object)"none");
             subKey1.SetValue("AutoCheck", Datas.AutoCheck ? (object)"Yes" : (object)"No");
@@ -5446,24 +5479,36 @@ namespace go.Forms
                 Errlog.AddToLog(ex.ToString());
             }
         }
+        
         private void UpdateAll()
         {
             if (!Datas.IsOkToUpdate)
                 return;
+
             this.ToggleFunctionality(false);
-            Cursor current = Cursor.Current;
+
+            Cursor previousCursor = Cursor.Current;
             Cursor.Current = Cursors.WaitCursor;
-            this.CheckComms();
+
             try
             {
+                this.CheckComms();
+
+                Datas.Communications.EnsureSession();
+
+                if (!Datas.Communications.IsLoggedIn)
+                    throw new Exception("No session established, cannot connect to GPRO");
+
                 this.Updatecar();
                 this.UpdateDriver();
                 this.UpdateTesting();
+
                 if (this.UpdatePractice())
                 {
                     this.UpdateQualify();
                     this.UpdateStrategy();
                 }
+
                 this.UpdateLastrace();
                 this.UpdateStaff();
                 this.UpdateTechnicalDirector();
@@ -5471,24 +5516,39 @@ namespace go.Forms
                 this.UpdateLastRaceSummary();
                 this.UpdateSponsors();
                 this.UpdateFinances();
+
                 this.FillCarWearData();
+
+                this.UpdateSeasonStats();
+                this.FillTitleBar();
+
+                if (Datas.TechnicalDirector.id > 0)
+                    Datas.OldTechnicalDirectors.Add(Datas.TechnicalDirector);
+                else
+                    Datas.TechnicalDirector = new TechnicalDirector();
+
+                this.FillTechnicalDirectorTab();
+
+                this.statusBarPanel3.Text = "Ready";
             }
             catch (Exception ex)
             {
-                int num = (int)MessageBox.Show((IWin32Window)this, ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Hand);
-                Errlog.AddToLog("Form1: " + ex.Message);
-                return;
+                MessageBox.Show(
+                    ex.Message,
+                    "Error",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Error);
+
+                Errlog.AddToLog("UpdateAll: " + ex.Message);
             }
-            this.UpdateSeasonStats();
-            Cursor.Current = current;
-            this.statusBarPanel3.Text = "Ready";
-            this.FillTitleBar();
-            this.ToggleFunctionality(true);
-            if (Datas.TechnicalDirector.id > 0)
-                Datas.OldTechnicalDirectors.Add((object)Datas.TechnicalDirector);
-            else
-                Datas.TechnicalDirector = new TechnicalDirector();
-            this.FillTechnicalDirectorTab();
+            finally
+            {
+                Cursor.Current = previousCursor;
+
+                this.ToggleFunctionality(true);
+
+                this.statusBarPanel3.Text = "Ready";
+            }
         }
 
         public bool UpdateFinances()

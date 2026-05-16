@@ -13,6 +13,8 @@ namespace go.Utils
     {
         public static string Username = "";
         public static string Password = "";
+        public static string SettingsUsername = "";
+        public static string SettingsPassword = "";
         public static Communication Communications = new Communication();
         internal static Version Version = Assembly.GetExecutingAssembly().GetName().Version;
         public static bool AutoCheck;

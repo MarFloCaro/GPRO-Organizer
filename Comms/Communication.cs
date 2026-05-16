@@ -34,12 +34,6 @@ namespace go.Comms
             Communication.SetAllowUnsafeHeaderParsing20();
         }
 
-        internal Communication(string username, string password)
-          : this()
-        {
-            this.username = username;
-            this.password = password;
-        }
 
         internal Communication(bool rememberPassword, string managerName, string teamName)
           : this()
@@ -54,7 +48,16 @@ namespace go.Comms
         private bool _loginInProgress;
 
         public Func<(string username, string password)> CredentialProvider { get; set; }
-        
+
+        public static class AppInfo
+        {
+            public static string Version =>
+                Assembly.GetEntryAssembly()?.GetName().Version?.ToString() ?? "0.0.0.0";
+
+            public static string UserAgent =>
+                $"GPRO-Organizer/{Version} (.NET {Environment.Version})";
+        }
+
         private HttpWebRequest CreateRequest(string url, string method = "GET")
         {
             // Prevent accidental double-prefixing
@@ -67,7 +70,7 @@ namespace go.Comms
                 (HttpWebRequest)WebRequest.Create(url);
 
             request.CookieContainer = this.cookieContainer;
-            request.UserAgent = "GO";
+            request.UserAgent = AppInfo.UserAgent;
             request.Method = method.ToUpperInvariant();
 
             request.Timeout = 20000;
@@ -92,39 +95,226 @@ namespace go.Comms
             if (_loginInProgress)
                 return;
 
-            this.Login();
+            this.Login("Ensure Session");
         }
 
-        public void Login()
+
+        private void EnsureCredentials()
+        {
+            if (CredentialProvider == null)
+                throw new Exception("No credential provider configured.");
+
+            var creds = CredentialProvider();
+
+            username = creds.username;
+            password = creds.password;
+
+            if (!string.IsNullOrWhiteSpace(username) &&
+                !string.IsNullOrWhiteSpace(password))
+            {
+                return;
+            }
+
+            using (var login = new go.Forms.Logon(Datas.Communications))
+            {
+                if (login.ShowDialog() != DialogResult.OK)
+                    throw new Exception("User cancelled login");
+            }
+
+            username = Datas.Username;
+            password = Datas.Password;
+
+            if (string.IsNullOrWhiteSpace(username) ||
+                string.IsNullOrWhiteSpace(password))
+            {
+                throw new Exception("No credentials provided");
+            }
+        }
+
+
+        private void ValidateLogin(string loginResponse)
+        {
+            if (
+                loginResponse.Contains("Sign in") ||
+                loginResponse.Contains("To access the site you have to sign in first")
+            )
+            {
+                throw new Exception(
+                    "Invalid username or password."
+                );
+            }
+
+            if (
+                !loginResponse.Contains("Logout") &&
+                !loginResponse.Contains("Log out") &&
+                !loginResponse.Contains(username)
+            )
+            {
+                throw new Exception(
+                    "Login validation failed."
+                );
+            }
+        }
+
+        private void ResetSession()
+        {
+            IsLoggedIn = false;
+
+            username = "";
+            password = "";
+
+            Datas.Username = "";
+            Datas.Password = "";
+
+            rememberPassword = false;
+        }
+
+        private void LoadAccountData()
+        {
+            HttpWebRequest homeRequest =
+                this.CreateRequest("gpro.asp");
+
+            string homePage;
+
+            using (HttpWebResponse response =
+                (HttpWebResponse)homeRequest.GetResponse())
+            using (StreamReader reader =
+                new StreamReader(response.GetResponseStream(), Encoding.UTF8))
+            {
+                homePage = reader.ReadToEnd();
+            }
+
+            this.GetData(
+                Regex.Replace(homePage, "[\r\t\n]", "")
+            );
+        }
+
+        private void PerformLogin()
+        {
+            string loginUrl =
+                go.Utils.Util.URI + "Login.asp?Redirect=gpro.asp";
+
+            string postData =
+                "textLogin=" + this.ConvertToHtmlEncoding(username) +
+                "&textPassword=" + this.ConvertToHtmlEncoding(password) +
+                "&Logon=Login";
+
+            HttpWebRequest loginRequest =
+                this.CreateRequest(loginUrl, "POST");
+
+            loginRequest.ContentType =
+                "application/x-www-form-urlencoded";
+
+            byte[] bytes = Encoding.UTF8.GetBytes(postData);
+
+            loginRequest.ContentLength = bytes.Length;
+
+            using (Stream requestStream = loginRequest.GetRequestStream())
+            {
+                requestStream.Write(bytes, 0, bytes.Length);
+            }
+
+            string loginResponse;
+
+            using (HttpWebResponse response =
+                (HttpWebResponse)loginRequest.GetResponse())
+            using (StreamReader reader =
+                new StreamReader(response.GetResponseStream(), Encoding.UTF8))
+            {
+                loginResponse = reader.ReadToEnd();
+            }
+
+            ValidateLogin(loginResponse);
+
+            LoadAccountData();
+        }
+
+
+        public void Login(string origin)
         {
             if (_loginInProgress)
-            return; 
-
+                return;
+        
             _loginInProgress = true;
-            
-            string username = this.username;
-            string password = this.password;
+        
+            try
+            {
+                EnsureCredentials();
+        
+                PerformLogin();
+        
+                IsLoggedIn = true;
+            }
+            catch (Exception ex)
+            {
+                ResetSession();
+        
+                MessageBox.Show(
+                    "Login failed.\n\n" + ex.Message,
+                    "Authentication Error",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Error
+                );
+            }
+            finally
+            {
+                _loginInProgress = false;
+            }
+        }
+
+
+
+        /*public void Login(string origin)
+        {       
+            if (_loginInProgress)
+            {
+                return; 
+            }
+            _loginInProgress = true;
+                      
+            if (CredentialProvider == null)
+                throw new Exception("No credential provider configured.");
+        
+            var creds = CredentialProvider();
+            username = creds.username;
+            password = creds.password;
             
             if (string.IsNullOrEmpty(username) || string.IsNullOrEmpty(password))
             {
-                if (CredentialProvider == null)
-                    throw new Exception("No credential provider configured.");
-            
-                var creds = CredentialProvider();
-
-                username = creds.username;
-                password = creds.password;
-
-                if (string.IsNullOrEmpty(username) || string.IsNullOrEmpty(password))
+                try
                 {
-                    using (var login = new go.Forms.Logon(this))
+                    using (var login = new go.Forms.Logon(Datas.Communications))
                     {
                         if (login.ShowDialog() != DialogResult.OK)
+                        {
+                            this.IsLoggedIn = false;
+                            Datas.Username = "";
+                            Datas.Password = "";
+                            Datas.Communications.rememberPassword = false;
                             throw new Exception("User cancelled login");
+                        }   
                     }
+                    username =  Datas.Username;
+                    password = Datas.Password;
+                }
+                catch (Exception ex)
+                {
+                    this.IsLoggedIn = false;
 
-                    username = this.username;
-                    password = this.password;
+                    Datas.Username = "";
+                    Datas.Password = "";
+                    Datas.Communications.rememberPassword = false;
+
+                    MessageBox.Show(
+                        "Login failed.\n\n" + ex.Message,
+                        "Authentication Error",
+                        MessageBoxButtons.OK,
+                        MessageBoxIcon.Error
+                    );
+                }
+                finally
+                {
+                    _loginInProgress = false;
                 }
             }
 
@@ -170,7 +360,9 @@ namespace go.Comms
                 )
                 {
                     this.IsLoggedIn = false;
-
+                    Datas.Username = "";
+                    Datas.Password = "";
+                    Datas.Communications.rememberPassword = false;
                     throw new Exception("Login failed: invalid credentials or session not established.");
                 }
 
@@ -178,11 +370,13 @@ namespace go.Comms
                 if (
                     !loginResponse.Contains("Logout") &&
                     !loginResponse.Contains("Log out") &&
-                    !loginResponse.Contains(this.username)
+                    !loginResponse.Contains(Datas.Username)
                 )
                 {
                     this.IsLoggedIn = false;
-
+                    Datas.Username = "";
+                    Datas.Password = "";
+                    Datas.Communications.rememberPassword = false;
                     throw new Exception("Login validation failed.");
                 }
 
@@ -204,11 +398,15 @@ namespace go.Comms
                     Regex.Replace(homePage, "[\r\t\n]", "")
                 );
 
-                this.IsLoggedIn = true;
+                Datas.Communications.IsLoggedIn = true;
             }
             catch (Exception ex)
             {
                 this.IsLoggedIn = false;
+
+                Datas.Username = "";
+                Datas.Password = "";
+                Datas.Communications.rememberPassword = false;
 
                 MessageBox.Show(
                     "Login failed.\n\n" + ex.Message,
@@ -217,13 +415,13 @@ namespace go.Comms
                     MessageBoxIcon.Error
                 );
 
-                throw;
+                //throw;
             }
             finally
             {
                 _loginInProgress = false;
             }
-        }
+        } */
 
 
         private void CheckPage(string page)
