@@ -543,6 +543,7 @@ namespace go.Forms
         private ColumnHeader columnHeader42;
         private ColumnHeader columnHeader43;
         private ColumnHeader columnHeader44;
+        private ColumnHeader columnHeader51;
         private GroupBox groupBox30;
         private ListView listViewOngoingSponsorNegotiations;
         private ColumnHeader columnHeader45;
@@ -1154,6 +1155,7 @@ namespace go.Forms
             this.columnHeader42 = new ColumnHeader();
             this.columnHeader43 = new ColumnHeader();
             this.columnHeader44 = new ColumnHeader();
+            this.columnHeader51 = new ColumnHeader();
             this.toolTipCarPower = new ToolTip(this.components);
             this.toolTipCarHandling = new ToolTip(this.components);
             this.toolTipCarAcceleration = new ToolTip(this.components);
@@ -4360,18 +4362,19 @@ namespace go.Forms
             this.groupBox29.TabIndex = 0;
             this.groupBox29.TabStop = false;
             this.groupBox29.Text = "Ongoing contracts";
-            this.listViewOngoingSponsorContracts.Columns.AddRange(new ColumnHeader[5]
+            this.listViewOngoingSponsorContracts.Columns.AddRange(new ColumnHeader[6]
             {
         this.columnHeader12,
         this.columnHeader29,
         this.columnHeader42,
         this.columnHeader43,
-        this.columnHeader44
+        this.columnHeader44,
+        this.columnHeader51
             });
             this.listViewOngoingSponsorContracts.HideSelection = false;
             this.listViewOngoingSponsorContracts.Location = new Point(6, 19);
             this.listViewOngoingSponsorContracts.Name = "listViewOngoingSponsorContracts";
-            this.listViewOngoingSponsorContracts.Size = new Size(536, 106);
+            this.listViewOngoingSponsorContracts.Size = new Size(652, 106);
             this.listViewOngoingSponsorContracts.TabIndex = 0;
             this.listViewOngoingSponsorContracts.UseCompatibleStateImageBehavior = false;
             this.listViewOngoingSponsorContracts.View = View.Details;
@@ -4385,6 +4388,8 @@ namespace go.Forms
             this.columnHeader43.Width = 116;
             this.columnHeader44.Text = "Races left";
             this.columnHeader44.Width = 85;
+            this.columnHeader51.Text = "Sponsor satisfaction";
+            this.columnHeader51.Width = 116;
             this.notifyIconGO.ContextMenuStrip = this.contextMenuNotification;
             this.notifyIconGO.Icon = Resources.Resources.Car;
             this.notifyIconGO.Text = "GPRO Organizer";
@@ -6612,29 +6617,47 @@ label_10:
         private void FillSponsorTab(SponsorState sponsor)
         {
             this.listViewOngoingSponsorContracts.Items.Clear();
-            for (int index = 0; index < sponsor.ongoing.Length && sponsor.ongoing[index] != null; ++index)
-                this.listViewOngoingSponsorContracts.Items.Add(new ListViewItem(sponsor.ongoing[index].name.ToString())
-                {
-                    SubItems = {
-            sponsor.ongoing[index].spot.ToString(),
-            sponsor.ongoing[index].amountPerRace.ToString(),
-            sponsor.ongoing[index].contractStatus.ToString(),
-            sponsor.ongoing[index].racesLeft.ToString()
-          }
-                });
+        
+            for (int index = 0;
+                 index < sponsor.ongoing.Length &&
+                 sponsor.ongoing[index] != null;
+                 ++index)
+            {
+                this.listViewOngoingSponsorContracts.Items.Add(
+                    new ListViewItem(sponsor.ongoing[index].name.ToString())
+                    {
+                        SubItems = {
+                            sponsor.ongoing[index].spot.ToString(),
+                            sponsor.ongoing[index].amountPerRace.ToString(),
+                            sponsor.ongoing[index].contractStatus.ToString(),
+                            sponsor.ongoing[index].racesLeft.ToString(),
+                            sponsor.ongoing[index].amountPerRace == 0
+                                ? "-"
+                                : sponsor.ongoing[index].sponsorSatisfaction.ToString("0") + "%"
+                        }
+                    });
+            }
+        
             this.listViewOngoingSponsorNegotiations.Items.Clear();
-            for (int index = 0; index < sponsor.negotiations.Length && sponsor.negotiations[index] != null; ++index)
-                this.listViewOngoingSponsorNegotiations.Items.Add(new ListViewItem(sponsor.negotiations[index].name.ToString())
-                {
-                    SubItems = {
-            sponsor.negotiations[index].spot.ToString(),
-            sponsor.negotiations[index].amountPerRace.ToString(),
-            sponsor.negotiations[index].duration.ToString(),
-            sponsor.negotiations[index].progress.ToString() + "%",
-            EnumToString.Enum2String(sponsor.negotiations[index].priority)
-          }
-                });
-        }
+        
+            for (int index = 0;
+                 index < sponsor.negotiations.Length &&
+                 sponsor.negotiations[index] != null;
+                 ++index)
+            {
+                this.listViewOngoingSponsorNegotiations.Items.Add(
+                    new ListViewItem(sponsor.negotiations[index].name.ToString())
+                    {
+                        SubItems = {
+                            sponsor.negotiations[index].spot.ToString(),
+                            sponsor.negotiations[index].amountPerRace.ToString(),
+                            sponsor.negotiations[index].duration.ToString(),
+                            sponsor.negotiations[index].progress.ToString() + "%",
+                            EnumToString.Enum2String(sponsor.negotiations[index].priority)
+                        }
+                    });
+            }
+         }
 
         private void FillStrategyTab(Strategy4 strat)
         {
