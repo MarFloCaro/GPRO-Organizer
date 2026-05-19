@@ -4323,7 +4323,7 @@ namespace go.Forms
             this.groupBox30.Controls.Add((Control)this.listViewOngoingSponsorNegotiations);
             this.groupBox30.Location = new Point(21, 170);
             this.groupBox30.Name = "groupBox30";
-            this.groupBox30.Size = new Size(768, 167);
+            this.groupBox30.Size = new Size(756, 167);
             this.groupBox30.TabIndex = 1;
             this.groupBox30.TabStop = false;
             this.groupBox30.Text = "Ongoing negotiations";
@@ -4339,7 +4339,7 @@ namespace go.Forms
             this.listViewOngoingSponsorNegotiations.HideSelection = false;
             this.listViewOngoingSponsorNegotiations.Location = new Point(6, 19);
             this.listViewOngoingSponsorNegotiations.Name = "listViewOngoingSponsorNegotiations";
-            this.listViewOngoingSponsorNegotiations.Size = new Size(756, 142);
+            this.listViewOngoingSponsorNegotiations.Size = new Size(744, 142);
             this.listViewOngoingSponsorNegotiations.TabIndex = 1;
             this.listViewOngoingSponsorNegotiations.UseCompatibleStateImageBehavior = false;
             this.listViewOngoingSponsorNegotiations.View = View.Details;
@@ -4358,7 +4358,7 @@ namespace go.Forms
             this.groupBox29.Controls.Add((Control)this.listViewOngoingSponsorContracts);
             this.groupBox29.Location = new Point(21, 18);
             this.groupBox29.Name = "groupBox29";
-            this.groupBox29.Size = new Size(548, 131);
+            this.groupBox29.Size = new Size(756, 140);
             this.groupBox29.TabIndex = 0;
             this.groupBox29.TabStop = false;
             this.groupBox29.Text = "Ongoing contracts";
@@ -4374,9 +4374,10 @@ namespace go.Forms
             this.listViewOngoingSponsorContracts.HideSelection = false;
             this.listViewOngoingSponsorContracts.Location = new Point(6, 19);
             this.listViewOngoingSponsorContracts.Name = "listViewOngoingSponsorContracts";
-            this.listViewOngoingSponsorContracts.Size = new Size(652, 106);
+            this.listViewOngoingSponsorContracts.Size = new Size(744, 115);
             this.listViewOngoingSponsorContracts.TabIndex = 0;
             this.listViewOngoingSponsorContracts.UseCompatibleStateImageBehavior = false;
+            this.listViewOngoingSponsorContracts.Scrollable = false;
             this.listViewOngoingSponsorContracts.View = View.Details;
             this.columnHeader12.Text = "Sponsor name";
             this.columnHeader12.Width = 134;
