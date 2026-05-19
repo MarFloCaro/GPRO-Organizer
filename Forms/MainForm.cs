@@ -543,6 +543,7 @@ namespace go.Forms
         private ColumnHeader columnHeader42;
         private ColumnHeader columnHeader43;
         private ColumnHeader columnHeader44;
+        private ColumnHeader columnHeader51;
         private GroupBox groupBox30;
         private ListView listViewOngoingSponsorNegotiations;
         private ColumnHeader columnHeader45;
@@ -1154,6 +1155,7 @@ namespace go.Forms
             this.columnHeader42 = new ColumnHeader();
             this.columnHeader43 = new ColumnHeader();
             this.columnHeader44 = new ColumnHeader();
+            this.columnHeader51 = new ColumnHeader();
             this.toolTipCarPower = new ToolTip(this.components);
             this.toolTipCarHandling = new ToolTip(this.components);
             this.toolTipCarAcceleration = new ToolTip(this.components);
@@ -4321,7 +4323,7 @@ namespace go.Forms
             this.groupBox30.Controls.Add((Control)this.listViewOngoingSponsorNegotiations);
             this.groupBox30.Location = new Point(21, 170);
             this.groupBox30.Name = "groupBox30";
-            this.groupBox30.Size = new Size(768, 167);
+            this.groupBox30.Size = new Size(756, 167);
             this.groupBox30.TabIndex = 1;
             this.groupBox30.TabStop = false;
             this.groupBox30.Text = "Ongoing negotiations";
@@ -4337,7 +4339,7 @@ namespace go.Forms
             this.listViewOngoingSponsorNegotiations.HideSelection = false;
             this.listViewOngoingSponsorNegotiations.Location = new Point(6, 19);
             this.listViewOngoingSponsorNegotiations.Name = "listViewOngoingSponsorNegotiations";
-            this.listViewOngoingSponsorNegotiations.Size = new Size(756, 142);
+            this.listViewOngoingSponsorNegotiations.Size = new Size(744, 142);
             this.listViewOngoingSponsorNegotiations.TabIndex = 1;
             this.listViewOngoingSponsorNegotiations.UseCompatibleStateImageBehavior = false;
             this.listViewOngoingSponsorNegotiations.View = View.Details;
@@ -4356,24 +4358,26 @@ namespace go.Forms
             this.groupBox29.Controls.Add((Control)this.listViewOngoingSponsorContracts);
             this.groupBox29.Location = new Point(21, 18);
             this.groupBox29.Name = "groupBox29";
-            this.groupBox29.Size = new Size(548, 131);
+            this.groupBox29.Size = new Size(756, 140);
             this.groupBox29.TabIndex = 0;
             this.groupBox29.TabStop = false;
             this.groupBox29.Text = "Ongoing contracts";
-            this.listViewOngoingSponsorContracts.Columns.AddRange(new ColumnHeader[5]
+            this.listViewOngoingSponsorContracts.Columns.AddRange(new ColumnHeader[6]
             {
         this.columnHeader12,
         this.columnHeader29,
         this.columnHeader42,
         this.columnHeader43,
-        this.columnHeader44
+        this.columnHeader44,
+        this.columnHeader51
             });
             this.listViewOngoingSponsorContracts.HideSelection = false;
             this.listViewOngoingSponsorContracts.Location = new Point(6, 19);
             this.listViewOngoingSponsorContracts.Name = "listViewOngoingSponsorContracts";
-            this.listViewOngoingSponsorContracts.Size = new Size(536, 106);
+            this.listViewOngoingSponsorContracts.Size = new Size(744, 115);
             this.listViewOngoingSponsorContracts.TabIndex = 0;
             this.listViewOngoingSponsorContracts.UseCompatibleStateImageBehavior = false;
+            this.listViewOngoingSponsorContracts.Scrollable = false;
             this.listViewOngoingSponsorContracts.View = View.Details;
             this.columnHeader12.Text = "Sponsor name";
             this.columnHeader12.Width = 134;
@@ -4385,6 +4389,8 @@ namespace go.Forms
             this.columnHeader43.Width = 116;
             this.columnHeader44.Text = "Races left";
             this.columnHeader44.Width = 85;
+            this.columnHeader51.Text = "Sponsor satisfaction";
+            this.columnHeader51.Width = 116;
             this.notifyIconGO.ContextMenuStrip = this.contextMenuNotification;
             this.notifyIconGO.Icon = Resources.Resources.Car;
             this.notifyIconGO.Text = "GPRO Organizer";
@@ -6612,29 +6618,47 @@ label_10:
         private void FillSponsorTab(SponsorState sponsor)
         {
             this.listViewOngoingSponsorContracts.Items.Clear();
-            for (int index = 0; index < sponsor.ongoing.Length && sponsor.ongoing[index] != null; ++index)
-                this.listViewOngoingSponsorContracts.Items.Add(new ListViewItem(sponsor.ongoing[index].name.ToString())
-                {
-                    SubItems = {
-            sponsor.ongoing[index].spot.ToString(),
-            sponsor.ongoing[index].amountPerRace.ToString(),
-            sponsor.ongoing[index].contractStatus.ToString(),
-            sponsor.ongoing[index].racesLeft.ToString()
-          }
-                });
+        
+            for (int index = 0;
+                 index < sponsor.ongoing.Length &&
+                 sponsor.ongoing[index] != null;
+                 ++index)
+            {
+                this.listViewOngoingSponsorContracts.Items.Add(
+                    new ListViewItem(sponsor.ongoing[index].name.ToString())
+                    {
+                        SubItems = {
+                            sponsor.ongoing[index].spot.ToString(),
+                            sponsor.ongoing[index].amountPerRace.ToString(),
+                            sponsor.ongoing[index].contractStatus.ToString(),
+                            sponsor.ongoing[index].racesLeft.ToString(),
+                            sponsor.ongoing[index].amountPerRace == 0
+                                ? "-"
+                                : sponsor.ongoing[index].sponsorSatisfaction.ToString("0") + "%"
+                        }
+                    });
+            }
+        
             this.listViewOngoingSponsorNegotiations.Items.Clear();
-            for (int index = 0; index < sponsor.negotiations.Length && sponsor.negotiations[index] != null; ++index)
-                this.listViewOngoingSponsorNegotiations.Items.Add(new ListViewItem(sponsor.negotiations[index].name.ToString())
-                {
-                    SubItems = {
-            sponsor.negotiations[index].spot.ToString(),
-            sponsor.negotiations[index].amountPerRace.ToString(),
-            sponsor.negotiations[index].duration.ToString(),
-            sponsor.negotiations[index].progress.ToString() + "%",
-            EnumToString.Enum2String(sponsor.negotiations[index].priority)
-          }
-                });
-        }
+        
+            for (int index = 0;
+                 index < sponsor.negotiations.Length &&
+                 sponsor.negotiations[index] != null;
+                 ++index)
+            {
+                this.listViewOngoingSponsorNegotiations.Items.Add(
+                    new ListViewItem(sponsor.negotiations[index].name.ToString())
+                    {
+                        SubItems = {
+                            sponsor.negotiations[index].spot.ToString(),
+                            sponsor.negotiations[index].amountPerRace.ToString(),
+                            sponsor.negotiations[index].duration.ToString(),
+                            sponsor.negotiations[index].progress.ToString() + "%",
+                            EnumToString.Enum2String(sponsor.negotiations[index].priority)
+                        }
+                    });
+            }
+         }
 
         private void FillStrategyTab(Strategy4 strat)
         {
