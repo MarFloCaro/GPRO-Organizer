@@ -90,7 +90,22 @@ namespace go.Comms
         public void EnsureSession()
         {
             if (this.IsLoggedIn)
-                return;
+            {
+                string homePage;
+                homePage = GetHomePage();
+
+                if (
+                homePage.Contains("Sign in") ||
+                homePage.Contains("To access the site you have to sign in first")
+                )
+                {
+                    this.IsLoggedIn = false;
+                }
+                else
+                {
+                    return;
+                }
+            }
 
             if (_loginInProgress)
                 return;
@@ -156,6 +171,7 @@ namespace go.Comms
             }
         }
 
+
         private void ResetSession()
         {
             IsLoggedIn = false;
@@ -169,25 +185,29 @@ namespace go.Comms
             rememberPassword = false;
         }
 
-        private void LoadAccountData()
+
+        private string GetHomePage()
         {
             HttpWebRequest homeRequest =
                 this.CreateRequest("gpro.asp");
-
-            string homePage;
 
             using (HttpWebResponse response =
                 (HttpWebResponse)homeRequest.GetResponse())
             using (StreamReader reader =
                 new StreamReader(response.GetResponseStream(), Encoding.UTF8))
             {
-                homePage = reader.ReadToEnd();
+                return reader.ReadToEnd();
             }
+        }
 
+
+        private void LoadAccountData(string homePage)
+        {
             this.GetData(
                 Regex.Replace(homePage, "[\r\t\n]", "")
             );
         }
+
 
         private void PerformLogin()
         {
@@ -226,7 +246,7 @@ namespace go.Comms
 
             ValidateLogin(loginResponse);
 
-            LoadAccountData();
+            LoadAccountData(GetHomePage());
         }
 
 
@@ -261,167 +281,6 @@ namespace go.Comms
                 _loginInProgress = false;
             }
         }
-
-
-
-        /*public void Login(string origin)
-        {       
-            if (_loginInProgress)
-            {
-                return; 
-            }
-            _loginInProgress = true;
-                      
-            if (CredentialProvider == null)
-                throw new Exception("No credential provider configured.");
-        
-            var creds = CredentialProvider();
-            username = creds.username;
-            password = creds.password;
-            
-            if (string.IsNullOrEmpty(username) || string.IsNullOrEmpty(password))
-            {
-                try
-                {
-                    using (var login = new go.Forms.Logon(Datas.Communications))
-                    {
-                        if (login.ShowDialog() != DialogResult.OK)
-                        {
-                            this.IsLoggedIn = false;
-                            Datas.Username = "";
-                            Datas.Password = "";
-                            Datas.Communications.rememberPassword = false;
-                            throw new Exception("User cancelled login");
-                        }   
-                    }
-                    username =  Datas.Username;
-                    password = Datas.Password;
-                }
-                catch (Exception ex)
-                {
-                    this.IsLoggedIn = false;
-
-                    Datas.Username = "";
-                    Datas.Password = "";
-                    Datas.Communications.rememberPassword = false;
-
-                    MessageBox.Show(
-                        "Login failed.\n\n" + ex.Message,
-                        "Authentication Error",
-                        MessageBoxButtons.OK,
-                        MessageBoxIcon.Error
-                    );
-                }
-                finally
-                {
-                    _loginInProgress = false;
-                }
-            }
-
-            string loginUrl = go.Utils.Util.URI + "Login.asp?Redirect=gpro.asp";
-
-            string postData =
-                "textLogin=" + this.ConvertToHtmlEncoding(username) +
-                "&textPassword=" + this.ConvertToHtmlEncoding(password) +
-                "&Logon=Login";
-
-            try
-            {
-                HttpWebRequest loginRequest =
-                    this.CreateRequest(loginUrl, "POST");
-
-                loginRequest.ContentType =
-                    "application/x-www-form-urlencoded";
-
-                byte[] bytes = Encoding.UTF8.GetBytes(postData);
-
-                loginRequest.ContentLength = bytes.Length;
-
-                using (Stream requestStream = loginRequest.GetRequestStream())
-                {
-                    requestStream.Write(bytes, 0, bytes.Length);
-                }
-
-                string loginResponse;
-
-
-                using (HttpWebResponse response =
-                    (HttpWebResponse)loginRequest.GetResponse())
-                using (StreamReader reader =
-                    new StreamReader(response.GetResponseStream(), Encoding.UTF8))
-                {
-                    loginResponse = reader.ReadToEnd();
-                }
-
-                // Detect failed login
-                if (
-                    loginResponse.Contains("Sign in") ||
-                    loginResponse.Contains("To access the site you have to sign in first")
-                )
-                {
-                    this.IsLoggedIn = false;
-                    Datas.Username = "";
-                    Datas.Password = "";
-                    Datas.Communications.rememberPassword = false;
-                    throw new Exception("Login failed: invalid credentials or session not established.");
-                }
-
-                // Validate authenticated state
-                if (
-                    !loginResponse.Contains("Logout") &&
-                    !loginResponse.Contains("Log out") &&
-                    !loginResponse.Contains(Datas.Username)
-                )
-                {
-                    this.IsLoggedIn = false;
-                    Datas.Username = "";
-                    Datas.Password = "";
-                    Datas.Communications.rememberPassword = false;
-                    throw new Exception("Login validation failed.");
-                }
-
-                // Load account data
-                HttpWebRequest homeRequest =
-                    this.CreateRequest("gpro.asp");
-
-                string homePage;
-
-                using (HttpWebResponse response =
-                    (HttpWebResponse)homeRequest.GetResponse())
-                using (StreamReader reader =
-                    new StreamReader(response.GetResponseStream(), Encoding.UTF8))
-                {
-                    homePage = reader.ReadToEnd();
-                }
-
-                this.GetData(
-                    Regex.Replace(homePage, "[\r\t\n]", "")
-                );
-
-                Datas.Communications.IsLoggedIn = true;
-            }
-            catch (Exception ex)
-            {
-                this.IsLoggedIn = false;
-
-                Datas.Username = "";
-                Datas.Password = "";
-                Datas.Communications.rememberPassword = false;
-
-                MessageBox.Show(
-                    "Login failed.\n\n" + ex.Message,
-                    "Authentication Error",
-                    MessageBoxButtons.OK,
-                    MessageBoxIcon.Error
-                );
-
-                //throw;
-            }
-            finally
-            {
-                _loginInProgress = false;
-            }
-        } */
 
 
         private void CheckPage(string page)
