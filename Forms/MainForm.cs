@@ -6632,9 +6632,9 @@ label_10:
                             sponsor.ongoing[index].amountPerRace.ToString(),
                             sponsor.ongoing[index].contractStatus.ToString(),
                             sponsor.ongoing[index].racesLeft.ToString(),
-                            sponsor.ongoing[index].amountPerRace == 0
+                            sponsor.ongoing[index].sponsorSatisfaction <= 0
                                 ? "-"
-                                : sponsor.ongoing[index].sponsorSatisfaction.ToString("0") + "%"
+                                : sponsor.ongoing[index].sponsorSatisfaction.ToString("0")
                         }
                     });
             }

@@ -52,22 +52,29 @@ namespace go.Parsers
           int startIndex12 = sponsorPage.IndexOf("<td", startIndex11) + 3;
           int startIndex13 = sponsorPage.IndexOf(">", startIndex12) + 1;
           
-          string satisfaction =
+          string satisfactionCell =
               sponsorPage.Substring(
                   startIndex13,
-                  sponsorPage.IndexOf("<", startIndex13) - startIndex13
+                  sponsorPage.IndexOf("</td>", startIndex13) - startIndex13
               );
           
-          if (satisfaction == "-")
+          if (satisfactionCell.Contains("title=\""))
           {
-              ongoingSponsors.sponsorSatisfaction = 0;
+              int titleStart =
+                  satisfactionCell.IndexOf("title=\"") + 7;
+          
+              string satisfaction =
+                  satisfactionCell.Substring(
+                      titleStart,
+                      satisfactionCell.IndexOf("\"", titleStart) - titleStart
+                  );
+          
+              ongoingSponsors.sponsorSatisfaction =
+                  int.Parse(satisfaction);
           }
           else
           {
-              satisfaction = satisfaction.Replace("%", "").Trim();
-          
-              ongoingSponsors.sponsorSatisfaction =
-                  Util.ParseDouble(satisfaction);
+              ongoingSponsors.sponsorSatisfaction = 0;
           }
           
           startIndex1 = sponsorPage.IndexOf("</tr>", startIndex13);

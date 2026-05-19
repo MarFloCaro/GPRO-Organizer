@@ -21,7 +21,7 @@ namespace go
     public int racesLeft;
 
     [OptionalField]
-    public double sponsorSatisfaction;
+    public int sponsorSatisfaction;
 
     public bool isDifferent(OngoingSponsors ongoingSponsors)
     {
