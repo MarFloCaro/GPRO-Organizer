@@ -91,8 +91,7 @@ namespace go.Comms
         {
             if (this.IsLoggedIn)
             {
-                string homePage;
-                homePage = GetHomePage();
+                string homePage = GetHomePage();
 
                 if (
                 homePage.Contains("Sign in") ||
@@ -103,6 +102,7 @@ namespace go.Comms
                 }
                 else
                 {
+                    LoadAccountData(homePage);
                     return;
                 }
             }
