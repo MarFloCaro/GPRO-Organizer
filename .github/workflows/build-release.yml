@@ -55,7 +55,7 @@ jobs:
           GO_FORUM_TOPIC_ID: ${{ vars.GO_FORUM_TOPIC_ID }}
         run: |
           $message = @"
-          [table][trow][th][b][size=+2][color=yellow] New GPRO Organizer release available: v${{ github.ref_name }} [/color][/size][/b][/th][/trow][/table]
+          [table][trow][th][b][size=+2][color=yellow] New GPRO Organizer release available: ${{ github.ref_name }} [/color][/size][/b][/th][/trow][/table]
 
           [b][size=+1]Find it at[/size][/b]
           

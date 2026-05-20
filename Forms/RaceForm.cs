@@ -531,6 +531,7 @@ namespace go.Forms
     private ColumnHeader columnHeader102;
     private ColumnHeader columnHeader103;
     private ColumnHeader columnHeader104;
+    private ColumnHeader columnHeader105;
     private TextBox textBoxWet;
     private Label label160;
     private GroupBox groupBox36;
@@ -919,7 +920,10 @@ namespace go.Forms
             sponsor.ongoing[index].spot.ToString(),
             sponsor.ongoing[index].amountPerRace.ToString(),
             sponsor.ongoing[index].contractStatus.ToString(),
-            sponsor.ongoing[index].racesLeft.ToString()
+            sponsor.ongoing[index].racesLeft.ToString(),
+            sponsor.ongoing[index].sponsorSatisfaction <= 0
+                ? "-"
+                : sponsor.ongoing[index].sponsorSatisfaction.ToString("0")
           }
         });
       this.listViewOngoingSponsorNegotiations.Items.Clear();
@@ -1812,6 +1816,7 @@ namespace go.Forms
       this.columnHeader102 = new ColumnHeader();
       this.columnHeader103 = new ColumnHeader();
       this.columnHeader104 = new ColumnHeader();
+      this.columnHeader105 = new ColumnHeader();
       this.tabPageSummary.SuspendLayout();
       this.tabPagePractice.SuspendLayout();
       this.tabPageForecast.SuspendLayout();
@@ -5350,7 +5355,7 @@ namespace go.Forms
       this.groupBox34.Controls.Add((Control) this.listViewOngoingSponsorNegotiations);
       this.groupBox34.Location = new Point(20, 165);
       this.groupBox34.Name = "groupBox34";
-      this.groupBox34.Size = new Size(768, 243);
+      this.groupBox34.Size = new Size(756, 167);
       this.groupBox34.TabIndex = 3;
       this.groupBox34.TabStop = false;
       this.groupBox34.Text = "Ongoing negotiations";
@@ -5367,7 +5372,7 @@ namespace go.Forms
       this.listViewOngoingSponsorNegotiations.HideSelection = false;
       this.listViewOngoingSponsorNegotiations.Location = new Point(6, 19);
       this.listViewOngoingSponsorNegotiations.Name = "listViewOngoingSponsorNegotiations";
-      this.listViewOngoingSponsorNegotiations.Size = new Size(756, 218);
+      this.listViewOngoingSponsorNegotiations.Size = new Size(744, 142);
       this.listViewOngoingSponsorNegotiations.TabIndex = 1;
       this.listViewOngoingSponsorNegotiations.UseCompatibleStateImageBehavior = false;
       this.listViewOngoingSponsorNegotiations.View = View.Details;
@@ -5386,23 +5391,24 @@ namespace go.Forms
       this.groupBox35.Controls.Add((Control) this.listViewOngoingSponsorContracts);
       this.groupBox35.Location = new Point(20, 17);
       this.groupBox35.Name = "groupBox35";
-      this.groupBox35.Size = new Size(548, 131);
+      this.groupBox35.Size = new Size(756, 140);
       this.groupBox35.TabIndex = 2;
       this.groupBox35.TabStop = false;
       this.groupBox35.Text = "Ongoing contracts";
-      this.listViewOngoingSponsorContracts.Columns.AddRange(new ColumnHeader[5]
+      this.listViewOngoingSponsorContracts.Columns.AddRange(new ColumnHeader[6]
       {
         this.columnHeader100,
         this.columnHeader101,
         this.columnHeader102,
         this.columnHeader103,
-        this.columnHeader104
+        this.columnHeader104,
+        this.columnHeader105
       });
       this.listViewOngoingSponsorContracts.ContextMenu = this.contextMenu1;
       this.listViewOngoingSponsorContracts.HideSelection = false;
       this.listViewOngoingSponsorContracts.Location = new Point(6, 19);
       this.listViewOngoingSponsorContracts.Name = "listViewOngoingSponsorContracts";
-      this.listViewOngoingSponsorContracts.Size = new Size(536, 106);
+      this.listViewOngoingSponsorContracts.Size = new Size(744, 115);
       this.listViewOngoingSponsorContracts.TabIndex = 0;
       this.listViewOngoingSponsorContracts.UseCompatibleStateImageBehavior = false;
       this.listViewOngoingSponsorContracts.View = View.Details;
@@ -5416,6 +5422,8 @@ namespace go.Forms
       this.columnHeader103.Width = 116;
       this.columnHeader104.Text = "Races left";
       this.columnHeader104.Width = 85;
+      this.columnHeader105.Text = "Sponsor satisfaction";
+      this.columnHeader105.Width = 116;
       this.AutoScaleBaseSize = new Size(5, 13);
       this.ClientSize = new Size(904, 478);
       this.Controls.Add((Control) this.button1);
