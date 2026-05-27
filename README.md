@@ -46,7 +46,7 @@ If you already use GPRO Organizer and already have a `go.dat` file:
 1. Download the latest release ZIP
 2. Extract the new files into your existing application folder
 3. Replace existing files when prompted
-    * If your `tracks.dat` file is newer than the one on the relase, ´do not replace´. 
+    * If your `tracks.dat` file is newer than the one on the relase, `do not replace`. 
 
 Your local data should remain preserved.
 
