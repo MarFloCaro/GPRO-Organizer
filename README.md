@@ -1,5 +1,9 @@
 # GPRO Organizer
 
+![Release](https://img.shields.io/github/v/release/MarFloCaro/GPRO-Organizer?style=for-the-badge)
+![Downloads](https://img.shields.io/github/downloads/MarFloCaro/GPRO-Organizer/latest/total?style=for-the-badge&color=purple)
+![Last Commit](https://img.shields.io/github/last-commit/MarFloCaro/GPRO-Organizer?style=for-the-badge)
+
 GPRO Organizer is a community-maintained desktop companion tool for [GPRO](https://gpro.net) players.
 
 This application helps managers collect, store and analyze game data locally on their own computer.
@@ -42,6 +46,7 @@ If you already use GPRO Organizer and already have a `go.dat` file:
 1. Download the latest release ZIP
 2. Extract the new files into your existing application folder
 3. Replace existing files when prompted
+    * If your `tracks.dat` file is newer than the one on the relase, ´do not replace´. 
 
 Your local data should remain preserved.
 
@@ -49,11 +54,11 @@ Your local data should remain preserved.
 
 ## First Startup
 
-On first use — and usually after the first race of a new season — tracks data must be updated manually.
+The releases after 4.1 come with a `tracks.dat` file included. In the eventuality that GPRO gets a new track added — tracks data must be updated manually.
 
 After opening the application:
 
-### Step 1 — Update tracks
+### Step 1 — Update tracks (optional)
 
 Navigate to:
 
@@ -63,7 +68,7 @@ Tools -> Update tracks
 
 ![Update Tracks](docs/screenshots/update-tracks.jpg)
 
-The application will generate the required `tracks.dat` file.
+The application will generate the required fresher `tracks.dat` file.
 
 When the update finishes, the application will request a restart.
 
