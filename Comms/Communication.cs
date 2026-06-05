@@ -405,18 +405,37 @@ namespace go.Comms
             {
                 Date date = new Date();
 
-                var match = Regex.Match(
+                var raceMatch = Regex.Match(
                     homePage,
                     @"Season\s+(\d+),\s+Race\s+(\d+)"
                 );
 
-                if (!match.Success)
+                if (raceMatch.Success)
                 {
-                    throw new Exception("Could not parse season/race from homepage.");
+                    date.season = int.Parse(raceMatch.Groups[1].Value);
+                    date.race = int.Parse(raceMatch.Groups[2].Value);
                 }
+                else
+                {
+                    var eosMatch = Regex.Match(
+                        homePage,
+                        @"End\s+of\s+Season\s+(\d+):"
+                    );
 
-                date.season = int.Parse(match.Groups[1].Value);
-                date.race = int.Parse(match.Groups[2].Value);
+                    if (eosMatch.Success)
+                    {
+                        date.season = int.Parse(eosMatch.Groups[1].Value);
+
+                        // Special value indicating End Of Season
+                        date.race = 18;
+                    }
+                    else
+                    {
+                        throw new Exception(
+                            "Could not parse season/race from homepage."
+                        );
+                    }
+                }
 
                 Datas.Date = date;
 
