@@ -5440,17 +5440,7 @@ namespace go.Forms
         
                     this.UpdateSeason();
                 }
-        
-                if (
-                    Datas.Seasons.Count > Datas.INDEX_CURRENTSEASON &&
-                    Datas.Seasons[Datas.INDEX_CURRENTSEASON] != null
-                )
-                {        
-                    var currentEvent =
-                        Datas.Seasons[Datas.INDEX_CURRENTSEASON]
-                            .Events[Datas.Date.race - 1];
-                }
-        
+                
                 this.menuItemCurrentSeason.Enabled = true;
                 this.menuItemPitStrategy.Enabled = true;
         

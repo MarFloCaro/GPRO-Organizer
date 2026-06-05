@@ -379,7 +379,7 @@
   <ItemGroup>
     <None Include="Data\README.txt">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-      <Link>tracks.dat</Link>
+      <Link>README.txt</Link>
     </None>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
