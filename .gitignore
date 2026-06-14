@@ -242,3 +242,8 @@ _temp
 !config
 dist
 !webpack.config.js
+
+
+# claude ai files
+.claude/
+CLAUDE.md
