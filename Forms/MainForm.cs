@@ -26,6 +26,8 @@ namespace go.Forms
 {
     public class MainForm : Form
     {
+        #region Form variables
+
         private MainMenu mainMenu1;
         private MenuItem menuItem1;
         private MenuItem menuItem3;
@@ -569,6 +571,9 @@ namespace go.Forms
         private MenuItem mniCheckUpdate;
         private MenuItem menuItemAllTracks;
         private Button LoadButton;
+
+        #endregion
+
         private static readonly RegexOptions options = RegexOptions.ExplicitCapture | RegexOptions.Compiled | RegexOptions.Singleline;
         private static Regex reg = new Regex("((?<val>\\d{1,10})([.]?))", MainForm.options);
         private bool _initialized;
@@ -583,8 +588,6 @@ namespace go.Forms
 
             Cursor current = Cursor.Current;
             Cursor.Current = Cursors.AppStarting;
-
-
 
             GetRegistrySettings();
 
@@ -7102,7 +7105,6 @@ label_10:
 
         private void buttonExit_Click(object sender, EventArgs e)
         {
-            Errlog.Close();
             this.Close();
         }
 
