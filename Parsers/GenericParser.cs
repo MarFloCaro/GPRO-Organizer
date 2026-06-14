@@ -32,7 +32,7 @@ namespace go.Parsers
       Errlog.AddToLog(e.StackTrace);
       Errlog.AddToLog("Offending page:");
       Errlog.AddToLog(page);
-      throw new Exception("Error during download. Please check that you are running the latest version, and if so, please send " + Errlog.getFileName() + " to gpro.organizer@gmail.com for fixing");
+      throw new Exception("Error during download. Please check that you are running the latest version, and if so, please send " + Errlog.GetFileName() + " to gpro.organizer@gmail.com for fixing");
     }
 
     public static int GetMoneyAmount(string noget)

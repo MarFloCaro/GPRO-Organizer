@@ -14,7 +14,7 @@ namespace go.Utils
     {
         private static readonly object _lock = new object();
     
-        public static string getFileName()
+        public static string GetFileName()
         {
             return Path.Combine(
                 AppDomain.CurrentDomain.BaseDirectory,
@@ -28,7 +28,7 @@ namespace go.Utils
                 lock (_lock)
                 {
                     using (StreamWriter stream =
-                        new StreamWriter(getFileName(), true))
+                        new StreamWriter(GetFileName(), true))
                     {
                         stream.WriteLine(
                             $"[{DateTime.Now:yyyy-MM-dd HH:mm:ss}] {message}");
@@ -39,11 +39,6 @@ namespace go.Utils
             {
                 // Never throw from logger
             }
-        }
-    
-        public static void Close()
-        {
-            // Compatibility with legacy code
         }
     }
 }

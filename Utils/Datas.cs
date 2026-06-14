@@ -55,24 +55,24 @@ namespace go.Utils
 
         internal static void InitialiseInternalvariables()
         {
-            Datas.DataChanged = false;
-            Datas.Car = new Car2();
-            Datas.Date = new Date();
-            Datas.CarHistory = new CarHistory2();
-            Datas.Driver = new Driver5();
-            Datas.OldDrivers = new ArrayList();
-            Datas.FinanceHistory = new ArrayList();
-            Datas.Staff = new Staff();
-            Datas.StaffHistory = new ArrayList();
-            Datas.TechnicalDirector = new TechnicalDirector();
-            Datas.OldTechnicalDirectors = new ArrayList();
-            Datas.INDEX_CURRENTSEASON = 0;
-            Datas.OkToFillPractice = true;
-            Datas.NextRace = -1;
-            Datas.CurrentPracticeViewed = 0;
-            Datas.CurrentTestingViewed = 0;
-            Datas.LastTabViewed = 0;
-            Datas.FormHandler = new FormHandler();
+            DataChanged = false;
+            Car = new Car2();
+            Date = new Date();
+            CarHistory = new CarHistory2();
+            Driver = new Driver5();
+            OldDrivers = new ArrayList();
+            FinanceHistory = new ArrayList();
+            Staff = new Staff();
+            StaffHistory = new ArrayList();
+            TechnicalDirector = new TechnicalDirector();
+            OldTechnicalDirectors = new ArrayList();
+            INDEX_CURRENTSEASON = 0;
+            OkToFillPractice = true;
+            NextRace = -1;
+            CurrentPracticeViewed = 0;
+            CurrentTestingViewed = 0;
+            LastTabViewed = 0;
+            FormHandler = new FormHandler();
         }
     }
 }
