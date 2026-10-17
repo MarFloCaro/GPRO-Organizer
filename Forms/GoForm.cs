@@ -809,6 +809,12 @@ namespace go.Forms
     {
       if (found)
         return;
+      if (trackid < 0 || trackid >= Datas.Tracks.Length)
+      {
+        found = true;
+        item.SubItems.Add("?");
+        return;
+      }
       found = true;
       switch (column)
       {
@@ -1203,9 +1209,12 @@ namespace go.Forms
       this.ListAll();
       this.UpdateColumnSizes();
       this.UpdateBoxVisibilities();
-      if (this.formInfo.columnInfo.Count != 0)
-        return;
-      this.menuItemChooseColumns_Click((object) null, (EventArgs) null);
+      if (this.formInfo.columnInfo.Count == 0)
+      {
+        MessageBox.Show((IWin32Window) this,
+          "No columns selected. Please select at least one column using the right-click menu.",
+          "No columns", MessageBoxButtons.OK, MessageBoxIcon.Information);
+      }
     }
 
     protected virtual void UpdateBoxVisibilities()

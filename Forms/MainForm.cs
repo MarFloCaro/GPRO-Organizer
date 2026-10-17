@@ -5301,6 +5301,15 @@ namespace go.Forms
                     Datas.Communications.teamName = teamName;
                     if (Datas.Date.season <= 0)
                         return;
+
+                    if (this.HasUnknownTracks())
+                    {
+                        MessageBox.Show((IWin32Window)this,
+                            "One or more tracks for this season are unknown to GO.\nPlease update the tracks using the Tools → Update tracks menu.",
+                            "Unknown track", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                        return;
+                    }
+
                     int index11 = Datas.Date.race == 18 ? 16 : Datas.Date.race - 1;
                     if (Datas.Date.race == 18)
                     {
@@ -5451,7 +5460,15 @@ namespace go.Forms
                 
                 this.menuItemCurrentSeason.Enabled = true;
                 this.menuItemPitStrategy.Enabled = true;
-        
+
+                if (this.HasUnknownTracks())
+                {
+                    MessageBox.Show((IWin32Window)this,
+                        "One or more tracks for this season are unknown to GO.\nPlease update the tracks using the Tools → Update tracks menu.",
+                        "Unknown track", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    return;
+                }
+
                 if (Datas.Date.race == 18)
                 {
                     Datas.NextRace = -1;
@@ -5462,13 +5479,13 @@ namespace go.Forms
                     var currentEvent =
                         Datas.Seasons[Datas.INDEX_CURRENTSEASON]
                             .Events[Datas.Date.race - 1];
-               
+
                     Datas.NextRace = currentEvent.Trackid - 1;
-        
+
                     this.statusBarPanel2.Text =
                         "Next race: " + Datas.Tracks[Datas.NextRace].name;
                 }
-        
+
                 this.UpdateSeasonStats();
             }
             catch (Exception ex)
@@ -5523,7 +5540,10 @@ namespace go.Forms
 
                 this.FillCarWearData();
 
-                this.UpdateSeasonStats();
+                if (!this.HasUnknownTracks())
+                {
+                    this.UpdateSeasonStats();
+                }
                 this.FillTitleBar();
 
                 if (Datas.TechnicalDirector.id > 0)
@@ -6095,6 +6115,19 @@ label_10:
             return true;
         }
 
+        private bool HasUnknownTracks()
+        {
+            if (Datas.Seasons.Count <= Datas.INDEX_CURRENTSEASON || Datas.Seasons[Datas.INDEX_CURRENTSEASON] == null)
+                return false;
+            foreach (var evt in Datas.Seasons[Datas.INDEX_CURRENTSEASON].Events)
+            {
+                int trackIndex = evt.Trackid - 1;
+                if (trackIndex < 0 || trackIndex >= Datas.Tracks.Length)
+                    return true;
+            }
+            return false;
+        }
+
         private void UpdateSeason()
         {
             try
@@ -6121,14 +6154,14 @@ label_10:
                 for (int index = 0; index < Datas.Seasons[Datas.INDEX_CURRENTSEASON].Events.Length; ++index)
                 {
                     ListViewItem listViewItem = new ListViewItem((index + 1).ToString());
-                    try
+                    int trackIndex = Datas.Seasons[Datas.INDEX_CURRENTSEASON].Events[index].Trackid - 1;
+                    if (trackIndex < 0 || trackIndex >= Datas.Tracks.Length)
                     {
-                        listViewItem.SubItems.Add(Datas.Tracks[Datas.Seasons[Datas.INDEX_CURRENTSEASON].Events[index].Trackid - 1].name);
+                        listViewItem.SubItems.Add("?");
                     }
-                    catch (IndexOutOfRangeException)
+                    else
                     {
-                        int num = (int)MessageBox.Show((IWin32Window)this, "One of the tracks for this season is unknown to GO \n You must update the tracks using the Tools -> Update tracks menu \n If you are running Vista it may be necessary to run GO as administrator", "Error", MessageBoxButtons.OK, MessageBoxIcon.Hand);
-                        break;
+                        listViewItem.SubItems.Add(Datas.Tracks[trackIndex].name);
                     }
                     if (Datas.Seasons[Datas.INDEX_CURRENTSEASON].Events[index].isCarUpdated)
                         listViewItem.SubItems.Add("updated");
@@ -6144,7 +6177,9 @@ label_10:
                         listViewItem.SubItems.Add("-");
                     if (Datas.Seasons[Datas.INDEX_CURRENTSEASON].Events[index].Practise.runs[0].netTime > TimeSpan.Zero)
                     {
-                        this.comboBoxPrac.Items.Add((object)Datas.Tracks[Datas.Seasons[Datas.INDEX_CURRENTSEASON].Events[index].Trackid - 1].name);
+                        this.comboBoxPrac.Items.Add(trackIndex >= 0 && trackIndex < Datas.Tracks.Length
+                            ? (object)Datas.Tracks[trackIndex].name
+                            : (object)"?");
                         listViewItem.SubItems.Add("updated");
                     }
                     else
@@ -7085,7 +7120,10 @@ label_10:
         private void LoadButton_Click(object sender, EventArgs e)
         {
             this.LoadData();
-            this.UpdateSeasonStats();
+            if (!this.HasUnknownTracks())
+            {
+                this.UpdateSeasonStats();
+            }
         }
 
         private void menuItemAllTracks_Click(object sender, EventArgs e) => new AllTracks().Show();
