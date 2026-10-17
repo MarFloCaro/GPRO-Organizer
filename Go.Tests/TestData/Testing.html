@@ -1,0 +1,427 @@
+<!DOCTYPE html>
+<html>
+<head><title>Testing - Kyalami - Grand Prix Racing Online</title>
+<script language='JavaScript' type="text/javascript">
+<!--
+function SubmitForm() 
+			{	
+				if (validateForm('testing'))
+				{
+					document.formQual.DriveStint.disabled=true;
+					document.formQual.submit();
+					return true;
+				}
+				return false;
+			}
+			function FillSetup(setup1,setup2,setup3,setup4,setup5,setup6,tyres,fuel) 
+			{
+				document.formQual.FWing.value = setup1;
+				document.formQual.RWing.value = setup2;
+				document.formQual.Engine.value = setup3;
+				document.formQual.Brakes.value = setup4;
+				document.formQual.Gear.value = setup5;
+				document.formQual.Suspension.value = setup6;
+				document.formQual.Tyres.value = tyres;
+				document.formQual.Fuel.value = fuel;
+				window.scrollBy(0,200);
+			}
+			function getLapComment(lap)
+			{
+				var comments = new Array(5);
+				comments[0] = "";
+			comments[1] = "<br><font color=orange>No driver comments available</font><br><br>(Stint research priority: Top speed)";comments[2] = "<br><font color=orange>No driver comments available</font><br><br>(Stint research priority: Top speed)";comments[3] = "<br><font color=orange>No driver comments available</font><br><br>(Stint research priority: Top speed)";comments[4] = "<br><font color=orange>No driver comments available</font><br><br>(Stint research priority: Top speed)";
+				return comments[lap];
+			}
+		//-->
+//-->
+</script>
+</head>
+<body>
+<form action="Testing.asp" method="post" name="formQual" ID="formQual" style="margin:0px">
+	<input type="hidden" name="manPostToken" value="000000">
+	<div class="navholder">
+	<ul class="subnavigation">
+		<li><a href="TrackDetails.asp?id=20">Testing track information</a></li>
+		<li class="selected"><a href="Testing.asp">Testing</a></li>
+		<li><a href="TestingStandings.asp?Group=Pro - 9">Testing standings</a></li>
+		<li><a href="PastTesting.asp">Past testing sessions</a></li>
+	</ul>
+	</div>
+	<br><br><br>
+	<h1 class="block">Testing: Kyalami (South Africa) <span class="tl bc"></span><span class="tr bc"></span><span class="bl bc"></span><span class="br bc"></span></h1>
+	
+	<div class="column thirtyfive nomargin" data-step="1" data-intro="Here you can view details about the track you will be testing on. The testing track changes only once at the start of every season, so this gives you a chance to get familiar with it. Testing is also another way of developing your staff and driver skills, and is generally a very useful way for new players to test how certain things work in the game and to also collect data for future use. For a more detailed look of the testing track, click on it to view the track profile." data-position="right">
+		<h2><a href="/TrackDetails.asp?id=20">Track details</a></h2>
+		<a href="/TrackDetails.asp?id=20"><img SRC="/images/tracks/track_kyalami_sa.gif"></a>
+		<table cellspacing="0" cellpadding="0" class="normal">
+			<tr>
+				<th>Power:</th>
+				<td>
+					<img src="/images/lvl.gif"><img src="/images/lvl.gif"><img src="/images/lvl.gif"><img src="/images/lvl.gif"><img src="/images/lvl_dark.gif"><img src="/images/lvl.gif"><img src="/images/lvl.gif"><img src="/images/lvl.gif"><img src="/images/lvl.gif">
+				</td>
+			</tr>
+			<tr>
+				<th>Handling:</th>
+				<td>
+					<img src="/images/lvl.gif"><img src="/images/lvl.gif"><img src="/images/lvl.gif"><img src="/images/lvl.gif"><img src="/images/lvl_dark.gif"><img src="/images/lvl.gif"><img src="/images/lvl.gif"><img src="/images/lvl.gif"><img src="/images/lvl.gif"><img src="/images/lvl_dark.gif"><img src="/images/lvl.gif"><img src="/images/lvl.gif">              
+				</td>
+			</tr>
+			<tr>
+				<th>Acceleration:</th>
+				<td>
+					<img src="/images/lvl.gif"><img src="/images/lvl.gif"><img src="/images/lvl.gif"><img src="/images/lvl.gif"><img src="/images/lvl_dark.gif"><img src="/images/lvl.gif"><img src="/images/lvl.gif"><img src="/images/lvl.gif"><img src="/images/lvl.gif">              
+				</td>
+			</tr>						
+		</table>
+		<h2>Best qualifying lap</h2>
+		<table cellspacing="0" cellpadding="0" class="styled center padded" style="width:300px;border:none">
+			
+				<tr>
+					<td nowrap class="center"><img align="absmiddle" src="/images/country/uy.gif" height="12" width="18" class="flag">&nbsp;<a href="ManagerProfile.asp?IDM=10001">Test Manager A</a>:&nbsp;&nbsp;1:04.384s&nbsp;&nbsp;(S109)</td>
+				</tr>
+			
+		</table>
+		<h2>Track record</h2>
+		<table cellspacing="0" cellpadding="0" class="styled center padded" style="width:300px;border:none">				
+			
+				<tr>
+					<td nowrap class="center"><img align="absmiddle" src="/images/country/es.gif" height="12" width="18" class="flag">&nbsp;<a href="ManagerProfile.asp?IDM=10002">Test Manager B</a><span class="cup">1</span>:&nbsp;&nbsp;1:03.714s&nbsp;&nbsp;(S104)</td>
+				</tr>
+			
+		</table>
+		<h2>Current weather</h2>
+		<table cellpadding="0" cellspacing="0" class="normal">
+		<tr>			
+			<td class="center">
+				<img border="2" src="/images/wPartCloudy.gif" title="Partially Cloudy" alt="Partially Cloudy" align="absmiddle"><br>
+				Temp: 29°C<br>
+				Humidity: 35%
+			</td>
+		</tr>
+		</table>		
+		<h2>Current points distribution</h2>
+		<table cellpadding="0" cellspacing="0" class="styled leftalign borderbottom" style="margin:1px 0 0;border:none;" data-step="2" data-intro="This is where you can check how your research test points are being redistributed. Over the course of three races, these points will be converted from Test Points to R&amp;D Points, then Engineering Points and only then they can be converted to Car Character Points which improve the performance of your car. Technical directors and certain facilities improve the conversion rates during the process." data-position="right">
+			<tr>
+				<th colspan="2">Points type</th>
+				<th title="Power" style="width:50px !important;" class="center">P</th>
+				<th title="Handling" style="width:50px !important;" class="center">H</th>
+				<th title="Acceleration" style="width:50px !important;" class="center">A</th>
+			</tr>
+			<tr>
+				<th style="width:12px;"><img src="/images/hint.gif" class="help" rel="tooltip" content="<div style=width:300px;><p>While driving test laps you get knowledge about the car on three areas: <b>Power</b>, <b>Handling</b> and <b>Acceleration</b>.
+<br>
+<br>Next, you race and after the race the test points are converted to new ideas (<b>R&amp;D points</b>). This depends on your technical director, staff and facilities.</p></div>"></th><th>&nbsp;Test points</th>
+				<td class="center">65.3</td>
+				<td class="center">8.2</td>
+				<td class="center">8.2</td>
+			</tr>
+			<tr>
+				<th style="width:12px;"><img src="/images/hint.gif" class="help" rel="tooltip" content="<div style=width:300px;><p>After each race the new ideas (<b>R&amp;D points</b>) are turned into production (<b>Engineering points</b>). The success of this conversion depends on your technical director, staff and facilities.</p></div>"></th><th>&nbsp;<b>R&amp;D points</th>
+				<td class="center">0</td>	
+				<td class="center">0</td>
+				<td class="center">0</td>
+			</tr>			
+			<tr>
+				<th style="width:12px;"><img src="/images/hint.gif" class="help" rel="tooltip" content="<div style=width:300px;><p>After each race the engineering points are converted into new part details ready to be fitted on the car (<b>Car character points</b>). The success of this conversion depends how many additional car character points through testing you already have per car character. The more points you already have, the harder it will be to gain new points.</p></div>"></th><th>&nbsp;Engineering points</th>
+				<td class="center">0</td>
+				<td class="center">0</td>
+				<td class="center">0</td>
+			</tr>
+			<tr>
+				<th style="width:12px;"><img src="/images/hint.gif" class="help" rel="tooltip" content="<div style=width:300px;><p>This shows only the additional car character points earned through testing and does not include any points earned through buying separate car parts.</p></div>"></th><th>&nbsp;<b>Car character points</b></th>
+				<td class="center">7</b></td>
+				<td class="center">4</b></td>
+				<td class="center">5</b></td>
+			</tr>
+			<tr><td colspan="5" class="center" style="border-bottom:none;"><a href="CCPHistory.asp?default=yes">Car character points history</a></td></tr>
+		</table>
+	</div>
+	<div class="column sixtyfive right" data-step="3" data-intro="Here you can view your testing setup and also information regarding any testing stints you&#8217;ve done so far. To get started you should firstly take a look at the track and weather information on the left and setup your part values around that, you could also read the tooltips on each part if you have trouble understanding what the different parts are for. If you are really struggling, start within the middle for everything (around 500) and then follow your driver comments to fine tune your setup. Note that your driver will only give you feedback on the setup if you choose 'Setup tuning' as research priority for the stint." data-position="left">
+		<h2>Setup and lap information</h2>		
+		<div class="inner">
+			<table cellpadding="0" cellspacing="0" class="styled borderbottom flag">
+				<tr>
+					<th colspan="15">
+						Testing stints data (laps done: <font color="orange">100/100</font>, stints done: <font color="orange">4/10</font>)
+					</td>
+				</tr>
+				<tr bgcolor="#1B2D47">
+					<td align="center" rowspan="2" class="speccellnobot center"><b>#</b></td>
+					<td align="center" rowspan="2" class="speccellnobot center"><b>Laps done</b></td>
+					<td align="center" colspan="2" class="speccellnobot center"><b>Lap time</b></td>
+					<td align="center" colspan="8" class="speccellnobot center"><b>Settings</b></td>
+					<td align="center" colspan="3" class="speccellnobot center"><b>End of stint</b></td>
+				</tr>
+				<tr bgcolor="#1B2D47">
+					<td align="center" class="speccellnobot center"><b>Best</b></td>
+					<td align="center" class="speccellnobot center"><b>Mean</b></td>
+					<td align="center" class="speccellnobot center"><b>FW</b></td>
+					<td align="center" class="speccellnobot center"><b>RW</b></td>
+					<td align="center" class="speccellnobot center"><b>Eng</b></td>
+					<td align="center" class="speccellnobot center"><b>Bra</b></td>
+					<td align="center" class="speccellnobot center"><b>Gear</b></td>
+					<td align="center" class="speccellnobot center"><b>Susp</b></td>
+					<td align="center" class="speccellnobot center"><b>Tyres</b></td>
+					<td align="center" class="speccellnobot center"><b>Fuel</b></td>
+					<td align="center" class="speccellnobot center"><b>Tyres cond</b></td>
+					<td align="center" class="speccellnobot center"><b>Fuel left</b></td>
+					<td align="center" class="speccellnobot center"><b>Comm</b></td>
+				</tr>
+				
+				<tr class="pointerhand" onmouseover="this.style.backgroundColor='#3B2D47';" onmouseout="this.style.backgroundColor='';">
+					<td align="center" onclick='FillSetup(450,450,450,450,450,450,4,180);' bgcolor="#1B2D47" class="speccellnobot">1</td>
+					<td class="speccellnobot center" onclick='FillSetup(450,450,450,450,450,450,4,180);' align="center">
+						30/30
+					</td>
+					<td  class="speccellnobot center" onclick='FillSetup(450,450,450,450,450,450,4,180);'>
+						
+						<b>1:16.670s</b>
+						
+					</td>
+					<td align="center" class="speccellnobot center" onclick='FillSetup(450,450,450,450,450,450,4,180);'>
+						
+						<b>1:17.033s</b>
+						
+					</td>									
+					<td align="center" class="speccellnobot center" onclick='FillSetup(450,450,450,450,450,450,4,180);'>450</td>
+					<td align="center" class="speccellnobot center" onclick='FillSetup(450,450,450,450,450,450,4,180);'>450</td>
+					<td align="center" class="speccellnobot center" onclick='FillSetup(450,450,450,450,450,450,4,180);'>450</td>
+					<td align="center" class="speccellnobot center" onclick='FillSetup(450,450,450,450,450,450,4,180);'>450</td>
+					<td align="center" class="speccellnobot center" onclick='FillSetup(450,450,450,450,450,450,4,180);'>450</td>
+					<td align="center" class="speccellnobot center" onclick='FillSetup(450,450,450,450,450,450,4,180);'>450</td>
+					<td align="center" class="speccellnobot center" onclick='FillSetup(450,450,450,450,450,450,4,180);'>Hard</td>
+					<td align="center" class="speccellnobot center" nowrap onclick='FillSetup(450,450,450,450,450,450,4,180);'>180</td>
+					<td align="center" class="speccellnobot center" nowrap>32%</td>
+					<td align="center" class="speccellnobot center" nowrap>100</td>
+					<td align="center" style="cursor:pointer;" class="speccellnobot center"><input class="normal" type="radio" name="rbLapComment" value="1"  onclick="document.getElementById('lapComments').innerHTML=getLapComment(this.value);document.getElementById('lapNumber').innerHTML=this.value;" ID="radio"></td>
+				</tr>
+				
+				<tr class="pointerhand" onmouseover="this.style.backgroundColor='#3B2D47';" onmouseout="this.style.backgroundColor='';">
+					<td align="center" onclick='FillSetup(450,450,450,450,450,450,4,90);' bgcolor="#1B2D47" class="speccellnobot">2</td>
+					<td class="speccellnobot center" onclick='FillSetup(450,450,450,450,450,450,4,90);' align="center">
+						30/30
+					</td>
+					<td  class="speccellnobot center" onclick='FillSetup(450,450,450,450,450,450,4,90);'>
+						
+						<b>1:15.568s</b>
+						
+					</td>
+					<td align="center" class="speccellnobot center" onclick='FillSetup(450,450,450,450,450,450,4,90);'>
+						
+						<b>1:15.868s</b>
+						
+					</td>									
+					<td align="center" class="speccellnobot center" onclick='FillSetup(450,450,450,450,450,450,4,90);'>450</td>
+					<td align="center" class="speccellnobot center" onclick='FillSetup(450,450,450,450,450,450,4,90);'>450</td>
+					<td align="center" class="speccellnobot center" onclick='FillSetup(450,450,450,450,450,450,4,90);'>450</td>
+					<td align="center" class="speccellnobot center" onclick='FillSetup(450,450,450,450,450,450,4,90);'>450</td>
+					<td align="center" class="speccellnobot center" onclick='FillSetup(450,450,450,450,450,450,4,90);'>450</td>
+					<td align="center" class="speccellnobot center" onclick='FillSetup(450,450,450,450,450,450,4,90);'>450</td>
+					<td align="center" class="speccellnobot center" onclick='FillSetup(450,450,450,450,450,450,4,90);'>Hard</td>
+					<td align="center" class="speccellnobot center" nowrap onclick='FillSetup(450,450,450,450,450,450,4,90);'>90</td>
+					<td align="center" class="speccellnobot center" nowrap>32%</td>
+					<td align="center" class="speccellnobot center" nowrap>10</td>
+					<td align="center" style="cursor:pointer;" class="speccellnobot center"><input class="normal" type="radio" name="rbLapComment" value="2"  onclick="document.getElementById('lapComments').innerHTML=getLapComment(this.value);document.getElementById('lapNumber').innerHTML=this.value;" ID="radio"></td>
+				</tr>
+				
+				<tr class="pointerhand" onmouseover="this.style.backgroundColor='#3B2D47';" onmouseout="this.style.backgroundColor='';">
+					<td align="center" onclick='FillSetup(450,450,450,450,450,450,4,85);' bgcolor="#1B2D47" class="speccellnobot">3</td>
+					<td class="speccellnobot center" onclick='FillSetup(450,450,450,450,450,450,4,85);' align="center">
+						30/30
+					</td>
+					<td  class="speccellnobot center" onclick='FillSetup(450,450,450,450,450,450,4,85);'>
+						
+						<b>1:15.454s</b>
+						
+					</td>
+					<td align="center" class="speccellnobot center" onclick='FillSetup(450,450,450,450,450,450,4,85);'>
+						<font color="lime">
+						<b>1:15.748s</b>
+						</font>
+					</td>									
+					<td align="center" class="speccellnobot center" onclick='FillSetup(450,450,450,450,450,450,4,85);'>450</td>
+					<td align="center" class="speccellnobot center" onclick='FillSetup(450,450,450,450,450,450,4,85);'>450</td>
+					<td align="center" class="speccellnobot center" onclick='FillSetup(450,450,450,450,450,450,4,85);'>450</td>
+					<td align="center" class="speccellnobot center" onclick='FillSetup(450,450,450,450,450,450,4,85);'>450</td>
+					<td align="center" class="speccellnobot center" onclick='FillSetup(450,450,450,450,450,450,4,85);'>450</td>
+					<td align="center" class="speccellnobot center" onclick='FillSetup(450,450,450,450,450,450,4,85);'>450</td>
+					<td align="center" class="speccellnobot center" onclick='FillSetup(450,450,450,450,450,450,4,85);'>Hard</td>
+					<td align="center" class="speccellnobot center" nowrap onclick='FillSetup(450,450,450,450,450,450,4,85);'>85</td>
+					<td align="center" class="speccellnobot center" nowrap>32%</td>
+					<td align="center" class="speccellnobot center" nowrap>5</td>
+					<td align="center" style="cursor:pointer;" class="speccellnobot center"><input class="normal" type="radio" name="rbLapComment" value="3"  onclick="document.getElementById('lapComments').innerHTML=getLapComment(this.value);document.getElementById('lapNumber').innerHTML=this.value;" ID="radio"></td>
+				</tr>
+				
+				<tr class="pointerhand" onmouseover="this.style.backgroundColor='#3B2D47';" onmouseout="this.style.backgroundColor='';">
+					<td align="center" onclick='FillSetup(450,450,450,450,450,450,4,85);' bgcolor="#1B2D47" class="speccell">4</td>
+					<td class="speccell center" onclick='FillSetup(450,450,450,450,450,450,4,85);' align="center">
+						10/10
+					</td>
+					<td  class="speccell center" onclick='FillSetup(450,450,450,450,450,450,4,85);'>
+						<font color="lime">
+						<b>1:15.448s</b>
+						</font>
+					</td>
+					<td align="center" class="speccell center" onclick='FillSetup(450,450,450,450,450,450,4,85);'>
+						
+						<b>1:15.844s</b>
+						
+					</td>									
+					<td align="center" class="speccell center" onclick='FillSetup(450,450,450,450,450,450,4,85);'>450</td>
+					<td align="center" class="speccell center" onclick='FillSetup(450,450,450,450,450,450,4,85);'>450</td>
+					<td align="center" class="speccell center" onclick='FillSetup(450,450,450,450,450,450,4,85);'>450</td>
+					<td align="center" class="speccell center" onclick='FillSetup(450,450,450,450,450,450,4,85);'>450</td>
+					<td align="center" class="speccell center" onclick='FillSetup(450,450,450,450,450,450,4,85);'>450</td>
+					<td align="center" class="speccell center" onclick='FillSetup(450,450,450,450,450,450,4,85);'>450</td>
+					<td align="center" class="speccell center" onclick='FillSetup(450,450,450,450,450,450,4,85);'>Hard</td>
+					<td align="center" class="speccell center" nowrap onclick='FillSetup(450,450,450,450,450,450,4,85);'>85</td>
+					<td align="center" class="speccell center" nowrap>77%</td>
+					<td align="center" class="speccell center" nowrap>58</td>
+					<td align="center" style="cursor:pointer;" class="speccell center"><input class="normal" type="radio" name="rbLapComment" value="4" checked onclick="document.getElementById('lapComments').innerHTML=getLapComment(this.value);document.getElementById('lapNumber').innerHTML=this.value;" ID="radio"></td>
+				</tr>
+				
+			</table>		
+			<br>
+			
+			<div>
+				<font color="yellow" class="normal">
+					<b>Testing stint #<span id="lapNumber">4</span> comments from your driver:</b>
+					<br>
+					<span id="lapComments"><br><font color=orange>No driver comments available</font><br><br>(Stint research priority: Top speed)</span>
+				</font>
+			</div>
+			
+			<br>
+			<table border="0" cellspacing="0" cellpadding="0" class="styled borderbottom flag leftalign noinputpadding">
+				<tr> 							
+					<th colspan="5" class="center">Setup related parts</th>
+					<th colspan="3" class="center">Parts not related to setup</th>
+				</tr>
+				<tr bgcolor="#1B2D47"> 
+					<td class="speccellnobot">&nbsp;</td>
+					<td class="speccellnobot center">&nbsp;Level&nbsp;</td>
+					<td class="speccellnobot center">&nbsp;Wear&nbsp;</td>
+					<td class="speccellnobot" colspan="2" align="center">&nbsp;Settings&nbsp;</td>							
+					<td class="speccellnobot">&nbsp;</td>
+					<td class="speccellnobot center">&nbsp;Level&nbsp;</td>
+					<td class="speccellnobot center">&nbsp;Wear&nbsp;</td>
+				</tr>
+				<tr> 
+					<td class="speccellnobot" bgcolor="#1B2D47">&nbsp;<img src="/images/hint.gif" class="help" rel="tooltip" content="<div style=width:300px;><p>High wing setting = high level of downforce on the car. This provides more grip in the corners but lowers top speed, ideal for slow tracks such as Monaco.
+<br>
+<br>The faster tracks such as Monza require a lower wing setting, giving the car more speed through the long flat out straights. A good balance is needed between front and rear wing, to prevent oversteer or understeer on the car.</p></div>">&nbsp;Front wing:&nbsp;</td>
+					<td class="speccellnobot center" align="center">6</td>
+					<td class="speccellnobot center" align="center">30%</td>
+					<td class="speccellnobot" colspan="2" align="center"><input pattern="\d*" name="FWing" size=3 maxlength=3 value="" class="normal" autocomplete="off" ID="FWing">&nbsp;(0-999)</td>							
+					<td class="speccellnobot" bgcolor="#1B2D47">&nbsp;<img src="/images/hint.gif" class="help" rel="tooltip" content="<div style=width:300px;><p>This is the main structure of the car, to which the engine and suspension are attached. The chassis is made from moulded carbon fibre, to minimize its weight. It is shaped as aerodynamically as possible to reduce drag, with strength being provided through the use of honeycomb technology.</p></div>">&nbsp;Chassis:&nbsp;</td>
+					<td class="speccellnobot center" align="center">6</td>
+					<td class="speccellnobot center" align="center">24%</td>
+				</tr>
+				<tr> 				
+					<td class="speccellnobot" bgcolor="#1B2D47">&nbsp;<img src="/images/hint.gif" class="help" rel="tooltip" content="<div style=width:300px;><p>High wing setting = high level of downforce on the car. This provides more grip in the corners but lowers top speed, ideal for slow tracks such as Monaco.
+<br>
+<br>The faster tracks such as Monza require a lower wing setting, giving the car more speed through the long flat out straights. A good balance is needed between front and rear wing, to prevent oversteer or understeer on the car.</p></div>">&nbsp;Rear wing:&nbsp;</td>
+					<td class="speccellnobot center" align="center">6</td>
+					<td class="speccellnobot center" align="center">32%</td>
+					<td class="speccellnobot" colspan="2" align="center"><input autocomplete="off" pattern="\d*" name="RWing" size=3 maxlength=3 value="" class="normal" ID="RWing">&nbsp;(0-999)</td>							
+					<td class="speccellnobot" bgcolor="#1B2D47">&nbsp;<img src="/images/hint.gif" class="help" rel="tooltip" content="<div style=width:300px;><p>Racing cars used to run with sculpted underbody tunnels, making maximum use of the ground effect to produce higher levels of grip and faster cornering speeds. Today, ground effect is reduced as teams are required to run with a skid block (a flat wooden or plastic board) mounted on the underbody. The skid block reduces cornering speeds as well as protecting the underbody of the car.</p></div>">&nbsp;Underbody:&nbsp;</td>
+					<td class="speccellnobot center" align="center">7</td>
+					<td class="speccellnobot center" align="center">39%</td>
+				</tr>
+				<tr> 
+					<td class="speccellnobot" bgcolor="#1B2D47">&nbsp;<img src="/images/hint.gif" class="help" rel="tooltip" content="<div style=width:300px;><p>Higher setting = more straight line speed, favoring top speed over acceleration - useful on circuits such as Monza. 
+
+Lower engine settings are used on slower circuits like Monaco, where acceleration is more important than pure top speed. Engines must be enormously strong to withstand the hammering they take in the races, yet as light as possible too for speed.</p></div>">&nbsp;Engine:&nbsp;</td>
+					<td class="speccellnobot center" align="center">6</td>
+					<td class="speccellnobot center" align="center">25%</td>
+					<td class="speccellnobot" colspan="2" align="center"><input autocomplete="off" pattern="\d*" name="Engine" size=3 maxlength=3 value="" class="normal" ID="Engine">&nbsp;(0-999)</td>							
+					<td class="speccellnobot" bgcolor="#1B2D47">&nbsp;<img src="/images/hint.gif" class="help" rel="tooltip" content="<div style=width:300px;><p>The main purpose of the sidepods is to direct air flow which cools the engine and gearbox of the car. At very hot races, radiator exit ducts can be used on the pods to increase the flow of air and boost their cooling potential. The pods must also be aerodynamic and strong enough to hold up under impact testing. Sidepods also house the control electronics and data systems of the car.</p></div>">&nbsp;Sidepods:&nbsp;</td>
+					<td class="speccellnobot center" align="center">7</td>
+					<td class="speccellnobot center" align="center">22%</td>
+				</tr>
+				<tr> 
+					<td class="speccellnobot" bgcolor="#1B2D47">&nbsp;<img src="/images/hint.gif" class="help" rel="tooltip" content="<div style=width:300px;><p>Higher setting = brake bias towards the front. When braking into a corner, especially with a full fuel load, more weight is transferred to the front of the car.
+<br>
+<br>Teams can adjust the brake bias so that more brake pressure is applied to the front of the car, to compensate for the weight transfer effect. Poorly balanced brakes lead to longer braking distances as well as problems with oversteer or understeer.</p></div>">&nbsp;Brakes:&nbsp;</td>
+					<td class="speccellnobot center" align="center">4</td>
+					<td class="speccellnobot center" align="center">34%</td>
+					<td class="speccellnobot" colspan="2" align="center"><input autocomplete="off" pattern="\d*" name="Brakes" size=3 maxlength=3 value="" class="normal" ID="Brakes">&nbsp;(0-999)</td>
+					<td class="speccellnobot" bgcolor="#1B2D47">&nbsp;<img src="/images/hint.gif" class="help" rel="tooltip" content="<div style=width:300px;><p>Liquid cooling systems are used to absorb heat as they pass through the engine, preventing the engine from overheating. After leaving the engine, the cooling fluid passes through a radiator, which transfers the heat from the fluid to the air. Coolant lines are not allowed to pass through the cockpit and must be fitted so that any leaked fluid cannot penetrate the cockpit.</p></div>">&nbsp;Cooling:&nbsp;</td>
+					<td class="speccellnobot center" align="center">5</td>
+					<td class="speccellnobot center" align="center">26%</td>
+				</tr>
+				<tr> 
+					<td class="speccellnobot" bgcolor="#1B2D47">&nbsp;<img src="/images/hint.gif" class="help" rel="tooltip" content="<div style=width:300px;><p>Higher setting = higher gear ratio. The high gear ratio favors top speed at the expense of acceleration and is used on the faster tracks such as Monza.
+<br>
+<br>Gear ratios on the slower tracks such as Monaco are much lower, favoring acceleration over top speed. The first gear should be set to best suit the slowest corner, whilst the seventh should be set to redline just before the braking point at the fastest part of the circuit.</p></div>">&nbsp;Gear:&nbsp;</td>
+					<td class="speccellnobot center" align="center">6</td>
+					<td class="speccellnobot center" align="center">32%</td>
+					<td class="speccellnobot" colspan="2" align="center"><input autocomplete="off" pattern="\d*" name="Gear" size=3 maxlength=3 value="" class="normal" ID="Gear">&nbsp;(0-999)</td>							
+					<td class="speccellnobot" bgcolor="#1B2D47" nowrap>&nbsp;<img src="/images/hint.gif" class="help" rel="tooltip" content="<div style=width:300px;><p>The electronic control unit (ECU) acts as the brain of the car, consisting of a series of sensors and processors which produce feedback for the driver and the team. The ECU uses the information collected to control certain car components, such as the engine and gearbox. The system also logs information, transferring it to the pits through a telemetry link.</p></div>">&nbsp;Electronics:&nbsp;</td>
+					<td class="speccellnobot center" align="center">6</td>
+					<td class="speccellnobot center" align="center">19%</td>
+				</tr>
+				<tr> 
+					<td class="speccellnobot" bgcolor="#1B2D47">&nbsp;<img src="/images/hint.gif" class="help" rel="tooltip" content="<div style=width:300px;><p>High suspension rigidity = harder suspension springs. Hard springs give greater stability and responsiveness to the car, which is good for riding the kerbs. Softer springs (low rigidity) provide for easier cornering, but the car may pitch and roll more as a result.</p></div>">&nbsp;Suspension:&nbsp;</td>
+					<td class="speccellnobot center" align="center">6</td>
+					<td class="speccellnobot center" align="center">43%</td>
+					<td class="speccellnobot" colspan="2" align="center"><input autocomplete="off" pattern="\d*" name="Suspension" size=3 maxlength=3 value="" class="normal" ID="Suspension">&nbsp;(0-999)</td>
+					<th class="center" colspan="3">Car character</th>
+				</tr>
+				<tr>
+					<td class="speccellnobot" bgcolor="#1B2D47">&nbsp;<img src="/images/hint.gif" class="help" rel="tooltip" content="<div style=width:300px;><p>The type of tyre you want to use for the lap. Softer tyre compounds provide better grip while harder tyre compounds provide higher durability.</p></div>">&nbsp;Tyres:&nbsp;</td>
+					<td class="speccellnobot" colspan="4" align="left">
+						<select name="Tyres" class="normal" ID="Tyres">
+		  				  <option value="1">Extra Soft
+</option>  <option value="2">Soft
+</option>  <option value="3">Medium
+</option>  <option value="4">Hard
+</option>  <option value="6">Rain
+</option>
+						</select>
+					</td>
+					<td class="speccellnobot" bgcolor="#1B2D47" nowrap>Power</td>
+					<td colspan="2">87</td>
+				</tr>
+				<tr>
+					<td class="speccellnobot" bgcolor="#1B2D47" nowrap>&nbsp;<img src="/images/hint.gif" class="help" rel="tooltip" content="<div style=width:300px;><p>The amount of fuel in liters you want to send out your car with.</p></div>">&nbsp;Fuel load:&nbsp;</td>
+					<td class="speccellnobot" colspan="4">
+						<input name="Fuel" size="3" maxlength="3" pattern="\d*" value="" class="normal" ID="Fuel">&nbsp;(min 10 - max 180 liters)
+					</td>
+					<td class="speccellnobot" bgcolor="#1B2D47" nowrap>Handling</td>
+					<td colspan="2">82</td>
+				</tr>
+				<tr>
+					<td class="speccellnobot" bgcolor="#1B2D47" nowrap>&nbsp;<img src="/images/hint.gif" class="help" rel="tooltip" content="<div style=width:300px;><p>The length of the testing stint you want to drive. The minimum length of a stint is 5 laps and the maximum length is 50 laps. Note that even if the car does not complete the full length of the stint all requested laps are deducted from the maximum amount of laps.</p></div>">&nbsp;Stint length:&nbsp;</td>
+					<td class="speccellnobot" colspan="4">
+						<select name="slStintLength" class="normal" ID="slStintLength" disabled>
+							
+						</select>laps
+					</td>
+					<td class="speccellnobot" bgcolor="#1B2D47" nowrap>Acceleration</td>
+					<td colspan="2">85</td>
+				</tr>
+				<tr>
+					<td class="speccell" bgcolor="#1B2D47">&nbsp;<img src="/images/hint.gif" class="help" rel="tooltip" content="<div style=width:300px;><p>This is the area you wish your driver to concentrate his research on while driving his testing laps.</p></div>">&nbsp;Research priority:&nbsp;</td>
+					<td class="speccell" colspan="4">
+						<select name="slResearchPriority" class="normal" ID="slResearchPriority" style="max-width:200px">
+							<option value="0" >No special priority</option>
+							<option value="1" >Top speed</option>
+							<option value="2" >Cornering</option>
+							<option value="3" >Hairpins</option>
+							<option value="4" >Braking</option>
+							<option value="5" >Overtaking</option>
+							<option value="6" >Chicanes</option>
+							<option value="7" >Test car limits</option>
+							<option value="8" >Setup tuning</option>
+						</select>
+					</td>
+					<td colspan="3">&nbsp;</td>
+				</tr>
+			</table>
+			<input type="submit" name="DriveStint" value="Drive stint" onclick="return SubmitForm()" disabled class="normal halo" style="width:250px; background-size:560px 32px;background-repeat:no-repeat;float:none;">
+		</div>
+	</div>
+</form>
+</body>
+</html>
