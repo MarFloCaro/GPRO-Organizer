@@ -9,6 +9,13 @@ namespace go.Tests.Parsers
         private readonly string _supplierPage = TestDataLoader.Load("Suppliers.html");
 
         [Fact]
+        public void GetTyreSupplier_ParsesName()
+        {
+            var supplier = TyreSupplierParser.GetTyreSupplier(_supplierPage);
+            Assert.Equal("Dunnolop", supplier.name);
+        }
+
+        [Fact]
         public void GetTyreSupplier_ParsesDryPerformance()
         {
             var supplier = TyreSupplierParser.GetTyreSupplier(_supplierPage);

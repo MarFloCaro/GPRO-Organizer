@@ -12,6 +12,7 @@ namespace go
   [Serializable]
   public class TyreSupplier
   {
+    public string name = "";
     public int dryPerf;
     public int wetPerf;
     public int peakTemp;

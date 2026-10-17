@@ -3288,7 +3288,7 @@ namespace go.Forms
             this.label14.Size = new Size(56, 16);
             this.label14.TabIndex = 1;
             this.label14.Text = "Weather:";
-            this.listViewPractice.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
+            this.listViewPractice.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
             this.listViewPractice.Columns.AddRange(new ColumnHeader[11]
             {
         this.columnHeader1,
@@ -3307,7 +3307,7 @@ namespace go.Forms
             this.listViewPractice.HideSelection = false;
             this.listViewPractice.Location = new Point(0, 32);
             this.listViewPractice.Name = "listViewPractice";
-            this.listViewPractice.Scrollable = false;
+            this.listViewPractice.Scrollable = true;
             this.listViewPractice.Size = new Size(797, 136);
             this.listViewPractice.TabIndex = 0;
             this.listViewPractice.UseCompatibleStateImageBehavior = false;
@@ -4528,7 +4528,9 @@ namespace go.Forms
         private void MniAllTracksClick(object sender, EventArgs e)
         {
             Cursor previousCursor = Cursor.Current;
-            Cursor.Current = Cursors.AppStarting;
+            Cursor.Current = Cursors.WaitCursor;
+            this.statusBarPanel3.Text = "Updating tracks...";
+            Application.DoEvents();
 
             try
             {
@@ -4574,6 +4576,7 @@ namespace go.Forms
             finally
             {
                 Cursor.Current = previousCursor;
+                this.statusBarPanel3.Text = "Ready";
             }
         }
 
@@ -5359,6 +5362,9 @@ namespace go.Forms
 
         private void FillTyreSupplierTab(TyreSupplier supplier)
         {
+            this.groupBox11.Text = string.IsNullOrEmpty(supplier.name)
+                ? "Tyre Supplier"
+                : "Tyre Supplier — " + supplier.name;
             this.textBoxDryPerformance.Text = supplier.dryPerf.ToString();
             this.textBoxWetPerformance.Text = supplier.wetPerf.ToString();
             this.textBoxPeakTemperature.Text = supplier.peakTemp.ToString();
@@ -5609,8 +5615,8 @@ namespace go.Forms
                 {
                     Datas.Seasons[Datas.INDEX_CURRENTSEASON].Events[Datas.Date.race - 1].Tyresupplier = tyreSupplier;
                     this.DataChanged();
-                    this.FillTyreSupplierTab(tyreSupplier);
                 }
+                this.FillTyreSupplierTab(tyreSupplier);
                 this.statusBarPanel3.Text = "Tyre supplier downloaded";
                 return true;
             }
