@@ -18,7 +18,7 @@ namespace go.Parsers
       return RaceSummaryParser.GetRaceSummaryPage(Datas.Communications.GetPage("RaceSummary.asp?Group=" + Datas.Communications.ConvertToPageEncoding(groupName)));
     }
 
-    private static RaceSummary GetRaceSummaryPage(string page)
+    public static RaceSummary GetRaceSummaryPage(string page)
     {
       RaceSummary raceSummaryPage = new RaceSummary();
       ArrayList list1 = new ArrayList();
