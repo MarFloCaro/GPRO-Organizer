@@ -219,6 +219,13 @@ namespace go.Forms
 
     private void buttonOk_Click(object sender, EventArgs e)
     {
+      if (this.listViewChosen.Items.Count == 0)
+      {
+        MessageBox.Show(this, "Please select at least one column.", "No columns",
+          MessageBoxButtons.OK, MessageBoxIcon.Warning);
+        this.DialogResult = DialogResult.None;
+        return;
+      }
       ArrayList arrayList1 = new ArrayList();
       ArrayList arrayList2 = new ArrayList();
       foreach (ListViewItem listViewItem in this.listViewChosen.Items)

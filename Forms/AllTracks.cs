@@ -201,11 +201,10 @@ namespace go.Forms
         if (trackid == Datas.NextRace)
           listViewItem.BackColor = Color.PaleGreen;
       }
-      if (this.comboBoxfuel.SelectedIndex > 0)
+      if (this.comboBoxfuel.SelectedIndex > 0 && this.FUEL_COLUMN >= 0)
         this.SelectFuelConsumption();
-      if (this.comboBoxTyres.SelectedIndex <= 0)
-        return;
-      this.SelectTyreWear();
+      if (this.comboBoxTyres.SelectedIndex > 0 && this.TYRE_COLUMN >= 0)
+        this.SelectTyreWear();
     }
 
     private void ListTracksWithFuel(FuelConsumption fuel)

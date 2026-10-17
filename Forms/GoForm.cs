@@ -26,6 +26,7 @@ namespace go.Forms
     protected MenuItem menuItemChooseColumns = new MenuItem();
     protected MenuItem menuItemExportToCSV = new MenuItem();
 
+
     public GoForm() => this.InitializeComponent();
 
     public GoForm(string formName)
@@ -1210,11 +1211,7 @@ namespace go.Forms
       this.UpdateColumnSizes();
       this.UpdateBoxVisibilities();
       if (this.formInfo.columnInfo.Count == 0)
-      {
-        MessageBox.Show((IWin32Window) this,
-          "No columns selected. Please select at least one column using the right-click menu.",
-          "No columns", MessageBoxButtons.OK, MessageBoxIcon.Information);
-      }
+        this.menuItemChooseColumns_Click(null, null);
     }
 
     protected virtual void UpdateBoxVisibilities()
