@@ -285,7 +285,7 @@ namespace go.Comms
 
         private void CheckPage(string page)
         {
-            if (page.IndexOf("Offices are currently closed!") > 0 && (page.IndexOf("Season Position") < 0 || page.IndexOf("Technical Director:") < 0) || page.IndexOf("Post-race update in progress:") > 0)
+            if ((page.IndexOf("Offices are currently closed!") > 0 && (page.IndexOf("Season Position") < 0 || page.IndexOf("Technical Director:") < 0)) || page.IndexOf("Post-race update in progress:") > 0)
             {
                 Exception exception = new Exception("Offices are currently closed");
                 this.IsLoggedIn = false;
