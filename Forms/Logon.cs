@@ -33,6 +33,7 @@ namespace go.Forms
 
             boxUsername.Text = Datas.SettingsUsername;
             boxPassword.Text = Datas.SettingsPassword;
+            _rememberPasswordCheckBox.Checked = Datas.Communications.rememberPassword;
 
             _comms = comms;
 
@@ -195,6 +196,7 @@ namespace go.Forms
                     try
                     {
                         Datas.SettingsPassword = EncDec.Decrypt(cipherText, "phdsp98q4tæqæræosalæx-lkdsvjipo.LKLDUSFÆIREp98 w3rp98y<ÆH æFp9843æiohfp9y<ftg");
+                        Datas.Communications.rememberPassword = true;
                     }
                     catch (Exception ex)
                     {
