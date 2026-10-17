@@ -244,6 +244,9 @@ dist
 !webpack.config.js
 
 
+# Local lib folder (replaced by NuGet packages)
+lib/
+
 # claude ai files
 .claude/
 CLAUDE.md

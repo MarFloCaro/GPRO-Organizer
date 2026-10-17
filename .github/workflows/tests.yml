@@ -19,7 +19,13 @@ jobs:
       - name: Setup MSBuild
         uses: microsoft/setup-msbuild@v2
 
-      - name: Restore NuGet packages
+      - name: Setup NuGet
+        uses: NuGet/setup-nuget@v2
+
+      - name: Restore NuGet packages (main project)
+        run: nuget restore Go.sln
+
+      - name: Restore NuGet packages (test project)
         run: dotnet restore Go.Tests/Go.Tests.csproj
 
       - name: Build
