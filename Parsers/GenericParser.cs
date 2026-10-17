@@ -7,6 +7,7 @@
 using go.Utils;
 using System;
 using System.Globalization;
+using System.Text;
 
 #nullable disable
 namespace go.Parsers
@@ -16,10 +17,10 @@ namespace go.Parsers
     protected static string GetRidOfLinks(string noget)
     {
       string[] strArray = noget.Split('<', '>');
-      string ridOfLinks = "";
+      StringBuilder sb = new StringBuilder();
       for (int index = 0; index < strArray.Length; index += 2)
-        ridOfLinks += strArray[index];
-      return ridOfLinks;
+        sb.Append(strArray[index]);
+      return sb.ToString();
     }
 
     public static void HandleError(string message, Exception e, string page)
