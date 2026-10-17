@@ -29,9 +29,8 @@ namespace go.Parsers
       try
       {
         int num2 = racePage.IndexOf("TrackDetails") + 20;
-        string s1 = racePage.Substring(num2, racePage.IndexOf("\"", num2) - num2);
         int num1 = 0;
-        int num3 = int.Parse(s1);
+        int num3 = ExtractIntUntil(racePage, num2, "\"");
         int laps = Datas.GetTrack(num3).laps + 1;
         Race9 race = new Race9(laps);
         bool flag = false;
@@ -86,8 +85,7 @@ namespace go.Parsers
           Lap2 lap2 = new Lap2();
           num2 = racePage.IndexOf("racescreen.asp", num2);
           num2 = racePage.IndexOf(">", num2) + 1;
-          string s2 = racePage.Substring(num2, racePage.IndexOf("<", num2) - num2);
-          lap2.lapNumber = int.Parse(s2);
+          lap2.lapNumber = ExtractIntUntil(racePage, num2, "<");
           if (flag)
           {
             lap2.lapTime = TimeSpan.Zero;
@@ -98,7 +96,7 @@ namespace go.Parsers
           {
             num2 = racePage.IndexOf("<td class=\"center", num2) + 18;
             num2 = racePage.IndexOf(">", num2) + 1;
-            string str = racePage.Substring(num2, racePage.IndexOf("<", num2) - num2);
+            string str = ExtractUntil(racePage, num2, "<");
             switch (str)
             {
               case "-":
@@ -106,7 +104,7 @@ namespace go.Parsers
                 goto label_17;
               case "":
                 num2 += 19;
-                str = racePage.Substring(num2, racePage.IndexOf("<", num2) - num2);
+                str = ExtractUntil(racePage, num2, "<");
                 break;
             }
             num1 = str.IndexOf(">") + 1;
@@ -118,13 +116,12 @@ namespace go.Parsers
           }
 label_17:
           num2 = racePage.IndexOf("<b>", num2) + 3;
-          string s3 = racePage.Substring(num2, racePage.IndexOf("<", num2) - num2);
-          lap2.position = int.Parse(s3);
+          lap2.position = ExtractIntUntil(racePage, num2, "<");
           num2 = racePage.IndexOf("<font color", num2) + 13;
-          if (racePage.Substring(num2, racePage.IndexOf("\"", num2) - num2) == "#8C8C8C")
+          if (ExtractUntil(racePage, num2, "\"") == "#8C8C8C")
             lap2.goodTyres = false;
           num2 = racePage.IndexOf("<b>", num2) + 3;
-          string noget = racePage.Substring(num2, racePage.IndexOf("<", num2) - num2);
+          string noget = ExtractUntil(racePage, num2, "<");
           switch (noget)
           {
             case "Extra Soft":
@@ -148,16 +145,14 @@ label_17:
           if (racePage.Substring(num2, 3) == "<b>")
             lap2.weather.skies = Skies.Rain;
           else
-            noget = racePage.Substring(num2, racePage.IndexOf("<", num2) - num2);
+            noget = ExtractUntil(racePage, num2, "<");
           lap2.weather.skies = EnumConvert.String2Skies(noget);
           num2 = racePage.IndexOf("\"center\"", num2);
           num2 = racePage.IndexOf(">", num2) + 1;
-          string s4 = racePage.Substring(num2, racePage.IndexOf("&#176;", num2) - num2);
-          lap2.weather.temperature = int.Parse(s4);
+          lap2.weather.temperature = ExtractIntUntil(racePage, num2, "&#176;");
           num2 = racePage.IndexOf("\"center\"", num2);
           num2 = racePage.IndexOf(">", num2) + 1;
-          string s5 = racePage.Substring(num2, racePage.IndexOf("%", num2) - num2);
-          lap2.weather.humidity = int.Parse(s5);
+          lap2.weather.humidity = ExtractIntUntil(racePage, num2, "%");
           num2 = racePage.IndexOf("center", num2);
           int startIndex = racePage.IndexOf(">", num2) + 1;
           if (startIndex < racePage.IndexOf("</td>", num2))
@@ -169,64 +164,51 @@ label_17:
         num2 = racePage.IndexOf("Driver energy", num2);
         num2 = racePage.IndexOf("<div class=\"barLabel", num2);
         num2 = racePage.IndexOf(">", num2) + 1;
-        string s6 = racePage.Substring(num2, racePage.IndexOf("%", num2) - num2);
-        race.DriverEnergy.BeforeQ1 = int.Parse(s6);
+        race.DriverEnergy.BeforeQ1 = ExtractIntUntil(racePage, num2, "%");
         num2 = racePage.IndexOf("<div class=\"barLabel", num2);
         num2 = racePage.IndexOf(">", num2) + 1;
-        string s7 = racePage.Substring(num2, racePage.IndexOf("%", num2) - num2);
-        race.DriverEnergy.AfterQ1 = int.Parse(s7);
+        race.DriverEnergy.AfterQ1 = ExtractIntUntil(racePage, num2, "%");
         num2 = racePage.IndexOf("<div class=\"barLabel", num2);
         num2 = racePage.IndexOf(">", num2) + 1;
-        string s8 = racePage.Substring(num2, racePage.IndexOf("%", num2) - num2);
-        race.DriverEnergy.BeforeQ2 = int.Parse(s8);
+        race.DriverEnergy.BeforeQ2 = ExtractIntUntil(racePage, num2, "%");
         num2 = racePage.IndexOf("<div class=\"barLabel", num2);
         num2 = racePage.IndexOf(">", num2) + 1;
-        string s9 = racePage.Substring(num2, racePage.IndexOf("%", num2) - num2);
-        race.DriverEnergy.AfterQ2 = int.Parse(s9);
+        race.DriverEnergy.AfterQ2 = ExtractIntUntil(racePage, num2, "%");
         num2 = racePage.IndexOf("<div class=\"barLabel", num2);
         num2 = racePage.IndexOf(">", num2) + 1;
-        string s10 = racePage.Substring(num2, racePage.IndexOf("%", num2) - num2);
-        race.DriverEnergy.BeforeRace = int.Parse(s10);
+        race.DriverEnergy.BeforeRace = ExtractIntUntil(racePage, num2, "%");
         num2 = racePage.IndexOf("<div class=\"barLabel", num2);
         num2 = racePage.IndexOf(">", num2) + 1;
-        string s11 = racePage.Substring(num2, racePage.IndexOf("%", num2) - num2);
-        race.DriverEnergy.AfterRace = int.Parse(s11);
+        race.DriverEnergy.AfterRace = ExtractIntUntil(racePage, num2, "%");
         num2 = racePage.IndexOf("Qualify 2 / Race start") + 1;
         num2 = racePage.IndexOf("<img ", num2) + 1;
         num2 = racePage.IndexOf("<img ", num2) + 1;
         num2 = racePage.IndexOf("alt=", num2) + 5;
-        string noget1 = racePage.Substring(num2, racePage.IndexOf("\"", num2) - num2);
+        string noget1 = ExtractUntil(racePage, num2, "\"");
         race.Laps[0].weather.skies = EnumConvert.String2Skies(noget1);
         num2 = racePage.IndexOf("Setups used");
         num2 = racePage.IndexOf("Race", num2);
         num2 = racePage.IndexOf("center", num2);
         num2 = racePage.IndexOf(">", num2) + 1;
-        string s12 = racePage.Substring(num2, racePage.IndexOf("<", num2) - num2);
-        race.CarSetup.fWing = int.Parse(s12);
+        race.CarSetup.fWing = ExtractIntUntil(racePage, num2, "<");
         num2 = racePage.IndexOf("center", num2);
         num2 = racePage.IndexOf(">", num2) + 1;
-        string s13 = racePage.Substring(num2, racePage.IndexOf("<", num2) - num2);
-        race.CarSetup.rWing = int.Parse(s13);
+        race.CarSetup.rWing = ExtractIntUntil(racePage, num2, "<");
         num2 = racePage.IndexOf("center", num2);
         num2 = racePage.IndexOf(">", num2) + 1;
-        string s14 = racePage.Substring(num2, racePage.IndexOf("<", num2) - num2);
-        race.CarSetup.engine = int.Parse(s14);
+        race.CarSetup.engine = ExtractIntUntil(racePage, num2, "<");
         num2 = racePage.IndexOf("center", num2);
         num2 = racePage.IndexOf(">", num2) + 1;
-        string s15 = racePage.Substring(num2, racePage.IndexOf("<", num2) - num2);
-        race.CarSetup.brakes = int.Parse(s15);
+        race.CarSetup.brakes = ExtractIntUntil(racePage, num2, "<");
         num2 = racePage.IndexOf("center", num2);
         num2 = racePage.IndexOf(">", num2) + 1;
-        string s16 = racePage.Substring(num2, racePage.IndexOf("<", num2) - num2);
-        race.CarSetup.gear = int.Parse(s16);
+        race.CarSetup.gear = ExtractIntUntil(racePage, num2, "<");
         num2 = racePage.IndexOf("center", num2);
         num2 = racePage.IndexOf(">", num2) + 1;
-        string s17 = racePage.Substring(num2, racePage.IndexOf("<", num2) - num2);
-        race.CarSetup.susp = int.Parse(s17);
+        race.CarSetup.susp = ExtractIntUntil(racePage, num2, "<");
         num2 = racePage.IndexOf("Start fuel:", num2);
         num2 = racePage.IndexOf(">", num2) + 1;
-        string s18 = racePage.Substring(num2, racePage.IndexOf("&nbsp;", num2) - num2);
-        race.StartFuel = int.Parse(s18);
+        race.StartFuel = ExtractIntUntil(racePage, num2, "&nbsp;");
         int startIndex1 = num2;
         if (racePage.IndexOf("Pitstop reason", num2) > 0)
         {
@@ -236,11 +218,11 @@ label_17:
           {
             num2 += 4;
             PitStop pitStop = new PitStop();
-            string str = racePage.Substring(num2, racePage.IndexOf(")", num2) - num2);
+            string str = ExtractUntil(racePage, num2, ")");
             pitStop.lap = int.Parse(str.Replace("nbsp;", ""));
             num2 = racePage.IndexOf("<td", num2) + 4;
             num2 = racePage.IndexOf(">", num2) + 1;
-            switch (racePage.Substring(num2, racePage.IndexOf("<", num2) - num2))
+            switch (ExtractUntil(racePage, num2, "<"))
             {
               case "The tyres could not do any more laps":
                 pitStop.pitstopreason = PitStopReason.WornTyres;
@@ -259,12 +241,12 @@ label_17:
             string s19 = racePage.Substring(num2, racePage.IndexOf("<", num2) - 1 - num2);
             pitStop.tyresCondition = int.Parse(s19);
             num2 = racePage.IndexOf("<b>", num2) + 3;
-            string s20 = racePage.Substring(num2, racePage.IndexOf("%", num2) - num2);
+            string s20 = ExtractUntil(racePage, num2, "%");
             if (s20 == "")
               s20 = "0";
             pitStop.fuelLeft = int.Parse(s20);
             num2 = racePage.IndexOf("<b>", num2) + 3;
-            string s21 = racePage.Substring(num2, racePage.IndexOf(" ", num2) - num2);
+            string s21 = ExtractUntil(racePage, num2, " ");
             pitStop.refilledTo = !(s21 == "No") ? int.Parse(s21) : -1;
             num2 = racePage.IndexOf("<b>", num2) + 3;
             int num4 = racePage.IndexOf(".", num2);
@@ -296,10 +278,9 @@ label_17:
           {
             TechnicalProblem technicalProblem = new TechnicalProblem();
             num2 += 11;
-            string s23 = racePage.Substring(num2, racePage.IndexOf("<", num2) - num2);
-            technicalProblem.lap = int.Parse(s23);
+            technicalProblem.lap = ExtractIntUntil(racePage, num2, "<");
             num2 = racePage.IndexOf("class=\"orange", num2) + 15;
-            string str = technicalProblem.problem = racePage.Substring(num2, racePage.IndexOf("<", num2) - num2);
+            string str = technicalProblem.problem = ExtractUntil(racePage, num2, "<");
             arrayList.Add((object) technicalProblem);
           }
           race.TechnicalProblems = new TechnicalProblem[arrayList.Count];
@@ -311,83 +292,77 @@ label_17:
           num2 = racePage.IndexOf("<font color", startIndex1);
           num2 = racePage.IndexOf(">", num2) + 1;
           racePage.IndexOf("%", num2);
-          string s24 = racePage.Substring(num2, racePage.IndexOf("%", num2) - num2);
-          race.TyresAfterFinish = int.Parse(s24);
+          race.TyresAfterFinish = ExtractIntUntil(racePage, num2, "%");
           num2 = racePage.IndexOf("<b>", num2) + 3;
-          string s25 = racePage.Substring(num2, racePage.IndexOf(" ", num2) - num2);
-          race.EndFuel = int.Parse(s25);
+          race.EndFuel = ExtractIntUntil(racePage, num2, " ");
         }
         num2 = racePage.IndexOf("Overtaking attempts", num2);
         num2 = racePage.IndexOf("<font color=", num2) + 21;
-        string s26 = racePage.Substring(num2, racePage.IndexOf("</font>", num2) - num2);
-        race.OvertakingAttemps.InitiatedBlocked = int.Parse(s26);
+        race.OvertakingAttemps.InitiatedBlocked = ExtractIntUntil(racePage, num2, "</font>");
         num2 = racePage.IndexOf("<font color=", num2) + 19;
-        string s27 = racePage.Substring(num2, racePage.IndexOf("</font>", num2) - num2);
-        race.OvertakingAttemps.InitiatedSucceful = int.Parse(s27);
+        race.OvertakingAttemps.InitiatedSucceful = ExtractIntUntil(racePage, num2, "</font>");
         num2 = racePage.IndexOf("<font color=", num2) + 19;
-        string s28 = racePage.Substring(num2, racePage.IndexOf("</font>", num2) - num2);
-        race.OvertakingAttemps.SufferedBlocked = int.Parse(s28);
+        race.OvertakingAttemps.SufferedBlocked = ExtractIntUntil(racePage, num2, "</font>");
         num2 = racePage.IndexOf("<font color=", num2) + 21;
-        string s29 = racePage.Substring(num2, racePage.IndexOf("</font>", num2) - num2);
-        race.OvertakingAttemps.SufferedSuccessful = int.Parse(s29);
+        race.OvertakingAttemps.SufferedSuccessful = ExtractIntUntil(racePage, num2, "</font>");
         num2 = racePage.IndexOf("Financial analysis of the last race");
         int startIndex2 = racePage.IndexOf("Driver race position", num2);
         if (startIndex2 > 0)
         {
           int startIndex3 = racePage.IndexOf("(", startIndex2) + 1;
-          race.Finances.endPosition = int.Parse(racePage.Substring(startIndex3, racePage.IndexOf(")", startIndex3) - startIndex3));
+          race.Finances.endPosition = ExtractIntUntil(racePage, startIndex3, ")");
           int startIndex4 = racePage.IndexOf("$", startIndex3);
-          race.Finances.endPositionMoney = GenericParser.GetMoneyAmount(racePage.Substring(startIndex4, racePage.IndexOf("<", startIndex4) - startIndex4), "endPositionMoney");
+          race.Finances.endPositionMoney = GenericParser.GetMoneyAmount(ExtractUntil(racePage, startIndex4, "<"), "endPositionMoney");
         }
         int startIndex5 = racePage.IndexOf("Driver qualifying position", num2);
         if (startIndex5 > 0)
         {
           int startIndex6 = racePage.IndexOf("(", startIndex5) + 1;
-          race.Finances.qualPosition = int.Parse(racePage.Substring(startIndex6, racePage.IndexOf(")", startIndex6) - startIndex6));
+          race.Finances.qualPosition = ExtractIntUntil(racePage, startIndex6, ")");
           int startIndex7 = racePage.IndexOf("$", startIndex6);
-          race.Finances.qualPositionMoney = GenericParser.GetMoneyAmount(racePage.Substring(startIndex7, racePage.IndexOf("<", startIndex7) - startIndex7), "qualPositionMoney");
+          race.Finances.qualPositionMoney = GenericParser.GetMoneyAmount(ExtractUntil(racePage, startIndex7, "<"), "qualPositionMoney");
         }
         int startIndex8 = racePage.IndexOf("SponsorState money:", num2);
         if (startIndex8 > 0)
         {
           int startIndex9 = racePage.IndexOf("$", startIndex8);
-          race.Finances.sponsorMoney = GenericParser.GetMoneyAmount(racePage.Substring(startIndex9, racePage.IndexOf("<", startIndex9) - startIndex9), "sponsorPositionMoney");
+          race.Finances.sponsorMoney = GenericParser.GetMoneyAmount(ExtractUntil(racePage, startIndex9, "<"), "sponsorPositionMoney");
         }
         int startIndex10 = racePage.IndexOf("Driver salary:", num2);
         if (startIndex10 > 0)
         {
           int startIndex11 = racePage.IndexOf("$", startIndex10);
-          race.Finances.driverSalary = GenericParser.GetMoneyAmount(racePage.Substring(startIndex11, racePage.IndexOf("<", startIndex11) - startIndex11), "driverSalary");
+          race.Finances.driverSalary = GenericParser.GetMoneyAmount(ExtractUntil(racePage, startIndex11, "<"), "driverSalary");
         }
         int startIndex12 = racePage.IndexOf("Staff salary:", num2);
         if (startIndex12 > 0)
         {
           int startIndex13 = racePage.IndexOf("$", startIndex12);
-          race.Finances.staffSalary = GenericParser.GetMoneyAmount(racePage.Substring(startIndex13, racePage.IndexOf("<", startIndex13) - startIndex13), "staffSalary");
+          race.Finances.staffSalary = GenericParser.GetMoneyAmount(ExtractUntil(racePage, startIndex13, "<"), "staffSalary");
         }
         int startIndex14 = racePage.IndexOf("Facility costs:", num2);
         if (startIndex14 > 0)
         {
           int startIndex15 = racePage.IndexOf("$", startIndex14);
-          race.Finances.facilityCost = GenericParser.GetMoneyAmount(racePage.Substring(startIndex15, racePage.IndexOf("<", startIndex15) - startIndex15), "facilityCosts");
+          race.Finances.facilityCost = GenericParser.GetMoneyAmount(ExtractUntil(racePage, startIndex15, "<"), "facilityCosts");
         }
         int startIndex16 = racePage.IndexOf("Tyres contract", num2);
         if (startIndex16 > 0)
         {
           int startIndex17 = racePage.IndexOf("$", startIndex16);
-          race.Finances.tyresContractCost = GenericParser.GetMoneyAmount(racePage.Substring(startIndex17, racePage.IndexOf("<", startIndex17) - startIndex17), "tyresContract");
+          race.Finances.tyresContractCost = GenericParser.GetMoneyAmount(ExtractUntil(racePage, startIndex17, "<"), "tyresContract");
         }
         int startIndex18 = racePage.IndexOf("Total:", num2);
         if (startIndex18 > 0)
         {
           int startIndex19 = racePage.IndexOf("$", startIndex18);
-          race.Finances.total = GenericParser.GetMoneyAmount(racePage.Substring(startIndex19, racePage.IndexOf("<", startIndex19) - startIndex19), "total");
+          race.Finances.total = GenericParser.GetMoneyAmount(ExtractUntil(racePage, startIndex19, "<"), "total");
         }
         int startIndex20 = racePage.IndexOf("Current balance:", num2);
         if (startIndex20 > 0)
         {
           int startIndex21 = racePage.IndexOf("$", startIndex20);
-          race.Finances.currentBalance = GenericParser.GetMoneyAmount(racePage.Substring(startIndex21, racePage.IndexOf("<", startIndex21) - startIndex21), "currentBalance");
+          race.Finances.currentBalance = GenericParser.GetMoneyAmount(ExtractUntil(racePage, startIndex21, "<"), "currentBalance");
         }
         race.CalculateWear(Datas.GetTrack(num3));
         return race;

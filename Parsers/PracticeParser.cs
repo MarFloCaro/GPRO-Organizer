@@ -22,7 +22,7 @@ namespace go.Parsers
       {
         int startIndex1 = 0;
         int startIndex2 = practicePage.IndexOf("laps done&nbsp;") + 15;
-        int num1 = int.Parse(practicePage.Substring(startIndex2, practicePage.IndexOf("/", startIndex2) - startIndex2));
+        int num1 = ExtractIntUntil(practicePage, startIndex2, "/");
         for (int index1 = 0; index1 < 8; ++index1)
         {
           int startIndex3 = practicePage.IndexOf("comments[" + (index1 + 1).ToString() + "]");
@@ -41,7 +41,7 @@ namespace go.Parsers
               }
               else
               {
-                string str1 = practicePage.Substring(startIndex7, practicePage.IndexOf(":", startIndex7) - startIndex7);
+                string str1 = ExtractUntil(practicePage, startIndex7, ":");
                 arrayList.Add((object) str1);
                 startIndex7 = practicePage.IndexOf(">", startIndex7) + 3;
                 int num2 = practicePage.IndexOf("\"", startIndex7);
@@ -59,28 +59,23 @@ namespace go.Parsers
           }
         }
         int startIndex8 = practicePage.IndexOf("TrackDetails.asp", startIndex1) + 20;
-        string s1 = practicePage.Substring(startIndex8, practicePage.IndexOf("\"", startIndex8) - startIndex8);
-        practice.track = int.Parse(s1);
+        practice.track = ExtractIntUntil(practicePage, startIndex8, "\"");
         int startIndex9 = practicePage.IndexOf("Practice / Qualify 1", startIndex8) + 15;
         int startIndex10 = practicePage.IndexOf("alt", startIndex9) + 5;
-        string noget1 = practicePage.Substring(startIndex10, practicePage.IndexOf("\"", startIndex10) - startIndex10);
+        string noget1 = ExtractUntil(practicePage, startIndex10, "\"");
         practice.weather.skies = EnumConvert.String2Skies(noget1);
         int startIndex11 = practicePage.IndexOf("Temp", startIndex10) + 6;
-        string s2 = practicePage.Substring(startIndex11, practicePage.IndexOf("&", startIndex11) - startIndex11);
-        practice.weather.temperature = int.Parse(s2);
+        practice.weather.temperature = ExtractIntUntil(practicePage, startIndex11, "&");
         int startIndex12 = practicePage.IndexOf("Humidity", startIndex11) + 10;
-        string s3 = practicePage.Substring(startIndex12, practicePage.IndexOf("%", startIndex12) - startIndex12);
-        practice.weather.humidity = int.Parse(s3);
+        practice.weather.humidity = ExtractIntUntil(practicePage, startIndex12, "%");
         wf.pracWeather = practice.weather;
         int startIndex13 = practicePage.IndexOf("alt", startIndex12) + 5;
-        string noget2 = practicePage.Substring(startIndex13, practicePage.IndexOf("\"", startIndex13) - startIndex13);
+        string noget2 = ExtractUntil(practicePage, startIndex13, "\"");
         wf.qualWeather.skies = EnumConvert.String2Skies(noget2);
         int startIndex14 = practicePage.IndexOf("Temp", startIndex13) + 6;
-        string s4 = practicePage.Substring(startIndex14, practicePage.IndexOf("&", startIndex14) - startIndex14);
-        wf.qualWeather.temperature = int.Parse(s4);
+        wf.qualWeather.temperature = ExtractIntUntil(practicePage, startIndex14, "&");
         int startIndex15 = practicePage.IndexOf("Humidity", startIndex14) + 10;
-        string s5 = practicePage.Substring(startIndex15, practicePage.IndexOf("%", startIndex15) - startIndex15);
-        wf.qualWeather.humidity = int.Parse(s5);
+        wf.qualWeather.humidity = ExtractIntUntil(practicePage, startIndex15, "%");
         wf.forecast = ForecastParser.ParseForecast(practicePage.Substring(practicePage.IndexOf("Race forecast", startIndex15)));
         int startIndex16 = practicePage.IndexOf("<b>FWing</b>", startIndex15) + 20;
         for (int index = 0; index < num1; ++index)
@@ -115,31 +110,25 @@ namespace go.Parsers
           practice.runs[index].netTime = new TimeSpan(0, 0, minutes3, seconds3, milliseconds3);
           int startIndex24 = practicePage.IndexOf("<td", startIndex23) + 3;
           int startIndex25 = practicePage.IndexOf(">", startIndex24) + 1;
-          string s6 = practicePage.Substring(startIndex25, practicePage.IndexOf("<", startIndex25) - startIndex25);
-          practice.runs[index].setup.fWing = int.Parse(s6);
+          practice.runs[index].setup.fWing = ExtractIntUntil(practicePage, startIndex25, "<");
           int startIndex26 = practicePage.IndexOf("<td", startIndex25) + 3;
           int startIndex27 = practicePage.IndexOf(">", startIndex26) + 1;
-          string s7 = practicePage.Substring(startIndex27, practicePage.IndexOf("<", startIndex27) - startIndex27);
-          practice.runs[index].setup.rWing = int.Parse(s7);
+          practice.runs[index].setup.rWing = ExtractIntUntil(practicePage, startIndex27, "<");
           int startIndex28 = practicePage.IndexOf("<td", startIndex27) + 3;
           int startIndex29 = practicePage.IndexOf(">", startIndex28) + 1;
-          string s8 = practicePage.Substring(startIndex29, practicePage.IndexOf("<", startIndex29) - startIndex29);
-          practice.runs[index].setup.engine = int.Parse(s8);
+          practice.runs[index].setup.engine = ExtractIntUntil(practicePage, startIndex29, "<");
           int startIndex30 = practicePage.IndexOf("<td", startIndex29) + 3;
           int startIndex31 = practicePage.IndexOf(">", startIndex30) + 1;
-          string s9 = practicePage.Substring(startIndex31, practicePage.IndexOf("<", startIndex31) - startIndex31);
-          practice.runs[index].setup.brakes = int.Parse(s9);
+          practice.runs[index].setup.brakes = ExtractIntUntil(practicePage, startIndex31, "<");
           int startIndex32 = practicePage.IndexOf("<td", startIndex31) + 3;
           int startIndex33 = practicePage.IndexOf(">", startIndex32) + 1;
-          string s10 = practicePage.Substring(startIndex33, practicePage.IndexOf("<", startIndex33) - startIndex33);
-          practice.runs[index].setup.gear = int.Parse(s10);
+          practice.runs[index].setup.gear = ExtractIntUntil(practicePage, startIndex33, "<");
           int startIndex34 = practicePage.IndexOf("<td", startIndex33) + 3;
           int startIndex35 = practicePage.IndexOf(">", startIndex34) + 1;
-          string s11 = practicePage.Substring(startIndex35, practicePage.IndexOf("<", startIndex35) - startIndex35);
-          practice.runs[index].setup.susp = int.Parse(s11);
+          practice.runs[index].setup.susp = ExtractIntUntil(practicePage, startIndex35, "<");
           int startIndex36 = practicePage.IndexOf("<td", startIndex35) + 3;
           startIndex16 = practicePage.IndexOf(">", startIndex36) + 1;
-          string noget3 = practicePage.Substring(startIndex16, practicePage.IndexOf("<", startIndex16) - startIndex16);
+          string noget3 = ExtractUntil(practicePage, startIndex16, "<");
           practice.runs[index].setup.tyres = EnumConvert.String2Tyres(noget3);
         }
         int startIndex37 = practicePage.IndexOf("Front wing", startIndex16) + 15;
@@ -148,123 +137,101 @@ namespace go.Parsers
         int startIndex38 = practicePage.IndexOf("align=\"center\"", startIndex37) + 15;
         if (practicePage.Substring(startIndex38, 10).StartsWith("<font"))
           startIndex38 = practicePage.IndexOf(">", startIndex38) + 1;
-        string s12 = practicePage.Substring(startIndex38, practicePage.IndexOf("<", startIndex38) - startIndex38);
-        practice.car.frontWing.level = int.Parse(s12);
+        practice.car.frontWing.level = ExtractIntUntil(practicePage, startIndex38, "<");
         int startIndex39 = practicePage.IndexOf("align=\"center\"", startIndex38) + 15;
         if (practicePage.Substring(startIndex39, 10).StartsWith("<font"))
           startIndex39 = practicePage.IndexOf(">", startIndex39) + 1;
-        string s13 = practicePage.Substring(startIndex39, practicePage.IndexOf("%", startIndex39) - startIndex39);
-        practice.car.frontWing.wear = int.Parse(s13);
+        practice.car.frontWing.wear = ExtractIntUntil(practicePage, startIndex39, "%");
         int startIndex40 = practicePage.IndexOf("Chassis", startIndex39) + 15;
         int startIndex41 = practicePage.IndexOf("align=\"center\"", startIndex40) + 15;
         if (practicePage.Substring(startIndex41, 10).StartsWith("<font"))
           startIndex41 = practicePage.IndexOf(">", startIndex41) + 1;
-        string s14 = practicePage.Substring(startIndex41, practicePage.IndexOf("<", startIndex41) - startIndex41);
-        practice.car.chassis.level = int.Parse(s14);
+        practice.car.chassis.level = ExtractIntUntil(practicePage, startIndex41, "<");
         int startIndex42 = practicePage.IndexOf("align=\"center\"", startIndex41) + 15;
         if (practicePage.Substring(startIndex42, 10).StartsWith("<font"))
           startIndex42 = practicePage.IndexOf(">", startIndex42) + 1;
-        string s15 = practicePage.Substring(startIndex42, practicePage.IndexOf("%", startIndex42) - startIndex42);
-        practice.car.chassis.wear = int.Parse(s15);
+        practice.car.chassis.wear = ExtractIntUntil(practicePage, startIndex42, "%");
         int startIndex43 = practicePage.IndexOf("Rear wing", startIndex42) + 15;
         int startIndex44 = practicePage.IndexOf("align=\"center\"", startIndex43) + 15;
         if (practicePage.Substring(startIndex44, 10).StartsWith("<font"))
           startIndex44 = practicePage.IndexOf(">", startIndex44) + 1;
-        string s16 = practicePage.Substring(startIndex44, practicePage.IndexOf("<", startIndex44) - startIndex44);
-        practice.car.rearWing.level = int.Parse(s16);
+        practice.car.rearWing.level = ExtractIntUntil(practicePage, startIndex44, "<");
         int startIndex45 = practicePage.IndexOf("align=\"center\"", startIndex44) + 15;
         if (practicePage.Substring(startIndex45, 10).StartsWith("<font"))
           startIndex45 = practicePage.IndexOf(">", startIndex45) + 1;
-        string s17 = practicePage.Substring(startIndex45, practicePage.IndexOf("%", startIndex45) - startIndex45);
-        practice.car.rearWing.wear = int.Parse(s17);
+        practice.car.rearWing.wear = ExtractIntUntil(practicePage, startIndex45, "%");
         int startIndex46 = practicePage.IndexOf("Underbody", startIndex45) + 15;
         int startIndex47 = practicePage.IndexOf("align=\"center\"", startIndex46) + 15;
         if (practicePage.Substring(startIndex47, 10).StartsWith("<font"))
           startIndex47 = practicePage.IndexOf(">", startIndex47) + 1;
-        string s18 = practicePage.Substring(startIndex47, practicePage.IndexOf("<", startIndex47) - startIndex47);
-        practice.car.underbody.level = int.Parse(s18);
+        practice.car.underbody.level = ExtractIntUntil(practicePage, startIndex47, "<");
         int startIndex48 = practicePage.IndexOf("align=\"center\"", startIndex47) + 15;
         if (practicePage.Substring(startIndex48, 10).StartsWith("<font"))
           startIndex48 = practicePage.IndexOf(">", startIndex48) + 1;
-        string s19 = practicePage.Substring(startIndex48, practicePage.IndexOf("%", startIndex48) - startIndex48);
-        practice.car.underbody.wear = int.Parse(s19);
+        practice.car.underbody.wear = ExtractIntUntil(practicePage, startIndex48, "%");
         int startIndex49 = practicePage.IndexOf("Engine", startIndex48) + 15;
         int startIndex50 = practicePage.IndexOf("align=\"center\"", startIndex49) + 15;
         if (practicePage.Substring(startIndex50, 10).StartsWith("<font"))
           startIndex50 = practicePage.IndexOf(">", startIndex50) + 1;
-        string s20 = practicePage.Substring(startIndex50, practicePage.IndexOf("<", startIndex50) - startIndex50);
-        practice.car.engine.level = int.Parse(s20);
+        practice.car.engine.level = ExtractIntUntil(practicePage, startIndex50, "<");
         int startIndex51 = practicePage.IndexOf("align=\"center\"", startIndex50) + 15;
         if (practicePage.Substring(startIndex51, 10).StartsWith("<font"))
           startIndex51 = practicePage.IndexOf(">", startIndex51) + 1;
-        string s21 = practicePage.Substring(startIndex51, practicePage.IndexOf("%", startIndex51) - startIndex51);
-        practice.car.engine.wear = int.Parse(s21);
+        practice.car.engine.wear = ExtractIntUntil(practicePage, startIndex51, "%");
         int startIndex52 = practicePage.IndexOf("Sidepods", startIndex51) + 15;
         int startIndex53 = practicePage.IndexOf("align=\"center\"", startIndex52) + 15;
         if (practicePage.Substring(startIndex53, 10).StartsWith("<font"))
           startIndex53 = practicePage.IndexOf(">", startIndex53) + 1;
-        string s22 = practicePage.Substring(startIndex53, practicePage.IndexOf("<", startIndex53) - startIndex53);
-        practice.car.sidepods.level = int.Parse(s22);
+        practice.car.sidepods.level = ExtractIntUntil(practicePage, startIndex53, "<");
         int startIndex54 = practicePage.IndexOf("align=\"center\"", startIndex53) + 15;
         if (practicePage.Substring(startIndex54, 10).StartsWith("<font"))
           startIndex54 = practicePage.IndexOf(">", startIndex54) + 1;
-        string s23 = practicePage.Substring(startIndex54, practicePage.IndexOf("%", startIndex54) - startIndex54);
-        practice.car.sidepods.wear = int.Parse(s23);
+        practice.car.sidepods.wear = ExtractIntUntil(practicePage, startIndex54, "%");
         int startIndex55 = practicePage.IndexOf("Brakes", startIndex54) + 15;
         int startIndex56 = practicePage.IndexOf("align=\"center\"", startIndex55) + 15;
         if (practicePage.Substring(startIndex56, 10).StartsWith("<font"))
           startIndex56 = practicePage.IndexOf(">", startIndex56) + 1;
-        string s24 = practicePage.Substring(startIndex56, practicePage.IndexOf("<", startIndex56) - startIndex56);
-        practice.car.brakes.level = int.Parse(s24);
+        practice.car.brakes.level = ExtractIntUntil(practicePage, startIndex56, "<");
         int startIndex57 = practicePage.IndexOf("align=\"center\"", startIndex56) + 15;
         if (practicePage.Substring(startIndex57, 10).StartsWith("<font"))
           startIndex57 = practicePage.IndexOf(">", startIndex57) + 1;
-        string s25 = practicePage.Substring(startIndex57, practicePage.IndexOf("%", startIndex57) - startIndex57);
-        practice.car.brakes.wear = int.Parse(s25);
+        practice.car.brakes.wear = ExtractIntUntil(practicePage, startIndex57, "%");
         int startIndex58 = practicePage.IndexOf("Cooling", startIndex57) + 15;
         int startIndex59 = practicePage.IndexOf("align=\"center\"", startIndex58) + 15;
         if (practicePage.Substring(startIndex59, 10).StartsWith("<font"))
           startIndex59 = practicePage.IndexOf(">", startIndex59) + 1;
-        string s26 = practicePage.Substring(startIndex59, practicePage.IndexOf("<", startIndex59) - startIndex59);
-        practice.car.cooling.level = int.Parse(s26);
+        practice.car.cooling.level = ExtractIntUntil(practicePage, startIndex59, "<");
         int startIndex60 = practicePage.IndexOf("align=\"center\"", startIndex59) + 15;
         if (practicePage.Substring(startIndex60, 10).StartsWith("<font"))
           startIndex60 = practicePage.IndexOf(">", startIndex60) + 1;
-        string s27 = practicePage.Substring(startIndex60, practicePage.IndexOf("%", startIndex60) - startIndex60);
-        practice.car.cooling.wear = int.Parse(s27);
+        practice.car.cooling.wear = ExtractIntUntil(practicePage, startIndex60, "%");
         int startIndex61 = practicePage.IndexOf("Gear", startIndex60) + 15;
         int startIndex62 = practicePage.IndexOf("align=\"center\"", startIndex61) + 15;
         if (practicePage.Substring(startIndex62, 10).StartsWith("<font"))
           startIndex62 = practicePage.IndexOf(">", startIndex62) + 1;
-        string s28 = practicePage.Substring(startIndex62, practicePage.IndexOf("<", startIndex62) - startIndex62);
-        practice.car.gearBox.level = int.Parse(s28);
+        practice.car.gearBox.level = ExtractIntUntil(practicePage, startIndex62, "<");
         int startIndex63 = practicePage.IndexOf("align=\"center\"", startIndex62) + 15;
         if (practicePage.Substring(startIndex63, 10).StartsWith("<font"))
           startIndex63 = practicePage.IndexOf(">", startIndex63) + 1;
-        string s29 = practicePage.Substring(startIndex63, practicePage.IndexOf("%", startIndex63) - startIndex63);
-        practice.car.gearBox.wear = int.Parse(s29);
+        practice.car.gearBox.wear = ExtractIntUntil(practicePage, startIndex63, "%");
         int startIndex64 = practicePage.IndexOf("Electronics", startIndex63) + 15;
         int startIndex65 = practicePage.IndexOf("align=\"center\"", startIndex64) + 15;
         if (practicePage.Substring(startIndex65, 10).StartsWith("<font"))
           startIndex65 = practicePage.IndexOf(">", startIndex65) + 1;
-        string s30 = practicePage.Substring(startIndex65, practicePage.IndexOf("<", startIndex65) - startIndex65);
-        practice.car.electronics.level = int.Parse(s30);
+        practice.car.electronics.level = ExtractIntUntil(practicePage, startIndex65, "<");
         int startIndex66 = practicePage.IndexOf("align=\"center\"", startIndex65) + 15;
         if (practicePage.Substring(startIndex66, 10).StartsWith("<font"))
           startIndex66 = practicePage.IndexOf(">", startIndex66) + 1;
-        string s31 = practicePage.Substring(startIndex66, practicePage.IndexOf("%", startIndex66) - startIndex66);
-        practice.car.electronics.wear = int.Parse(s31);
+        practice.car.electronics.wear = ExtractIntUntil(practicePage, startIndex66, "%");
         int startIndex67 = practicePage.IndexOf("Suspension", startIndex66) + 15;
         int startIndex68 = practicePage.IndexOf("align=\"center\"", startIndex67) + 15;
         if (practicePage.Substring(startIndex68, 10).StartsWith("<font"))
           startIndex68 = practicePage.IndexOf(">", startIndex68) + 1;
-        string s32 = practicePage.Substring(startIndex68, practicePage.IndexOf("<", startIndex68) - startIndex68);
-        practice.car.suspension.level = int.Parse(s32);
+        practice.car.suspension.level = ExtractIntUntil(practicePage, startIndex68, "<");
         int startIndex69 = practicePage.IndexOf("align=\"center\"", startIndex68) + 15;
         if (practicePage.Substring(startIndex69, 10).StartsWith("<font"))
           startIndex69 = practicePage.IndexOf(">", startIndex69) + 1;
-        string s33 = practicePage.Substring(startIndex69, practicePage.IndexOf("%", startIndex69) - startIndex69);
-        practice.car.suspension.wear = int.Parse(s33);
+        practice.car.suspension.wear = ExtractIntUntil(practicePage, startIndex69, "%");
         return practice;
       }
       catch (Exception ex)

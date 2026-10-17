@@ -29,7 +29,7 @@ namespace go.Parsers
       try
       {
         int startIndex1 = origpage.IndexOf("Date and time");
-        string[] strArray1 = origpage.Substring(startIndex1, origpage.IndexOf("</table>", startIndex1) - startIndex1).Replace("<tr", "\u00BD").Split('\u00BD');
+        string[] strArray1 = ExtractUntil(origpage, startIndex1, "</table>").Replace("<tr", "\u00BD").Split('\u00BD');
         for (int index1 = 1; index1 < strArray1.Length; ++index1)
         {
           if (!strArray1[index1].Contains("<th"))
@@ -111,14 +111,14 @@ namespace go.Parsers
         if (num == -1)
           num = noget.IndexOf("rd");
         day = int.Parse(noget.Substring(4, num - 4));
-        year = int.Parse(noget.Substring(num + 2, noget.IndexOf(",", num + 2) - num - 2));
+        year = ExtractIntUntil(noget, num + 2, ",");
         startIndex2 = noget.IndexOf(",", num + 2) + 2;
       }
-      int hour = int.Parse(noget.Substring(startIndex2, noget.IndexOf(":", startIndex2) - startIndex2));
+      int hour = ExtractIntUntil(noget, startIndex2, ":");
       int startIndex3 = noget.IndexOf(":", startIndex2) + 1;
-      int minute = int.Parse(noget.Substring(startIndex3, noget.IndexOf(":", startIndex3) - startIndex3));
+      int minute = ExtractIntUntil(noget, startIndex3, ":");
       int startIndex4 = noget.IndexOf(":", startIndex3) + 1;
-      int second = int.Parse(noget.Substring(startIndex4, noget.IndexOf("<", startIndex4) - startIndex4));
+      int second = ExtractIntUntil(noget, startIndex4, "<");
       return new DateTime(year, month, day, hour, minute, second);
     }
 
