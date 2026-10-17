@@ -102,7 +102,7 @@ namespace go.Parsers
       }
       else
       {
-        month = FinanceParser.GetMonth(noget.Substring(0, 3));
+        month = GenericParser.GetMonth(noget.Substring(0, 3));
         int num = noget.IndexOf("th");
         if (num == -1)
           num = noget.IndexOf("st");
@@ -122,52 +122,5 @@ namespace go.Parsers
       return new DateTime(year, month, day, hour, minute, second);
     }
 
-    private static int GetMonth(string month)
-    {
-      int month1;
-      switch (month)
-      {
-        case "Apr":
-          month1 = 4;
-          break;
-        case "Aug":
-          month1 = 8;
-          break;
-        case "Dec":
-          month1 = 12;
-          break;
-        case "Feb":
-          month1 = 2;
-          break;
-        case "Jan":
-          month1 = 1;
-          break;
-        case "Jul":
-          month1 = 7;
-          break;
-        case "Jun":
-          month1 = 6;
-          break;
-        case "Mar":
-          month1 = 3;
-          break;
-        case "May":
-          month1 = 5;
-          break;
-        case "Nov":
-          month1 = 11;
-          break;
-        case "Oct":
-          month1 = 10;
-          break;
-        case "Sep":
-          month1 = 9;
-          break;
-        default:
-          month1 = 0;
-          break;
-      }
-      return month1;
-    }
   }
 }

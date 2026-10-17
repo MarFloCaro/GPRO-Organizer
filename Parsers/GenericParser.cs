@@ -49,6 +49,52 @@ namespace go.Parsers
       return !flag ? num2 : -num2;
     }
 
+    public static int GetMoneyAmount(string noget, string error)
+    {
+      int num1 = noget.IndexOf("$") + 1;
+      bool flag1 = false;
+      if (noget[num1] == '-')
+      {
+        flag1 = true;
+        ++num1;
+      }
+      bool flag2 = true;
+      if (noget.IndexOf("<", num1) > 0)
+        flag2 = false;
+      noget = noget.Substring(num1, (flag2 ? noget.Length : noget.IndexOf("<", num1)) - num1);
+      int num2;
+      try
+      {
+        num2 = int.Parse(noget, NumberStyles.AllowThousands, (IFormatProvider) new CultureInfo("da-DK"));
+      }
+      catch
+      {
+        Errlog.AddToLog("Could not parse int \"" + noget + " as " + error);
+        throw;
+      }
+      return !flag1 ? num2 : -num2;
+    }
+
+    public static int GetMonth(string month)
+    {
+      switch (month)
+      {
+        case "Jan": return 1;
+        case "Feb": return 2;
+        case "Mar": return 3;
+        case "Apr": return 4;
+        case "May": return 5;
+        case "Jun": return 6;
+        case "Jul": return 7;
+        case "Aug": return 8;
+        case "Sep": return 9;
+        case "Oct": return 10;
+        case "Nov": return 11;
+        case "Dec": return 12;
+        default: return 0;
+      }
+    }
+
     public static TimeSpan ParseTimeSpan(string noget) => EnumConvert.String2Time(noget);
   }
 }

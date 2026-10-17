@@ -337,7 +337,7 @@ label_17:
           int startIndex3 = racePage.IndexOf("(", startIndex2) + 1;
           race.Finances.endPosition = int.Parse(racePage.Substring(startIndex3, racePage.IndexOf(")", startIndex3) - startIndex3));
           int startIndex4 = racePage.IndexOf("$", startIndex3);
-          race.Finances.endPositionMoney = RaceAnalysisParser.GetMoneyAmount(racePage.Substring(startIndex4, racePage.IndexOf("<", startIndex4) - startIndex4), "endPositionMoney");
+          race.Finances.endPositionMoney = GenericParser.GetMoneyAmount(racePage.Substring(startIndex4, racePage.IndexOf("<", startIndex4) - startIndex4), "endPositionMoney");
         }
         int startIndex5 = racePage.IndexOf("Driver qualifying position", num2);
         if (startIndex5 > 0)
@@ -345,49 +345,49 @@ label_17:
           int startIndex6 = racePage.IndexOf("(", startIndex5) + 1;
           race.Finances.qualPosition = int.Parse(racePage.Substring(startIndex6, racePage.IndexOf(")", startIndex6) - startIndex6));
           int startIndex7 = racePage.IndexOf("$", startIndex6);
-          race.Finances.qualPositionMoney = RaceAnalysisParser.GetMoneyAmount(racePage.Substring(startIndex7, racePage.IndexOf("<", startIndex7) - startIndex7), "qualPositionMoney");
+          race.Finances.qualPositionMoney = GenericParser.GetMoneyAmount(racePage.Substring(startIndex7, racePage.IndexOf("<", startIndex7) - startIndex7), "qualPositionMoney");
         }
         int startIndex8 = racePage.IndexOf("SponsorState money:", num2);
         if (startIndex8 > 0)
         {
           int startIndex9 = racePage.IndexOf("$", startIndex8);
-          race.Finances.sponsorMoney = RaceAnalysisParser.GetMoneyAmount(racePage.Substring(startIndex9, racePage.IndexOf("<", startIndex9) - startIndex9), "sponsorPositionMoney");
+          race.Finances.sponsorMoney = GenericParser.GetMoneyAmount(racePage.Substring(startIndex9, racePage.IndexOf("<", startIndex9) - startIndex9), "sponsorPositionMoney");
         }
         int startIndex10 = racePage.IndexOf("Driver salary:", num2);
         if (startIndex10 > 0)
         {
           int startIndex11 = racePage.IndexOf("$", startIndex10);
-          race.Finances.driverSalary = RaceAnalysisParser.GetMoneyAmount(racePage.Substring(startIndex11, racePage.IndexOf("<", startIndex11) - startIndex11), "driverSalary");
+          race.Finances.driverSalary = GenericParser.GetMoneyAmount(racePage.Substring(startIndex11, racePage.IndexOf("<", startIndex11) - startIndex11), "driverSalary");
         }
         int startIndex12 = racePage.IndexOf("Staff salary:", num2);
         if (startIndex12 > 0)
         {
           int startIndex13 = racePage.IndexOf("$", startIndex12);
-          race.Finances.staffSalary = RaceAnalysisParser.GetMoneyAmount(racePage.Substring(startIndex13, racePage.IndexOf("<", startIndex13) - startIndex13), "staffSalary");
+          race.Finances.staffSalary = GenericParser.GetMoneyAmount(racePage.Substring(startIndex13, racePage.IndexOf("<", startIndex13) - startIndex13), "staffSalary");
         }
         int startIndex14 = racePage.IndexOf("Facility costs:", num2);
         if (startIndex14 > 0)
         {
           int startIndex15 = racePage.IndexOf("$", startIndex14);
-          race.Finances.facilityCost = RaceAnalysisParser.GetMoneyAmount(racePage.Substring(startIndex15, racePage.IndexOf("<", startIndex15) - startIndex15), "facilityCosts");
+          race.Finances.facilityCost = GenericParser.GetMoneyAmount(racePage.Substring(startIndex15, racePage.IndexOf("<", startIndex15) - startIndex15), "facilityCosts");
         }
         int startIndex16 = racePage.IndexOf("Tyres contract", num2);
         if (startIndex16 > 0)
         {
           int startIndex17 = racePage.IndexOf("$", startIndex16);
-          race.Finances.tyresContractCost = RaceAnalysisParser.GetMoneyAmount(racePage.Substring(startIndex17, racePage.IndexOf("<", startIndex17) - startIndex17), "tyresContract");
+          race.Finances.tyresContractCost = GenericParser.GetMoneyAmount(racePage.Substring(startIndex17, racePage.IndexOf("<", startIndex17) - startIndex17), "tyresContract");
         }
         int startIndex18 = racePage.IndexOf("Total:", num2);
         if (startIndex18 > 0)
         {
           int startIndex19 = racePage.IndexOf("$", startIndex18);
-          race.Finances.total = RaceAnalysisParser.GetMoneyAmount(racePage.Substring(startIndex19, racePage.IndexOf("<", startIndex19) - startIndex19), "total");
+          race.Finances.total = GenericParser.GetMoneyAmount(racePage.Substring(startIndex19, racePage.IndexOf("<", startIndex19) - startIndex19), "total");
         }
         int startIndex20 = racePage.IndexOf("Current balance:", num2);
         if (startIndex20 > 0)
         {
           int startIndex21 = racePage.IndexOf("$", startIndex20);
-          race.Finances.currentBalance = RaceAnalysisParser.GetMoneyAmount(racePage.Substring(startIndex21, racePage.IndexOf("<", startIndex21) - startIndex21), "currentBalance");
+          race.Finances.currentBalance = GenericParser.GetMoneyAmount(racePage.Substring(startIndex21, racePage.IndexOf("<", startIndex21) - startIndex21), "currentBalance");
         }
         race.CalculateWear(Datas.GetTrack(num3));
         return race;
@@ -406,91 +406,5 @@ label_17:
       }
     }
 
-    private static int GetMoneyAmount(string noget, string error)
-    {
-      int num1 = noget.IndexOf("$") + 1;
-      bool flag1 = false;
-      if (noget[num1] == '-')
-      {
-        flag1 = true;
-        ++num1;
-      }
-      bool flag2 = true;
-      if (noget.IndexOf("<", num1) > 0)
-        flag2 = false;
-      noget = noget.Substring(num1, (flag2 ? noget.Length : noget.IndexOf("<", num1)) - num1);
-      int num2;
-      try
-      {
-        num2 = int.Parse(noget, NumberStyles.AllowThousands, (IFormatProvider) new CultureInfo("da-DK"));
-      }
-      catch
-      {
-        Errlog.AddToLog("Could not parse int \"" + noget + " as " + error);
-        throw;
-      }
-      return !flag1 ? num2 : -num2;
-    }
-
-    private static int GetMonth(string month)
-    {
-      int month1;
-      switch (month)
-      {
-        case "Apr":
-          month1 = 4;
-          break;
-        case "Aug":
-          month1 = 8;
-          break;
-        case "Dec":
-          month1 = 12;
-          break;
-        case "Feb":
-          month1 = 2;
-          break;
-        case "Jan":
-          month1 = 1;
-          break;
-        case "Jul":
-          month1 = 7;
-          break;
-        case "Jun":
-          month1 = 6;
-          break;
-        case "Mar":
-          month1 = 3;
-          break;
-        case "May":
-          month1 = 5;
-          break;
-        case "Nov":
-          month1 = 11;
-          break;
-        case "Oct":
-          month1 = 10;
-          break;
-        case "Sep":
-          month1 = 9;
-          break;
-        default:
-          month1 = 0;
-          break;
-      }
-      return month1;
-    }
-
-    private static int GetDay(string noget)
-    {
-      int day = int.Parse(noget.Substring(0, 1));
-      try
-      {
-        return int.Parse(noget.Substring(0, 2));
-      }
-      catch
-      {
-        return day;
-      }
-    }
   }
 }
