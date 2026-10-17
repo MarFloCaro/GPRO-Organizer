@@ -4592,38 +4592,39 @@ namespace go.Forms
             if (System.IO.File.Exists(filename))
                 System.IO.File.Copy(filename, filename.Replace(".dat", ".bak"), true);
             string tempFileName = Path.GetTempFileName();
-            Stream serializationStream = (Stream)new FileStream(tempFileName, FileMode.Create, FileAccess.Write, FileShare.None);
-            binaryFormatter.Serialize(serializationStream, (object)13);
-            binaryFormatter.Serialize(serializationStream, (object)20);
-            binaryFormatter.Serialize(serializationStream, (object)Datas.Communications.managerName);
-            binaryFormatter.Serialize(serializationStream, (object)Datas.Communications.teamName);
-            binaryFormatter.Serialize(serializationStream, (object)Datas.Date);
-            binaryFormatter.Serialize(serializationStream, (object)2);
-            binaryFormatter.Serialize(serializationStream, (object)Datas.Car);
-            binaryFormatter.Serialize(serializationStream, (object)5);
-            binaryFormatter.Serialize(serializationStream, (object)Datas.Driver);
-            binaryFormatter.Serialize(serializationStream, (object)2);
-            binaryFormatter.Serialize(serializationStream, (object)Datas.CarHistory);
-            binaryFormatter.Serialize(serializationStream, (object)4);
-            binaryFormatter.Serialize(serializationStream, (object)Datas.OldDrivers);
-            binaryFormatter.Serialize(serializationStream, (object)21);
-            binaryFormatter.Serialize(serializationStream, (object)Datas.Seasons);
-            binaryFormatter.Serialize(serializationStream, (object)1);
-            binaryFormatter.Serialize(serializationStream, (object)Datas.TrackNotes);
-            binaryFormatter.Serialize(serializationStream, (object)1);
-            binaryFormatter.Serialize(serializationStream, (object)Datas.FinanceHistory);
-            binaryFormatter.Serialize(serializationStream, (object)1);
-            binaryFormatter.Serialize(serializationStream, (object)Datas.Staff);
-            binaryFormatter.Serialize(serializationStream, (object)1);
-            binaryFormatter.Serialize(serializationStream, (object)Datas.StaffHistory);
-            binaryFormatter.Serialize(serializationStream, (object)1);
-            binaryFormatter.Serialize(serializationStream, (object)Datas.TechnicalDirector);
-            binaryFormatter.Serialize(serializationStream, (object)1);
-            binaryFormatter.Serialize(serializationStream, (object)Datas.OldTechnicalDirectors);
-            binaryFormatter.Serialize(serializationStream, (object)1);
-            binaryFormatter.Serialize(serializationStream, (object)Datas.Manager);
-            binaryFormatter.Serialize(serializationStream, (object)Datas.WarnWrongTyres);
-            serializationStream.Close();
+            using (Stream serializationStream = (Stream)new FileStream(tempFileName, FileMode.Create, FileAccess.Write, FileShare.None))
+            {
+                binaryFormatter.Serialize(serializationStream, (object)13);
+                binaryFormatter.Serialize(serializationStream, (object)20);
+                binaryFormatter.Serialize(serializationStream, (object)Datas.Communications.managerName);
+                binaryFormatter.Serialize(serializationStream, (object)Datas.Communications.teamName);
+                binaryFormatter.Serialize(serializationStream, (object)Datas.Date);
+                binaryFormatter.Serialize(serializationStream, (object)2);
+                binaryFormatter.Serialize(serializationStream, (object)Datas.Car);
+                binaryFormatter.Serialize(serializationStream, (object)5);
+                binaryFormatter.Serialize(serializationStream, (object)Datas.Driver);
+                binaryFormatter.Serialize(serializationStream, (object)2);
+                binaryFormatter.Serialize(serializationStream, (object)Datas.CarHistory);
+                binaryFormatter.Serialize(serializationStream, (object)4);
+                binaryFormatter.Serialize(serializationStream, (object)Datas.OldDrivers);
+                binaryFormatter.Serialize(serializationStream, (object)21);
+                binaryFormatter.Serialize(serializationStream, (object)Datas.Seasons);
+                binaryFormatter.Serialize(serializationStream, (object)1);
+                binaryFormatter.Serialize(serializationStream, (object)Datas.TrackNotes);
+                binaryFormatter.Serialize(serializationStream, (object)1);
+                binaryFormatter.Serialize(serializationStream, (object)Datas.FinanceHistory);
+                binaryFormatter.Serialize(serializationStream, (object)1);
+                binaryFormatter.Serialize(serializationStream, (object)Datas.Staff);
+                binaryFormatter.Serialize(serializationStream, (object)1);
+                binaryFormatter.Serialize(serializationStream, (object)Datas.StaffHistory);
+                binaryFormatter.Serialize(serializationStream, (object)1);
+                binaryFormatter.Serialize(serializationStream, (object)Datas.TechnicalDirector);
+                binaryFormatter.Serialize(serializationStream, (object)1);
+                binaryFormatter.Serialize(serializationStream, (object)Datas.OldTechnicalDirectors);
+                binaryFormatter.Serialize(serializationStream, (object)1);
+                binaryFormatter.Serialize(serializationStream, (object)Datas.Manager);
+                binaryFormatter.Serialize(serializationStream, (object)Datas.WarnWrongTyres);
+            }
             System.IO.File.Copy(tempFileName, filename, true);
             System.IO.File.Delete(tempFileName);
             this.statusBarPanel3.Text = "data saved";
@@ -4640,10 +4641,11 @@ namespace go.Forms
                 {
                     Binder = (SerializationBinder) new TypeBinder()
                 };
-                Stream serializationStream =
-                    (Stream) new FileStream("tracks.dat", FileMode.Open, FileAccess.Read, FileShare.Read);
-                Datas.Tracks = (Track[]) binaryFormatter.Deserialize(serializationStream);
-                serializationStream.Close();
+                using (Stream serializationStream =
+                    (Stream) new FileStream("tracks.dat", FileMode.Open, FileAccess.Read, FileShare.Read))
+                {
+                    Datas.Tracks = (Track[]) binaryFormatter.Deserialize(serializationStream);
+                }
             }
             catch (FileNotFoundException e)
             {
@@ -4886,7 +4888,6 @@ namespace go.Forms
                             break;
                     }
                     Datas.INDEX_CURRENTSEASON = Datas.Seasons.Count - 1;
-                    goFile.Close();
                     if (num2 < 2)
                     {
                         Season20 season20 = Datas.Seasons.FirstOrDefault<Season20>((Func<Season20, bool>)(season => season.Season == 3));
@@ -5337,6 +5338,10 @@ namespace go.Forms
                 {
                     int num = (int)MessageBox.Show("There has been an unidentified error while reading your go.dat file.\nIt can be found at " + (Datas.KeepDataWithApp ? "the program location" : this.GetDefaultFileName()) + " If you save any data, your old data will be lost. Please make a backup of your data file before proceeding \nand contact gpro.organizer@gmail.com for help", "Critical error during startup", MessageBoxButtons.OK, MessageBoxIcon.Hand);
                     Errlog.AddToLog("LoadData: " + ex.Message);
+                }
+                finally
+                {
+                    goFile.Close();
                 }
             }
 
