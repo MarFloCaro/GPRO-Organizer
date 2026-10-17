@@ -11,8 +11,6 @@ namespace go.Forms
 {
     public class Logon : Form
     {
-        private static bool _isLoginSuccessful;
-
         public TextBox boxUsername;
         public TextBox boxPassword;
 

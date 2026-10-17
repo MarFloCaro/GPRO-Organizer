@@ -6125,7 +6125,7 @@ label_10:
                     {
                         listViewItem.SubItems.Add(Datas.Tracks[Datas.Seasons[Datas.INDEX_CURRENTSEASON].Events[index].Trackid - 1].name);
                     }
-                    catch (IndexOutOfRangeException ex)
+                    catch (IndexOutOfRangeException)
                     {
                         int num = (int)MessageBox.Show((IWin32Window)this, "One of the tracks for this season is unknown to GO \n You must update the tracks using the Tools -> Update tracks menu \n If you are running Vista it may be necessary to run GO as administrator", "Error", MessageBoxButtons.OK, MessageBoxIcon.Hand);
                         break;
@@ -7403,7 +7403,7 @@ label_10:
                 this.notifyIconGO.Visible = true;
                 this.Hide();
             }
-            catch (NullReferenceException ex)
+            catch (NullReferenceException)
             {
             }
         }

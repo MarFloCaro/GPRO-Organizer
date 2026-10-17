@@ -31,7 +31,7 @@ namespace go.Forms
     private Button button1;
     private ContextMenu contextMenu1;
     private MenuItem menuItemExportToCSV;
-    private int INDEX_CHASSIS;
+    private int INDEX_CHASSIS = 0;
     private int INDEX_ENGINE = 1;
     private int INDEX_FRONTWING = 2;
     private int INDEX_REARWING = 3;

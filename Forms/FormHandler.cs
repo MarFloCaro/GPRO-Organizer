@@ -407,24 +407,24 @@ namespace go.Forms
       {
         return (Stream) new FileStream(this.GetFileName(), FileMode.Open, FileAccess.Read, FileShare.Read);
       }
-      catch (FileNotFoundException ex1)
+      catch (FileNotFoundException)
       {
         try
         {
           return (Stream) new FileStream("go.ini", FileMode.Open, FileAccess.Read, FileShare.Read);
         }
-        catch (FileNotFoundException ex2)
+        catch (FileNotFoundException)
         {
           return (Stream) null;
         }
       }
-      catch (DirectoryNotFoundException ex3)
+      catch (DirectoryNotFoundException)
       {
         try
         {
           return (Stream) new FileStream("go.ini", FileMode.Open, FileAccess.Read, FileShare.Read);
         }
-        catch (FileNotFoundException ex4)
+        catch (FileNotFoundException)
         {
           return (Stream) null;
         }
