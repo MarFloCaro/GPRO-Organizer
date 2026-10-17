@@ -186,7 +186,7 @@ namespace go.Forms
         {
             //Datas.Communications.rememberPassword = false;
             RegistryKey subKey1 = Registry.CurrentUser.CreateSubKey("Software\\go");
-            Datas.SettingsUsername = (string)subKey1.GetValue("Username");
+            Datas.SettingsUsername = (subKey1.GetValue("Username") as string) ?? "";
             string cipherText = (string)subKey1.GetValue("Password");
             if (cipherText != null)
             {
@@ -203,7 +203,7 @@ namespace go.Forms
                     }
                 }
             }
-            if ((string)subKey1.GetValue("AutoCheck") == "Yes")
+            if ((subKey1.GetValue("AutoCheck") as string) == "Yes")
             {
                 Datas.AutoCheck = true;
                 //this.CheckVersion();
