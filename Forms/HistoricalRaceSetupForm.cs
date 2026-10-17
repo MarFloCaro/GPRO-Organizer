@@ -187,7 +187,7 @@ namespace go.Forms
                       listViewItem.SubItems.Add(strat.setup.susp.ToString());
                       continue;
                     case ColumnInfo.RaceSetupTyreType:
-                      listViewItem.SubItems.Add(EnumToString.Enum2String(strat.startTyres));
+                      listViewItem.SubItems.Add(EnumConvert.Enum2String(strat.startTyres));
                       continue;
                     case ColumnInfo.RaceSetupWeatherMinTemp:
                       int num1 = Math.Min(Math.Min(Math.Min(forecast.minTemp[0], forecast.minTemp[1]), forecast.minTemp[2]), forecast.minTemp[3]);

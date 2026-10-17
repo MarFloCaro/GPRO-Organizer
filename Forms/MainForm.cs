@@ -6195,9 +6195,9 @@ label_10:
                 {
           financeItem.Date.ToString(),
           financeItem.Description,
-          EnumToString.Wage2String(financeItem.BalanceBefore),
-          EnumToString.Wage2String(financeItem.Amount),
-          EnumToString.Wage2String(financeItem.BalanceAfter)
+          EnumConvert.Wage2String(financeItem.BalanceBefore),
+          EnumConvert.Wage2String(financeItem.Amount),
+          EnumConvert.Wage2String(financeItem.BalanceAfter)
                 }));
             }
         }
@@ -6389,7 +6389,7 @@ label_10:
             this.textBoxEnergy.Text = Datas.Driver.energy.ToString();
             this.textBoxWeight.Text = Datas.Driver.weight.ToString();
             this.textBoxAge.Text = Datas.Driver.age.ToString();
-            this.textBoxSalary.Text = EnumToString.Wage2String(Datas.Driver.salary);
+            this.textBoxSalary.Text = EnumConvert.Wage2String(Datas.Driver.salary);
             this.textBoxContract.Text = Datas.Driver.racesLeftOfContract.ToString();
             this.FavoriteTracksView.Items.Clear();
             foreach (int favoriteTrack in Datas.Driver.favoriteTracks)
@@ -6489,7 +6489,7 @@ label_10:
             this.textBoxTDNumGps.Text = Datas.TechnicalDirector.numberOfGps.ToString();
             this.textBoxTDOverall.Text = Datas.TechnicalDirector.overall.ToString();
             this.textBoxTDPitCoordination.Text = Datas.TechnicalDirector.pitCoordination.ToString();
-            this.textBoxTDSalary.Text = EnumToString.Wage2String(Datas.TechnicalDirector.salary);
+            this.textBoxTDSalary.Text = EnumConvert.Wage2String(Datas.TechnicalDirector.salary);
             this.textBoxTDTrophies.Text = Datas.TechnicalDirector.trophies.ToString();
             this.textBoxTDWins.Text = Datas.TechnicalDirector.wins.ToString();
             if (Datas.TechnicalDirector.history.historyList.Count < 2)
@@ -6586,26 +6586,26 @@ label_10:
                 this.listViewTesting.Items.Add(new ListViewItem((index + 1).ToString())
                 {
                     SubItems = {
-            EnumToString.Time2String(test.runs[index].meanTime, true),
-            EnumToString.Time2String(test.runs[index].bestTime, true),
+            EnumConvert.Time2String(test.runs[index].meanTime, true),
+            EnumConvert.Time2String(test.runs[index].bestTime, true),
             test.runs[index].lapLimit.ToString(),
             test.runs[index].lapsDone.ToString(),
             test.runs[index].fuelStart.ToString(),
             test.runs[index].tyresCondition.ToString() + "%",
             test.runs[index].fuelLeft.ToString(),
-            EnumToString.Enum2String(test.runs[index].priority),
+            EnumConvert.Enum2String(test.runs[index].priority),
             test.runs[index].setup.fWing.ToString(),
             test.runs[index].setup.rWing.ToString(),
             test.runs[index].setup.engine.ToString(),
             test.runs[index].setup.brakes.ToString(),
             test.runs[index].setup.gear.ToString(),
             test.runs[index].setup.susp.ToString(),
-            EnumToString.Enum2String(test.runs[index].setup.tyres)
+            EnumConvert.Enum2String(test.runs[index].setup.tyres)
           }
                 });
             this.testTemp.Text = test.weather.temperature.ToString();
             this.testHumidity.Text = test.weather.humidity.ToString();
-            this.testWeather.Text = EnumToString.Enum2String(test.weather.skies);
+            this.testWeather.Text = EnumConvert.Enum2String(test.weather.skies);
         }
 
         private void FillSponsorTab(SponsorState sponsor)
@@ -6647,7 +6647,7 @@ label_10:
                             sponsor.negotiations[index].amountPerRace.ToString(),
                             sponsor.negotiations[index].duration.ToString(),
                             sponsor.negotiations[index].progress.ToString() + "%",
-                            EnumToString.Enum2String(sponsor.negotiations[index].priority)
+                            EnumConvert.Enum2String(sponsor.negotiations[index].priority)
                         }
                     });
             }
@@ -6667,9 +6667,9 @@ label_10:
             this.textBoxBra.Text = strat.setup.brakes.ToString();
             this.textBoxGear.Text = strat.setup.gear.ToString();
             this.textBoxSusp.Text = strat.setup.susp.ToString();
-            this.textBoxTyresStart.Text = EnumToString.Enum2String(strat.startTyres);
-            this.textBoxTyresRain.Text = EnumToString.Enum2String(strat.rainTyres);
-            this.textBoxTyresDry.Text = EnumToString.Enum2String(strat.dryTyres);
+            this.textBoxTyresStart.Text = EnumConvert.Enum2String(strat.startTyres);
+            this.textBoxTyresRain.Text = EnumConvert.Enum2String(strat.rainTyres);
+            this.textBoxTyresDry.Text = EnumConvert.Enum2String(strat.dryTyres);
             this.textBoxWaitRain.Text = strat.pitAfterRain.ToString();
             if (strat.pitAfterRain == 1)
                 this.labelWaitRain.Text = "lap";
@@ -6687,7 +6687,7 @@ label_10:
             this.textBoxPitIfSolvableProblem.Text = strat.pitIfSolvableProblem ? "Yes" : "No";
             this.textBoxPitLimit.Text = strat.pitLapLimit.ToString();
             this.checkBoxRefuel.Checked = strat.dontrefuelOnTechnicalProblems;
-            this.textBoxStartStrategy.Text = EnumToString.Enum2String(strat.startStrategy);
+            this.textBoxStartStrategy.Text = EnumConvert.Enum2String(strat.startStrategy);
         }
 
         private void FillWeatherTab(RaceWeather wf)
@@ -6696,10 +6696,10 @@ label_10:
                 return;
             this.textBoxPracT.Text = wf.pracWeather.temperature.ToString();
             this.textBoxPracH.Text = wf.pracWeather.humidity.ToString();
-            this.textBoxPracW.Text = EnumToString.Enum2String(wf.pracWeather.skies);
+            this.textBoxPracW.Text = EnumConvert.Enum2String(wf.pracWeather.skies);
             this.textBoxQualT.Text = wf.qualWeather.temperature.ToString();
             this.textBoxQualH.Text = wf.qualWeather.humidity.ToString();
-            this.textBoxQualW.Text = EnumToString.Enum2String(wf.qualWeather.skies);
+            this.textBoxQualW.Text = EnumConvert.Enum2String(wf.qualWeather.skies);
             this.textBoxForecast1t.Text = wf.forecast.minTemp[0].ToString() + "° - " + wf.forecast.maxTemp[0].ToString() + "°";
             this.textBoxForecast1h.Text = wf.forecast.minHum[0].ToString() + " - " + wf.forecast.maxHum[0].ToString();
             this.textBoxForecast1r.Text = wf.forecast.minRain[0].ToString() + "%";
@@ -6738,7 +6738,7 @@ label_10:
             this.listViewQualify1.Items.Clear();
             this.listViewQualify2.Items.Clear();
             if (q1.time > TimeSpan.Zero)
-                this.listViewQualify1.Items.Add(new ListViewItem(EnumToString.Time2String(q1.time, true))
+                this.listViewQualify1.Items.Add(new ListViewItem(EnumConvert.Time2String(q1.time, true))
                 {
                     SubItems = {
             q1.setup.fWing.ToString(),
@@ -6747,13 +6747,13 @@ label_10:
             q1.setup.brakes.ToString(),
             q1.setup.gear.ToString(),
             q1.setup.susp.ToString(),
-            EnumToString.Enum2String(q1.setup.tyres),
-            EnumToString.Enum2String(q1.risk)
+            EnumConvert.Enum2String(q1.setup.tyres),
+            EnumConvert.Enum2String(q1.risk)
           }
                 });
             if (!(q2.time > TimeSpan.Zero))
                 return;
-            ListViewItem listViewItem = new ListViewItem(EnumToString.Time2String(q2.time, true));
+            ListViewItem listViewItem = new ListViewItem(EnumConvert.Time2String(q2.time, true));
             listViewItem.SubItems.Add(q2.setup.fWing.ToString());
             listViewItem.SubItems.Add(q2.setup.rWing.ToString());
             listViewItem.SubItems.Add(q2.setup.engine.ToString());
@@ -6764,8 +6764,8 @@ label_10:
                 listViewItem.SubItems.Add("Unknown");
             else
                 listViewItem.SubItems.Add(q2.fuel.ToString());
-            listViewItem.SubItems.Add(EnumToString.Enum2String(q2.setup.tyres));
-            listViewItem.SubItems.Add(EnumToString.Enum2String(q2.risk));
+            listViewItem.SubItems.Add(EnumConvert.Enum2String(q2.setup.tyres));
+            listViewItem.SubItems.Add(EnumConvert.Enum2String(q2.risk));
             this.listViewQualify2.Items.Add(listViewItem);
         }
 
@@ -6855,19 +6855,19 @@ label_10:
                     this.listViewPractice.Items.Add(new ListViewItem((index + 1).ToString())
                     {
                         SubItems = {
-              EnumToString.Time2String(prac.runs[index].lapTime, true),
-              EnumToString.Time2String(prac.runs[index].driverMistake, true),
-              EnumToString.Time2String(prac.runs[index].netTime, true),
+              EnumConvert.Time2String(prac.runs[index].lapTime, true),
+              EnumConvert.Time2String(prac.runs[index].driverMistake, true),
+              EnumConvert.Time2String(prac.runs[index].netTime, true),
               prac.runs[index].setup.fWing.ToString(),
               prac.runs[index].setup.rWing.ToString(),
               prac.runs[index].setup.engine.ToString(),
               prac.runs[index].setup.brakes.ToString(),
               prac.runs[index].setup.gear.ToString(),
               prac.runs[index].setup.susp.ToString(),
-              EnumToString.Enum2String(prac.runs[index].setup.tyres)
+              EnumConvert.Enum2String(prac.runs[index].setup.tyres)
             }
                     });
-                this.textBoxPracWeather.Text = EnumToString.Enum2String(prac.weather.skies);
+                this.textBoxPracWeather.Text = EnumConvert.Enum2String(prac.weather.skies);
                 this.textBoxPracTemp.Text = prac.weather.temperature.ToString();
                 this.textBoxPracHum.Text = prac.weather.humidity.ToString();
                 Datas.OkToFillPractice = true;
@@ -6890,8 +6890,8 @@ label_10:
             this.textBoxStaffEngineering.Text = newStaff.engineeringWorkshop.ToString();
             this.textBoxStaffAlloy.Text = newStaff.alloyAndChemicalLab.ToString();
             this.textBoxStaffCommercial.Text = newStaff.commercial.ToString();
-            this.textBoxStaffSalary.Text = EnumToString.Wage2String(newStaff.salary);
-            this.textBoxStaffFacilities.Text = EnumToString.Wage2String(newStaff.maintenance);
+            this.textBoxStaffSalary.Text = EnumConvert.Wage2String(newStaff.salary);
+            this.textBoxStaffFacilities.Text = EnumConvert.Wage2String(newStaff.maintenance);
             this.ColorTextBox(oldStaff.overall, newStaff.overall, ref this.textBoxStaffOverall, ref this.toolTipStaffOverall);
             this.ColorTextBox(oldStaff.experience, newStaff.experience, ref this.textBoxStaffExperience, ref this.toolTipStaffExperience);
             this.ColorTextBox(oldStaff.motivation, newStaff.motivation, ref this.textBoxStaffMotivation, ref this.toolTipStaffMotivation);

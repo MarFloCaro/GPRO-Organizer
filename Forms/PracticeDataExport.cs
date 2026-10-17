@@ -43,7 +43,7 @@ namespace go.Forms
       this.AddLine("# Total time D.Error Net time FWi RWi Eng Bra Gea Sus Tyres");
       for (int index1 = 0; index1 < 8 && !(practise.runs[index1].comments[0] == ""); ++index1)
       {
-        this.AddLine((index1 + 1).ToString() + " " + EnumToString.Time2PracExportString(practise.runs[index1].lapTime, true) + " " + EnumToString.Time2PracExportString(practise.runs[index1].driverMistake, true) + " " + EnumToString.Time2PracExportString(practise.runs[index1].netTime, true) + " " + practise.runs[index1].setup.fWing.ToString() + " " + practise.runs[index1].setup.rWing.ToString() + " " + practise.runs[index1].setup.engine.ToString() + " " + practise.runs[index1].setup.brakes.ToString() + " " + practise.runs[index1].setup.gear.ToString() + " " + practise.runs[index1].setup.susp.ToString() + " " + EnumToString.Enum2String(practise.runs[index1].setup.tyres));
+        this.AddLine((index1 + 1).ToString() + " " + EnumConvert.Time2PracExportString(practise.runs[index1].lapTime, true) + " " + EnumConvert.Time2PracExportString(practise.runs[index1].driverMistake, true) + " " + EnumConvert.Time2PracExportString(practise.runs[index1].netTime, true) + " " + practise.runs[index1].setup.fWing.ToString() + " " + practise.runs[index1].setup.rWing.ToString() + " " + practise.runs[index1].setup.engine.ToString() + " " + practise.runs[index1].setup.brakes.ToString() + " " + practise.runs[index1].setup.gear.ToString() + " " + practise.runs[index1].setup.susp.ToString() + " " + EnumConvert.Enum2String(practise.runs[index1].setup.tyres));
         for (int index2 = 0; index2 < index1; ++index2)
         {
           if (this.HasOnlyOneSettingChanged(practise.runs[index1], practise.runs[index2]) && !(practise.runs[index1].netTime == practise.runs[index2].netTime))
@@ -59,12 +59,12 @@ namespace go.Forms
       this.AddLine("Q1");
       this.AddLine("    Time FWi RWi Eng Bra Gea Sus Tyres Risk");
       Qualify qualify1 = race.Qualify1;
-      this.AddLine(EnumToString.Time2PracExportString(qualify1.time, true) + " " + qualify1.setup.fWing.ToString() + " " + qualify1.setup.rWing.ToString() + " " + qualify1.setup.engine.ToString() + " " + qualify1.setup.brakes.ToString() + " " + qualify1.setup.gear.ToString() + " " + qualify1.setup.susp.ToString() + " " + EnumToString.Enum2String(qualify1.setup.tyres) + " " + EnumToString.Enum2String(qualify1.risk));
+      this.AddLine(EnumConvert.Time2PracExportString(qualify1.time, true) + " " + qualify1.setup.fWing.ToString() + " " + qualify1.setup.rWing.ToString() + " " + qualify1.setup.engine.ToString() + " " + qualify1.setup.brakes.ToString() + " " + qualify1.setup.gear.ToString() + " " + qualify1.setup.susp.ToString() + " " + EnumConvert.Enum2String(qualify1.setup.tyres) + " " + EnumConvert.Enum2String(qualify1.risk));
       this.AddLine();
       this.AddLine("Q2");
       this.AddLine("    Time FWi RWi Eng Bra Gea Sus Tyres Fuel Risk");
       Qualify qualify2 = race.Qualify2;
-      this.AddLine(EnumToString.Time2PracExportString(qualify2.time, true) + " " + qualify2.setup.fWing.ToString() + " " + qualify2.setup.rWing.ToString() + " " + qualify2.setup.engine.ToString() + " " + qualify2.setup.brakes.ToString() + " " + qualify2.setup.gear.ToString() + " " + qualify2.setup.susp.ToString() + " " + EnumToString.Enum2String(qualify2.setup.tyres) + " " + qualify2.fuel.ToString() + " " + EnumToString.Enum2String(qualify2.risk));
+      this.AddLine(EnumConvert.Time2PracExportString(qualify2.time, true) + " " + qualify2.setup.fWing.ToString() + " " + qualify2.setup.rWing.ToString() + " " + qualify2.setup.engine.ToString() + " " + qualify2.setup.brakes.ToString() + " " + qualify2.setup.gear.ToString() + " " + qualify2.setup.susp.ToString() + " " + EnumConvert.Enum2String(qualify2.setup.tyres) + " " + qualify2.fuel.ToString() + " " + EnumConvert.Enum2String(qualify2.risk));
       this.AddLine();
       this.AddLine("Car data");
       this.AddLine("Wing sums: (" + this.MinWings.ToString() + " - " + this.MaxWings.ToString() + ")");

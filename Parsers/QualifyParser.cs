@@ -25,7 +25,7 @@ namespace go.Parsers
         int startIndex2 = qualifyPage.IndexOf("Practice / Qualify 1", startIndex1) + 15;
         int startIndex3 = qualifyPage.IndexOf("alt", startIndex2) + 5;
         string noget1 = qualifyPage.Substring(startIndex3, qualifyPage.IndexOf("\"", startIndex3) - startIndex3);
-        qualify1.weather.skies = StringToEnum.String2Skies(noget1);
+        qualify1.weather.skies = EnumConvert.String2Skies(noget1);
         int startIndex4 = qualifyPage.IndexOf("Temp", startIndex3) + 6;
         string s2 = qualifyPage.Substring(startIndex4, qualifyPage.IndexOf("&", startIndex4) - startIndex4);
         qualify1.weather.temperature = int.Parse(s2);
@@ -37,7 +37,7 @@ namespace go.Parsers
           return qualify1;
         int startIndex7 = qualifyPage.IndexOf("lime", startIndex6) + 9;
         string noget2 = qualifyPage.Substring(startIndex7, qualifyPage.IndexOf("<", startIndex7) - startIndex7 - 1);
-        qualify1.time = StringToEnum.String2Time(noget2);
+        qualify1.time = EnumConvert.String2Time(noget2);
         int startIndex8 = qualifyPage.IndexOf("center", startIndex7) + 8;
         int startIndex9 = qualifyPage.IndexOf(">", startIndex8) + 1;
         string s4 = qualifyPage.Substring(startIndex9, qualifyPage.IndexOf("<", startIndex9) - startIndex9);
@@ -67,11 +67,11 @@ namespace go.Parsers
         int startIndex22 = qualifyPage.IndexOf("center", startIndex21) + 8;
         int startIndex23 = qualifyPage.IndexOf(">", startIndex22) + 1;
         string noget3 = qualifyPage.Substring(startIndex23, qualifyPage.IndexOf("<", startIndex23) - startIndex23);
-        qualify1.setup.tyres = StringToEnum.String2Tyres(noget3);
+        qualify1.setup.tyres = EnumConvert.String2Tyres(noget3);
         int startIndex24 = qualifyPage.IndexOf("center", startIndex23) + 8;
         int startIndex25 = qualifyPage.IndexOf(">", startIndex24) + 1;
         string noget4 = qualifyPage.Substring(startIndex25, qualifyPage.IndexOf("<", startIndex25) - startIndex25);
-        qualify1.risk = StringToEnum.String2QualifyRisk(noget4);
+        qualify1.risk = EnumConvert.String2QualifyRisk(noget4);
         return qualify1;
       }
       catch (Exception ex)
@@ -95,7 +95,7 @@ namespace go.Parsers
         int startIndex3 = qualifyPage.IndexOf("Qualify 2 / Race start", startIndex2) + 15;
         int startIndex4 = qualifyPage.IndexOf("alt", startIndex3) + 5;
         string noget1 = qualifyPage.Substring(startIndex4, qualifyPage.IndexOf("\"", startIndex4) - startIndex4);
-        qualify2.weather.skies = StringToEnum.String2Skies(noget1);
+        qualify2.weather.skies = EnumConvert.String2Skies(noget1);
         int startIndex5 = qualifyPage.IndexOf("Temp", startIndex4) + 6;
         string s2 = qualifyPage.Substring(startIndex5, qualifyPage.IndexOf("&", startIndex5) - startIndex5);
         qualify2.weather.temperature = int.Parse(s2);
@@ -108,7 +108,7 @@ namespace go.Parsers
         if (startIndex9 <= 0)
           return qualify2;
         string noget2 = qualifyPage.Substring(startIndex9, qualifyPage.IndexOf("<", startIndex9) - startIndex9 - 1);
-        qualify2.time = StringToEnum.String2Time(noget2);
+        qualify2.time = EnumConvert.String2Time(noget2);
         int startIndex10 = qualifyPage.IndexOf("center", startIndex9);
         int startIndex11 = qualifyPage.IndexOf(">", startIndex10) + 1;
         string s4 = qualifyPage.Substring(startIndex11, qualifyPage.IndexOf("<", startIndex11) - startIndex11);
@@ -142,11 +142,11 @@ namespace go.Parsers
         int startIndex26 = qualifyPage.IndexOf("center", startIndex25);
         int startIndex27 = qualifyPage.IndexOf(">", startIndex26) + 1;
         string noget3 = qualifyPage.Substring(startIndex27, qualifyPage.IndexOf("<", startIndex27) - startIndex27);
-        qualify2.setup.tyres = StringToEnum.String2Tyres(noget3);
+        qualify2.setup.tyres = EnumConvert.String2Tyres(noget3);
         int startIndex28 = qualifyPage.IndexOf("center", startIndex27);
         int startIndex29 = qualifyPage.IndexOf(">", startIndex28) + 1;
         string noget4 = qualifyPage.Substring(startIndex29, qualifyPage.IndexOf("<", startIndex29) - startIndex29);
-        qualify2.risk = StringToEnum.String2QualifyRisk(noget4);
+        qualify2.risk = EnumConvert.String2QualifyRisk(noget4);
         return qualify2;
       }
       catch (Exception ex)

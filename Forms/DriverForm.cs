@@ -112,7 +112,7 @@ namespace go.Forms
       this.textBoxEnergy.Text = d.energy.ToString();
       this.textBoxWeight.Text = d.weight.ToString();
       this.textBoxAge.Text = d.age.ToString();
-      this.textBoxSalary.Text = EnumToString.Wage2String(d.salary);
+      this.textBoxSalary.Text = EnumConvert.Wage2String(d.salary);
       this.textBoxContract.Text = d.racesLeftOfContract.ToString();
       if (d.history.historyList.Count < 2)
         return;

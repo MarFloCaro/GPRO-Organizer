@@ -275,14 +275,12 @@
     <Compile Include="Utils\DataMerger.cs" />
     <Compile Include="Utils\Datas.cs" />
     <Compile Include="Utils\EncDec.cs" />
-    <Compile Include="Utils\EnumToString.cs" />
+    <Compile Include="Utils\EnumConvert.cs" />
     <Compile Include="Utils\Errlog.cs" />
     <Compile Include="Utils\IntPair.cs" />
     <Compile Include="Utils\ListViewColumnSorter.cs" />
     <Compile Include="Utils\Loader.cs" />
     <Compile Include="Utils\PartsWear.cs" />
-    <Compile Include="Utils\String2Enum.cs" />
-    <Compile Include="Utils\StringToEnum.cs" />
     <Compile Include="Utils\TrackNamesHandler.cs" />
     <Compile Include="Utils\TypeBinder.cs" />
     <Compile Include="Utils\Util.cs" />

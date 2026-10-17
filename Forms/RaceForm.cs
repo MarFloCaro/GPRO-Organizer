@@ -615,20 +615,20 @@ namespace go.Forms
           listViewItem1 = new ListViewItem(new string[3]
           {
             str2,
-            EnumToString.Time2String(lap.lapTime, true),
+            EnumConvert.Time2String(lap.lapTime, true),
             lap.position.ToString()
           }, -1);
         ListViewItem listViewItem2 = listViewItem1;
         if (!lap.goodTyres)
         {
           listViewItem2.UseItemStyleForSubItems = false;
-          listViewItem2.SubItems.Add(EnumToString.Enum2String(lap.tyres), Color.Red, Color.White, new Font("Microsoft Sans Serif", 8.25f, FontStyle.Regular, GraphicsUnit.Point, (byte) 0));
+          listViewItem2.SubItems.Add(EnumConvert.Enum2String(lap.tyres), Color.Red, Color.White, new Font("Microsoft Sans Serif", 8.25f, FontStyle.Regular, GraphicsUnit.Point, (byte) 0));
         }
         else
-          listViewItem2.SubItems.Add(EnumToString.Enum2String(lap.tyres));
+          listViewItem2.SubItems.Add(EnumConvert.Enum2String(lap.tyres));
         listViewItem2.SubItems.AddRange(new string[3]
         {
-          EnumToString.Enum2String(lap.weather.skies),
+          EnumConvert.Enum2String(lap.weather.skies),
           lap.weather.temperature.ToString(),
           lap.weather.humidity.ToString()
         });
@@ -646,7 +646,7 @@ namespace go.Forms
           ListViewItem listViewItem = new ListViewItem(new string[4]
           {
             pitStop.lap.ToString(),
-            EnumToString.Enum2String(pitStop.pitstopreason),
+            EnumConvert.Enum2String(pitStop.pitstopreason),
             pitStop.tyresCondition.ToString(),
             pitStop.fuelLeft.ToString()
           }, -1);
@@ -654,7 +654,7 @@ namespace go.Forms
             listViewItem.SubItems.Add(pitStop.refilledTo.ToString());
           else
             listViewItem.SubItems.Add("No refill");
-          listViewItem.SubItems.Add(EnumToString.Time2String(pitStop.pitTime, true));
+          listViewItem.SubItems.Add(EnumConvert.Time2String(pitStop.pitTime, true));
           this.listViewPitStops.Items.Add(listViewItem);
         }
       }
@@ -827,8 +827,8 @@ namespace go.Forms
         this.textBoxTestHandling.Text = endcar.testHandling.ToString();
         this.textBoxTestAcceleration.Text = endcar.testAcceleration.ToString();
       }
-      this.textBoxfuel.Text = EnumToString.Enum2String(track.fuelConsumption);
-      this.textBoxtyre.Text = EnumToString.Enum2String(track.tyreWear);
+      this.textBoxfuel.Text = EnumConvert.Enum2String(track.fuelConsumption);
+      this.textBoxtyre.Text = EnumConvert.Enum2String(track.tyreWear);
       if (race.CalcFuel != null)
       {
         for (int index = 0; index < race.CalcFuel.Length && race.CalcFuel[index] != null; ++index)
@@ -866,7 +866,7 @@ namespace go.Forms
           string[] items4 = new string[14];
           num = index + 1;
           items4[0] = "Stint " + num.ToString();
-          items4[1] = EnumToString.Enum2String(race.CalcTyres[index].tyres);
+          items4[1] = EnumConvert.Enum2String(race.CalcTyres[index].tyres);
           items4[2] = race.CalcTyres[index].laps.ToString();
           items4[3] = race.CalcTyres[index].km.ToString();
           items4[4] = race.CalcTyres[index].badTyres ? race.CalcTyres[index].badAtKm.ToString("N3") : "-";
@@ -935,7 +935,7 @@ namespace go.Forms
             sponsor.negotiations[index].amountPerRace.ToString(),
             sponsor.negotiations[index].duration.ToString(),
             sponsor.negotiations[index].progress.ToString() + "%",
-            EnumToString.Enum2String(sponsor.negotiations[index].priority)
+            EnumConvert.Enum2String(sponsor.negotiations[index].priority)
           }
         });
     }
@@ -965,8 +965,8 @@ namespace go.Forms
       this.textBoxStaffEngineering.Text = staff.engineeringWorkshop.ToString();
       this.textBoxStaffAlloy.Text = staff.alloyAndChemicalLab.ToString();
       this.textBoxStaffCommercial.Text = staff.commercial.ToString();
-      this.textBoxStaffSalary.Text = EnumToString.Wage2String(staff.salary);
-      this.textBoxStaffFacilities.Text = EnumToString.Wage2String(staff.maintenance);
+      this.textBoxStaffSalary.Text = EnumConvert.Wage2String(staff.salary);
+      this.textBoxStaffFacilities.Text = EnumConvert.Wage2String(staff.maintenance);
     }
 
     private void FillQualifyTab(Qualify q1, Qualify q2)
@@ -974,7 +974,7 @@ namespace go.Forms
       this.listViewQualify1.Items.Clear();
       this.listViewQualify2.Items.Clear();
       if (q1.time > TimeSpan.Zero)
-        this.listViewQualify1.Items.Add(new ListViewItem(EnumToString.Time2String(q1.time, true))
+        this.listViewQualify1.Items.Add(new ListViewItem(EnumConvert.Time2String(q1.time, true))
         {
           SubItems = {
             q1.setup.fWing.ToString(),
@@ -983,13 +983,13 @@ namespace go.Forms
             q1.setup.brakes.ToString(),
             q1.setup.gear.ToString(),
             q1.setup.susp.ToString(),
-            EnumToString.Enum2String(q1.setup.tyres),
-            EnumToString.Enum2String(q1.risk)
+            EnumConvert.Enum2String(q1.setup.tyres),
+            EnumConvert.Enum2String(q1.risk)
           }
         });
       if (!(q2.time > TimeSpan.Zero))
         return;
-      ListViewItem listViewItem = new ListViewItem(EnumToString.Time2String(q2.time, true));
+      ListViewItem listViewItem = new ListViewItem(EnumConvert.Time2String(q2.time, true));
       listViewItem.SubItems.Add(q2.setup.fWing.ToString());
       listViewItem.SubItems.Add(q2.setup.rWing.ToString());
       listViewItem.SubItems.Add(q2.setup.engine.ToString());
@@ -1000,8 +1000,8 @@ namespace go.Forms
         listViewItem.SubItems.Add("Unknown");
       else
         listViewItem.SubItems.Add(q2.fuel.ToString());
-      listViewItem.SubItems.Add(EnumToString.Enum2String(q2.setup.tyres));
-      listViewItem.SubItems.Add(EnumToString.Enum2String(q2.risk));
+      listViewItem.SubItems.Add(EnumConvert.Enum2String(q2.setup.tyres));
+      listViewItem.SubItems.Add(EnumConvert.Enum2String(q2.risk));
       this.listViewQualify2.Items.Add(listViewItem);
     }
 
@@ -1041,21 +1041,21 @@ namespace go.Forms
         this.listViewTesting.Items.Add(new ListViewItem((index + 1).ToString())
         {
           SubItems = {
-            EnumToString.Time2String(test.runs[index].meanTime, true),
-            EnumToString.Time2String(test.runs[index].bestTime, true),
+            EnumConvert.Time2String(test.runs[index].meanTime, true),
+            EnumConvert.Time2String(test.runs[index].bestTime, true),
             test.runs[index].lapLimit.ToString(),
             test.runs[index].lapsDone.ToString(),
             test.runs[index].fuelStart.ToString(),
             test.runs[index].tyresCondition.ToString() + "%",
             test.runs[index].fuelLeft.ToString(),
-            EnumToString.Enum2String(test.runs[index].priority),
+            EnumConvert.Enum2String(test.runs[index].priority),
             test.runs[index].setup.fWing.ToString(),
             test.runs[index].setup.rWing.ToString(),
             test.runs[index].setup.engine.ToString(),
             test.runs[index].setup.brakes.ToString(),
             test.runs[index].setup.gear.ToString(),
             test.runs[index].setup.susp.ToString(),
-            EnumToString.Enum2String(test.runs[index].setup.tyres)
+            EnumConvert.Enum2String(test.runs[index].setup.tyres)
           }
         });
       if (test.track > 0)
@@ -1064,7 +1064,7 @@ namespace go.Forms
         this.testTrack.Text = "Unknown";
       this.testTemp.Text = test.weather.temperature.ToString();
       this.testHumidity.Text = test.weather.humidity.ToString();
-      this.testWeather.Text = EnumToString.Enum2String(test.weather.skies);
+      this.testWeather.Text = EnumConvert.Enum2String(test.weather.skies);
     }
 
     private void FillStrategyTab(Strategy4 strat)
@@ -1081,9 +1081,9 @@ namespace go.Forms
       this.textBoxBra.Text = strat.setup.brakes.ToString();
       this.textBoxGea.Text = strat.setup.gear.ToString();
       this.textBoxSus.Text = strat.setup.susp.ToString();
-      this.textBoxTyresStart.Text = EnumToString.Enum2String(strat.startTyres);
-      this.textBoxTyresRain.Text = EnumToString.Enum2String(strat.rainTyres);
-      this.textBoxTyresDry.Text = EnumToString.Enum2String(strat.dryTyres);
+      this.textBoxTyresStart.Text = EnumConvert.Enum2String(strat.startTyres);
+      this.textBoxTyresRain.Text = EnumConvert.Enum2String(strat.rainTyres);
+      this.textBoxTyresDry.Text = EnumConvert.Enum2String(strat.dryTyres);
       this.textBoxWaitRain.Text = strat.pitAfterRain.ToString();
       if (strat.pitAfterRain == 1)
         this.labelWaitRain.Text = "lap";
@@ -1101,7 +1101,7 @@ namespace go.Forms
       this.textBoxPitIfSolvableProblem.Text = strat.pitIfSolvableProblem ? "Yes" : "No";
       this.textBoxPitLimit.Text = strat.pitLapLimit.ToString();
       this.checkBoxRefuel.Checked = strat.dontrefuelOnTechnicalProblems;
-      this.textBoxStartStrategy.Text = EnumToString.Enum2String(strat.startStrategy);
+      this.textBoxStartStrategy.Text = EnumConvert.Enum2String(strat.startStrategy);
     }
 
     private void FillWeatherTab(RaceWeather wf)
@@ -1110,10 +1110,10 @@ namespace go.Forms
         return;
       this.textBoxPracT.Text = wf.pracWeather.temperature.ToString();
       this.textBoxPracH.Text = wf.pracWeather.humidity.ToString();
-      this.textBoxPracW.Text = EnumToString.Enum2String(wf.pracWeather.skies);
+      this.textBoxPracW.Text = EnumConvert.Enum2String(wf.pracWeather.skies);
       this.textBoxQualT.Text = wf.qualWeather.temperature.ToString();
       this.textBoxQualH.Text = wf.qualWeather.humidity.ToString();
-      this.textBoxQualW.Text = EnumToString.Enum2String(wf.qualWeather.skies);
+      this.textBoxQualW.Text = EnumConvert.Enum2String(wf.qualWeather.skies);
       this.textBoxForecast1t.Text = wf.forecast.minTemp[0].ToString() + "° - " + wf.forecast.maxTemp[0].ToString() + "°";
       this.textBoxForecast1h.Text = wf.forecast.minHum[0].ToString() + " - " + wf.forecast.maxHum[0].ToString();
       this.textBoxForecast1r.Text = wf.forecast.minRain[0].ToString() + "%";
@@ -1160,19 +1160,19 @@ namespace go.Forms
         this.listViewPractice.Items.Add(new ListViewItem((index + 1).ToString())
         {
           SubItems = {
-            EnumToString.Time2String(prac.runs[index].lapTime, true),
-            EnumToString.Time2String(prac.runs[index].driverMistake, true),
-            EnumToString.Time2String(prac.runs[index].netTime, true),
+            EnumConvert.Time2String(prac.runs[index].lapTime, true),
+            EnumConvert.Time2String(prac.runs[index].driverMistake, true),
+            EnumConvert.Time2String(prac.runs[index].netTime, true),
             prac.runs[index].setup.fWing.ToString(),
             prac.runs[index].setup.rWing.ToString(),
             prac.runs[index].setup.engine.ToString(),
             prac.runs[index].setup.brakes.ToString(),
             prac.runs[index].setup.gear.ToString(),
             prac.runs[index].setup.susp.ToString(),
-            EnumToString.Enum2String(prac.runs[index].setup.tyres)
+            EnumConvert.Enum2String(prac.runs[index].setup.tyres)
           }
         });
-      this.textBoxPracWeather.Text = EnumToString.Enum2String(prac.weather.skies);
+      this.textBoxPracWeather.Text = EnumConvert.Enum2String(prac.weather.skies);
       this.textBoxPracTemp.Text = prac.weather.temperature.ToString();
       this.textBoxPracHum.Text = prac.weather.humidity.ToString();
     }
@@ -1201,7 +1201,7 @@ namespace go.Forms
       this.textBoxReputation.Text = driver.reputation.ToString();
       this.textBoxWeight.Text = driver.weight.ToString();
       this.textBoxAge.Text = driver.age.ToString();
-      this.textBoxSalary.Text = EnumToString.Wage2String(driver.salary);
+      this.textBoxSalary.Text = EnumConvert.Wage2String(driver.salary);
       this.textBoxContract.Text = driver.racesLeftOfContract.ToString();
       this.FavoriteTracksView.Items.Clear();
       foreach (int favoriteTrack in driver.favoriteTracks)
@@ -1228,12 +1228,12 @@ namespace go.Forms
           line.pos.ToString(),
           line.progress != 0 ? (line.progress > 0 ? "+ " + line.progress.ToString() : "- " + (line.progress * -1).ToString()) : "-",
           line.managerName,
-          line.raceTime > TimeSpan.MinValue ? (line.pos == 1 ? EnumToString.Time2String(line.raceTime, true) : "+ " + EnumToString.Time2String(line.raceTime.Subtract(bestTime), true)) : line.NoTimeReason,
+          line.raceTime > TimeSpan.MinValue ? (line.pos == 1 ? EnumConvert.Time2String(line.raceTime, true) : "+ " + EnumConvert.Time2String(line.raceTime.Subtract(bestTime), true)) : line.NoTimeReason,
           line.laps.ToString(),
           line.pitStops.ToString(),
-          EnumToString.Time2String(line.bestLap, true),
+          EnumConvert.Time2String(line.bestLap, true),
           line.averageSpeed.ToString("N2") + " km/h",
-          EnumToString.Time2String(line.bestPitTime, true) + "s"
+          EnumConvert.Time2String(line.bestPitTime, true) + "s"
         }));
     }
 

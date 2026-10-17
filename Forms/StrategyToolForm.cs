@@ -87,8 +87,8 @@ namespace go.Forms
       this.InitializeComponent();
       this.track = track;
       this.textBoxTrackName.Text = track.name;
-      this.textBoxTrackTyreWear.Text = EnumToString.Enum2String(track.tyreWear);
-      this.textBoxTrackFuelConsumption.Text = EnumToString.Enum2String(track.fuelConsumption);
+      this.textBoxTrackTyreWear.Text = EnumConvert.Enum2String(track.tyreWear);
+      this.textBoxTrackFuelConsumption.Text = EnumConvert.Enum2String(track.fuelConsumption);
       this.textBoxTrackLaps.Text = track.laps.ToString();
       this.textBoxTrackLapLength.Text = track.lapDistance.ToString();
       this.textBoxTrackRaceLength.Text = track.distance.ToString();

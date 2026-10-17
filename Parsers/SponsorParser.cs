@@ -134,7 +134,7 @@ namespace go.Parsers
           sponsorNegotiations.progress = Util.ParseDouble(noget1);
           startIndex17 = sponsorPage.IndexOf("selected>", startIndex30) + 9;
           string noget2 = sponsorPage.Substring(startIndex17, sponsorPage.IndexOf("<", startIndex17) - startIndex17);
-          sponsorNegotiations.priority = StringToEnum.String2SponsorPriority(noget2);
+          sponsorNegotiations.priority = EnumConvert.String2SponsorPriority(noget2);
           sponsor.negotiations[num2++] = sponsorNegotiations;
         }
         return sponsor;

@@ -52,7 +52,7 @@ namespace go.Forms
       if (Datas.Date.race > 0 && Datas.Date.race < 18 && Datas.Seasons[Datas.Seasons.Count - 1] != null && Datas.Seasons[Datas.Seasons.Count - 1].Events[Datas.Date.race - 1] != null && Datas.Tracks[Datas.Seasons[Datas.Seasons.Count - 1].Events[Datas.Date.race - 1].Trackid - 1] != null)
       {
         this.textBoxTrack.Text = Datas.Tracks[Datas.Seasons[index].Events[Datas.Date.race - 1].Trackid - 1].name;
-        this.textBoxWear.Text = EnumToString.Enum2String(Datas.Tracks[Datas.Seasons[index].Events[Datas.Date.race - 1].Trackid - 1].tyreWear);
+        this.textBoxWear.Text = EnumConvert.Enum2String(Datas.Tracks[Datas.Seasons[index].Events[Datas.Date.race - 1].Trackid - 1].tyreWear);
       }
       switch (this.textBoxWear.Text)
       {
@@ -408,7 +408,7 @@ namespace go.Forms
                           case ColumnInfo.StintTyreType:
                             if (race.CalcTyres != null && race.CalcTyres.Length > index2)
                             {
-                              listViewItem.SubItems.Add(EnumToString.Enum2String(race.CalcTyres[index2].tyres));
+                              listViewItem.SubItems.Add(EnumConvert.Enum2String(race.CalcTyres[index2].tyres));
                               continue;
                             }
                             listViewItem.SubItems.Add("-");
@@ -509,7 +509,7 @@ namespace go.Forms
                         }
                       }
                     }
-                    if (listViewItem.SubItems.Count > 1 && (selectedIndex1 <= 0 || !(str2 != EnumToString.Enum2String(race.CalcTyres[index2].tyres))) && (selectedIndex2 <= 0 || !(Datas.Tracks[season.Events[index1].Trackid - 1].name != str3)) && (selectedIndex3 <= 0 || !(str4 != EnumToString.Enum2String(Datas.Tracks[season.Events[index1].Trackid - 1].tyreWear))) && (selectedIndex4 <= 0 || !(str1 != driver.name)) && calcTyre.minTemp >= num1 && calcTyre.maxTemp <= num2 && calcTyre.minHum >= num3 && calcTyre.maxHum <= num4 && calcTyre.laps >= int.Parse(this.removeStintsWithLessLaps.Text))
+                    if (listViewItem.SubItems.Count > 1 && (selectedIndex1 <= 0 || !(str2 != EnumConvert.Enum2String(race.CalcTyres[index2].tyres))) && (selectedIndex2 <= 0 || !(Datas.Tracks[season.Events[index1].Trackid - 1].name != str3)) && (selectedIndex3 <= 0 || !(str4 != EnumConvert.Enum2String(Datas.Tracks[season.Events[index1].Trackid - 1].tyreWear))) && (selectedIndex4 <= 0 || !(str1 != driver.name)) && calcTyre.minTemp >= num1 && calcTyre.maxTemp <= num2 && calcTyre.minHum >= num3 && calcTyre.maxHum <= num4 && calcTyre.laps >= int.Parse(this.removeStintsWithLessLaps.Text))
                     {
                       listViewItem.Text = listViewItem.SubItems[1].Text;
                       listViewItem.SubItems.RemoveAt(0);

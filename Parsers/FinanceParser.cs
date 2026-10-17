@@ -58,7 +58,7 @@ namespace go.Parsers
                   break;
               }
             }
-            int financeItemType = (int) String2Enum.GetFinanceItemType(financeItem);
+            int financeItemType = (int) EnumConvert.GetFinanceItemType(financeItem);
             if (!(financeItem.Date > dateTime))
             {
               arrayList.AddRange((ICollection) Datas.FinanceHistory);

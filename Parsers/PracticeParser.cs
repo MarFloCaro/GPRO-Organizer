@@ -64,7 +64,7 @@ namespace go.Parsers
         int startIndex9 = practicePage.IndexOf("Practice / Qualify 1", startIndex8) + 15;
         int startIndex10 = practicePage.IndexOf("alt", startIndex9) + 5;
         string noget1 = practicePage.Substring(startIndex10, practicePage.IndexOf("\"", startIndex10) - startIndex10);
-        practice.weather.skies = StringToEnum.String2Skies(noget1);
+        practice.weather.skies = EnumConvert.String2Skies(noget1);
         int startIndex11 = practicePage.IndexOf("Temp", startIndex10) + 6;
         string s2 = practicePage.Substring(startIndex11, practicePage.IndexOf("&", startIndex11) - startIndex11);
         practice.weather.temperature = int.Parse(s2);
@@ -74,7 +74,7 @@ namespace go.Parsers
         wf.pracWeather = practice.weather;
         int startIndex13 = practicePage.IndexOf("alt", startIndex12) + 5;
         string noget2 = practicePage.Substring(startIndex13, practicePage.IndexOf("\"", startIndex13) - startIndex13);
-        wf.qualWeather.skies = StringToEnum.String2Skies(noget2);
+        wf.qualWeather.skies = EnumConvert.String2Skies(noget2);
         int startIndex14 = practicePage.IndexOf("Temp", startIndex13) + 6;
         string s4 = practicePage.Substring(startIndex14, practicePage.IndexOf("&", startIndex14) - startIndex14);
         wf.qualWeather.temperature = int.Parse(s4);
@@ -140,7 +140,7 @@ namespace go.Parsers
           int startIndex36 = practicePage.IndexOf("<td", startIndex35) + 3;
           startIndex16 = practicePage.IndexOf(">", startIndex36) + 1;
           string noget3 = practicePage.Substring(startIndex16, practicePage.IndexOf("<", startIndex16) - startIndex16);
-          practice.runs[index].setup.tyres = StringToEnum.String2Tyres(noget3);
+          practice.runs[index].setup.tyres = EnumConvert.String2Tyres(noget3);
         }
         int startIndex37 = practicePage.IndexOf("Front wing", startIndex16) + 15;
         if (practicePage.Substring(startIndex37, 10).StartsWith("<font"))

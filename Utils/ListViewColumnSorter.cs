@@ -60,28 +60,28 @@ namespace go.Utils
             num2 = this.ObjectCompare.Compare((object) double.Parse(listViewItem1.SubItems[this.ColumnToSort].Text), (object) double.Parse(listViewItem2.SubItems[this.ColumnToSort].Text));
             break;
           case ListViewColumnSorter.CompareManner.TYRETYPE:
-            num2 = this.ObjectCompare.Compare((object) StringToEnum.String2Tyres(listViewItem1.SubItems[this.ColumnToSort].Text), (object) StringToEnum.String2Tyres(listViewItem2.SubItems[this.ColumnToSort].Text));
+            num2 = this.ObjectCompare.Compare((object) EnumConvert.String2Tyres(listViewItem1.SubItems[this.ColumnToSort].Text), (object) EnumConvert.String2Tyres(listViewItem2.SubItems[this.ColumnToSort].Text));
             break;
           case ListViewColumnSorter.CompareManner.TYREWEAR:
-            num2 = this.ObjectCompare.Compare((object) StringToEnum.String2TyreWear(listViewItem1.SubItems[this.ColumnToSort].Text), (object) StringToEnum.String2TyreWear(listViewItem2.SubItems[this.ColumnToSort].Text));
+            num2 = this.ObjectCompare.Compare((object) EnumConvert.String2TyreWear(listViewItem1.SubItems[this.ColumnToSort].Text), (object) EnumConvert.String2TyreWear(listViewItem2.SubItems[this.ColumnToSort].Text));
             break;
           case ListViewColumnSorter.CompareManner.DOWNFORCE:
-            num2 = this.ObjectCompare.Compare((object) StringToEnum.String2Fuel(listViewItem1.SubItems[this.ColumnToSort].Text), (object) StringToEnum.String2Fuel(listViewItem2.SubItems[this.ColumnToSort].Text));
+            num2 = this.ObjectCompare.Compare((object) EnumConvert.String2Fuel(listViewItem1.SubItems[this.ColumnToSort].Text), (object) EnumConvert.String2Fuel(listViewItem2.SubItems[this.ColumnToSort].Text));
             break;
           case ListViewColumnSorter.CompareManner.OVERTAKING:
-            num2 = this.ObjectCompare.Compare((object) StringToEnum.String2Overtaking(listViewItem1.SubItems[this.ColumnToSort].Text), (object) StringToEnum.String2Overtaking(listViewItem2.SubItems[this.ColumnToSort].Text));
+            num2 = this.ObjectCompare.Compare((object) EnumConvert.String2Overtaking(listViewItem1.SubItems[this.ColumnToSort].Text), (object) EnumConvert.String2Overtaking(listViewItem2.SubItems[this.ColumnToSort].Text));
             break;
           case ListViewColumnSorter.CompareManner.SUSPENSION:
-            num2 = this.ObjectCompare.Compare((object) StringToEnum.String2Suspension(listViewItem1.SubItems[this.ColumnToSort].Text), (object) StringToEnum.String2Suspension(listViewItem2.SubItems[this.ColumnToSort].Text));
+            num2 = this.ObjectCompare.Compare((object) EnumConvert.String2Suspension(listViewItem1.SubItems[this.ColumnToSort].Text), (object) EnumConvert.String2Suspension(listViewItem2.SubItems[this.ColumnToSort].Text));
             break;
           case ListViewColumnSorter.CompareManner.FUEL_CONSUMPTION:
-            num2 = this.ObjectCompare.Compare((object) StringToEnum.String2Fuel(listViewItem1.SubItems[this.ColumnToSort].Text), (object) StringToEnum.String2Fuel(listViewItem2.SubItems[this.ColumnToSort].Text));
+            num2 = this.ObjectCompare.Compare((object) EnumConvert.String2Fuel(listViewItem1.SubItems[this.ColumnToSort].Text), (object) EnumConvert.String2Fuel(listViewItem2.SubItems[this.ColumnToSort].Text));
             break;
           case ListViewColumnSorter.CompareManner.TIMESPAN:
-            num2 = this.ObjectCompare.Compare((object) StringToEnum.String2Time(listViewItem1.SubItems[this.ColumnToSort].Text), (object) StringToEnum.String2Time(listViewItem2.SubItems[this.ColumnToSort].Text));
+            num2 = this.ObjectCompare.Compare((object) EnumConvert.String2Time(listViewItem1.SubItems[this.ColumnToSort].Text), (object) EnumConvert.String2Time(listViewItem2.SubItems[this.ColumnToSort].Text));
             break;
           case ListViewColumnSorter.CompareManner.GRIP:
-            num2 = this.ObjectCompare.Compare((object) StringToEnum.String2Grip(listViewItem1.SubItems[this.ColumnToSort].Text), (object) StringToEnum.String2Grip(listViewItem2.SubItems[this.ColumnToSort].Text));
+            num2 = this.ObjectCompare.Compare((object) EnumConvert.String2Grip(listViewItem1.SubItems[this.ColumnToSort].Text), (object) EnumConvert.String2Grip(listViewItem2.SubItems[this.ColumnToSort].Text));
             break;
           default:
             num2 = this.ObjectCompare.Compare((object) listViewItem1.SubItems[this.ColumnToSort].Text, (object) listViewItem2.SubItems[this.ColumnToSort].Text);

@@ -44,21 +44,21 @@ namespace go.Forms
       this.comboBoxfuel.Items.AddRange((object[]) new string[6]
       {
         "All",
-        EnumToString.Enum2String(FuelConsumption.VeryLow),
-        EnumToString.Enum2String(FuelConsumption.Low),
-        EnumToString.Enum2String(FuelConsumption.Medium),
-        EnumToString.Enum2String(FuelConsumption.High),
-        EnumToString.Enum2String(FuelConsumption.VeryHigh)
+        EnumConvert.Enum2String(FuelConsumption.VeryLow),
+        EnumConvert.Enum2String(FuelConsumption.Low),
+        EnumConvert.Enum2String(FuelConsumption.Medium),
+        EnumConvert.Enum2String(FuelConsumption.High),
+        EnumConvert.Enum2String(FuelConsumption.VeryHigh)
       });
       this.comboBoxTyres.Text = "All";
       this.comboBoxTyres.Items.AddRange((object[]) new string[6]
       {
         "All",
-        EnumToString.Enum2String(TyreWear.VeryLow),
-        EnumToString.Enum2String(TyreWear.Low),
-        EnumToString.Enum2String(TyreWear.Medium),
-        EnumToString.Enum2String(TyreWear.High),
-        EnumToString.Enum2String(TyreWear.VeryHigh)
+        EnumConvert.Enum2String(TyreWear.VeryLow),
+        EnumConvert.Enum2String(TyreWear.Low),
+        EnumConvert.Enum2String(TyreWear.Medium),
+        EnumConvert.Enum2String(TyreWear.High),
+        EnumConvert.Enum2String(TyreWear.VeryHigh)
       });
     }
 
@@ -212,7 +212,7 @@ namespace go.Forms
     {
       for (int index = 0; index < this.listView1.Items.Count; ++index)
       {
-        if (fuel != StringToEnum.String2Fuel(this.listView1.Items[index].SubItems[this.FUEL_COLUMN].Text))
+        if (fuel != EnumConvert.String2Fuel(this.listView1.Items[index].SubItems[this.FUEL_COLUMN].Text))
         {
           this.listView1.Items[index].Remove();
           --index;
@@ -224,7 +224,7 @@ namespace go.Forms
     {
       for (int index = 0; index < this.listView1.Items.Count; ++index)
       {
-        if (tyres != StringToEnum.String2TyreWear(this.listView1.Items[index].SubItems[this.TYRE_COLUMN].Text))
+        if (tyres != EnumConvert.String2TyreWear(this.listView1.Items[index].SubItems[this.TYRE_COLUMN].Text))
         {
           this.listView1.Items[index].Remove();
           --index;
@@ -243,7 +243,7 @@ namespace go.Forms
       for (int index = 0; index < this.formInfo.columnInfo.Count && index < this.formInfo.columnWidths.Count; ++index)
       {
         ColumnInfo columnInfo = (ColumnInfo) this.formInfo.columnInfo[index];
-        this.listView1.Columns.Add(EnumToString.Enum2ShortString(columnInfo), (int) this.formInfo.columnWidths[index], Datas.FormHandler.GetColumnAlignment(columnInfo));
+        this.listView1.Columns.Add(EnumConvert.Enum2ShortString(columnInfo), (int) this.formInfo.columnWidths[index], Datas.FormHandler.GetColumnAlignment(columnInfo));
         switch (columnInfo)
         {
           case ColumnInfo.TrackFuelConsumption:
@@ -261,7 +261,7 @@ namespace go.Forms
       int selectedIndex = this.comboBoxTyres.SelectedIndex;
       if (selectedIndex <= 0)
         return;
-      this.ListTracksWithTyre(StringToEnum.String2TyreWear((string) this.comboBoxTyres.Items[selectedIndex]));
+      this.ListTracksWithTyre(EnumConvert.String2TyreWear((string) this.comboBoxTyres.Items[selectedIndex]));
     }
 
     private void SelectFuelConsumption()
@@ -269,7 +269,7 @@ namespace go.Forms
       int selectedIndex = this.comboBoxfuel.SelectedIndex;
       if (selectedIndex <= 0)
         return;
-      this.ListTracksWithFuel(StringToEnum.String2Fuel((string) this.comboBoxfuel.Items[selectedIndex]));
+      this.ListTracksWithFuel(EnumConvert.String2Fuel((string) this.comboBoxfuel.Items[selectedIndex]));
     }
 
     private void SetVisibilityOnComboBoxes()

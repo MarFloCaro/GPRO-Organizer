@@ -149,7 +149,7 @@ label_17:
             lap2.weather.skies = Skies.Rain;
           else
             noget = racePage.Substring(num2, racePage.IndexOf("<", num2) - num2);
-          lap2.weather.skies = StringToEnum.String2Skies(noget);
+          lap2.weather.skies = EnumConvert.String2Skies(noget);
           num2 = racePage.IndexOf("\"center\"", num2);
           num2 = racePage.IndexOf(">", num2) + 1;
           string s4 = racePage.Substring(num2, racePage.IndexOf("&#176;", num2) - num2);
@@ -196,7 +196,7 @@ label_17:
         num2 = racePage.IndexOf("<img ", num2) + 1;
         num2 = racePage.IndexOf("alt=", num2) + 5;
         string noget1 = racePage.Substring(num2, racePage.IndexOf("\"", num2) - num2);
-        race.Laps[0].weather.skies = StringToEnum.String2Skies(noget1);
+        race.Laps[0].weather.skies = EnumConvert.String2Skies(noget1);
         num2 = racePage.IndexOf("Setups used");
         num2 = racePage.IndexOf("Race", num2);
         num2 = racePage.IndexOf("center", num2);

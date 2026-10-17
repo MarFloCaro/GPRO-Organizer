@@ -59,7 +59,7 @@ namespace go
 
     public FinanceItemType ItemType
     {
-      get => String2Enum.GetFinanceItemType(this);
+      get => EnumConvert.GetFinanceItemType(this);
       set => this.ItemType = value;
     }
 

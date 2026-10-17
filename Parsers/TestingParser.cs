@@ -61,7 +61,7 @@ namespace go.Parsers
           int startIndex7 = testPage.IndexOf("(Stint research priority: ", startIndex6) + 26;
           string noget = testPage.Substring(startIndex7, testPage.IndexOf(")", startIndex7) - startIndex7);
           test.runs[index1] = new TestingRun();
-          test.runs[index1].priority = StringToEnum.String2Priority(noget);
+          test.runs[index1].priority = EnumConvert.String2Priority(noget);
           test.runs[index1].comments = new string[arrayList.Count];
           for (int index2 = 0; index2 < arrayList.Count; ++index2)
             test.runs[index1].comments[index2] = (string) arrayList[index2];
@@ -83,7 +83,7 @@ namespace go.Parsers
         int startIndex9 = testPage.IndexOf("Current weather", startIndex8);
         int startIndex10 = testPage.IndexOf("title=", startIndex9) + 7;
         string noget1 = testPage.Substring(startIndex10, testPage.IndexOf("\"", startIndex10) - startIndex10);
-        test.weather.skies = StringToEnum.String2Skies(noget1);
+        test.weather.skies = EnumConvert.String2Skies(noget1);
         int startIndex11 = testPage.IndexOf("Temp", startIndex10) + 6;
         string s2 = testPage.Substring(startIndex11, testPage.IndexOf("°", startIndex11) - startIndex11);
         test.weather.temperature = int.Parse(s2);
@@ -123,10 +123,10 @@ namespace go.Parsers
           test.runs[index5].lapLimit = int.Parse(s5);
           int startIndex24 = testPage.IndexOf("<b>", startIndex23) + 3;
           string noget5 = testPage.Substring(startIndex24, testPage.IndexOf("s", startIndex24) - startIndex24);
-          test.runs[index5].bestTime = StringToEnum.String2Time(noget5);
+          test.runs[index5].bestTime = EnumConvert.String2Time(noget5);
           int startIndex25 = testPage.IndexOf("<b>", startIndex24) + 3;
           string noget6 = testPage.Substring(startIndex25, testPage.IndexOf("s", startIndex25) - startIndex25);
-          test.runs[index5].meanTime = StringToEnum.String2Time(noget6);
+          test.runs[index5].meanTime = EnumConvert.String2Time(noget6);
           int startIndex26 = testPage.IndexOf("'>", startIndex25) + 2;
           string s6 = testPage.Substring(startIndex26, testPage.IndexOf("<", startIndex26) - startIndex26);
           test.runs[index5].setup.fWing = int.Parse(s6);
@@ -147,7 +147,7 @@ namespace go.Parsers
           test.runs[index5].setup.susp = int.Parse(s11);
           int startIndex32 = testPage.IndexOf("'>", startIndex31) + 2;
           string noget7 = testPage.Substring(startIndex32, testPage.IndexOf("<", startIndex32) - startIndex32);
-          test.runs[index5].setup.tyres = StringToEnum.String2Tyres(noget7);
+          test.runs[index5].setup.tyres = EnumConvert.String2Tyres(noget7);
           int startIndex33 = testPage.IndexOf("'>", startIndex32) + 2;
           string s12 = testPage.Substring(startIndex33, testPage.IndexOf("<", startIndex33) - startIndex33);
           test.runs[index5].fuelStart = int.Parse(s12);

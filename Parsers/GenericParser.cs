@@ -49,6 +49,6 @@ namespace go.Parsers
       return !flag ? num2 : -num2;
     }
 
-    public static TimeSpan ParseTimeSpan(string noget) => StringToEnum.String2Time(noget);
+    public static TimeSpan ParseTimeSpan(string noget) => EnumConvert.String2Time(noget);
   }
 }

@@ -67,13 +67,13 @@ namespace go.Parsers
         int startIndex16 = setupPage.IndexOf("Tyres strategy", startIndex15) + 7;
         int startIndex17 = setupPage.IndexOf("selected", startIndex16) + 9;
         string noget1 = setupPage.Substring(startIndex17, setupPage.IndexOf("<", startIndex17) - startIndex17).Trim();
-        strategy.startTyres = StringToEnum.String2Tyres(noget1);
+        strategy.startTyres = EnumConvert.String2Tyres(noget1);
         int startIndex18 = setupPage.IndexOf("selected", startIndex17) + 9;
         string noget2 = setupPage.Substring(startIndex18, setupPage.IndexOf("<", startIndex18) - startIndex18).Trim();
-        strategy.rainTyres = StringToEnum.String2Tyres(noget2);
+        strategy.rainTyres = EnumConvert.String2Tyres(noget2);
         int startIndex19 = setupPage.IndexOf("selected", startIndex18) + 9;
         string noget3 = setupPage.Substring(startIndex19, setupPage.IndexOf("<", startIndex19) - startIndex19).Trim();
-        strategy.dryTyres = StringToEnum.String2Tyres(noget3);
+        strategy.dryTyres = EnumConvert.String2Tyres(noget3);
         int startIndex20 = setupPage.IndexOf("LapsWaitPitRain", startIndex19) + 9;
         int startIndex21 = setupPage.IndexOf("value", startIndex20) + 7;
         string s13 = setupPage.Substring(startIndex21, setupPage.IndexOf("\"", startIndex21) - startIndex21);
@@ -120,7 +120,7 @@ namespace go.Parsers
         strategy.dontrefuelOnTechnicalProblems = setupPage.IndexOf(" checked ", startIndex38) > 0;
         int startIndex39 = setupPage.IndexOf("selected", startIndex38) + 9;
         string noget4 = setupPage.Substring(startIndex39, setupPage.IndexOf("<", startIndex39) - startIndex39);
-        strategy.startStrategy = StringToEnum.String2Strategy(noget4);
+        strategy.startStrategy = EnumConvert.String2Strategy(noget4);
         return strategy;
       }
       catch (Exception ex)
