@@ -305,7 +305,7 @@ namespace go.Forms
                           case ColumnInfo.StintTyreType:
                             if (race.CalcTyres != null && race.CalcTyres.Length > index2)
                             {
-                              listViewItem.SubItems.Add(EnumToString.Enum2String(race.CalcTyres[index2].tyres));
+                              listViewItem.SubItems.Add(EnumConvert.Enum2String(race.CalcTyres[index2].tyres));
                               continue;
                             }
                             listViewItem.SubItems.Add("-");
@@ -396,7 +396,7 @@ namespace go.Forms
                         }
                       }
                     }
-                    if (listViewItem.SubItems.Count > 1 && (selectedIndex1 <= 0 || !(Datas.Tracks[season.Events[index1].Trackid - 1].name != str1)) && (selectedIndex2 <= 0 || !(str2 != EnumToString.Enum2String(Datas.Tracks[season.Events[index1].Trackid - 1].fuelConsumption))) && (selectedIndex3 <= 0 || !(str3 != driver.name)) && calculatedFuelConsumption.laps >= int.Parse(this.removeStintsWithLessLaps.Text) && (this.checkBoxStints.Checked || !("race" != text1)))
+                    if (listViewItem.SubItems.Count > 1 && (selectedIndex1 <= 0 || !(Datas.Tracks[season.Events[index1].Trackid - 1].name != str1)) && (selectedIndex2 <= 0 || !(str2 != EnumConvert.Enum2String(Datas.Tracks[season.Events[index1].Trackid - 1].fuelConsumption))) && (selectedIndex3 <= 0 || !(str3 != driver.name)) && calculatedFuelConsumption.laps >= int.Parse(this.removeStintsWithLessLaps.Text) && (this.checkBoxStints.Checked || !("race" != text1)))
                     {
                       listViewItem.Text = listViewItem.SubItems[1].Text;
                       listViewItem.SubItems.RemoveAt(0);
@@ -437,7 +437,7 @@ namespace go.Forms
       if (Datas.Date.race <= 0 || Datas.Date.race >= 18 || Datas.Seasons[Datas.Seasons.Count - 1] == null || Datas.Seasons[Datas.Seasons.Count - 1].Events[Datas.Date.race - 1] == null || Datas.Tracks[Datas.Seasons[Datas.Seasons.Count - 1].Events[Datas.Date.race - 1].Trackid - 1] == null)
         return;
       this.textBoxTrack.Text = Datas.Tracks[Datas.Seasons[Datas.Seasons.Count - 1].Events[Datas.Date.race - 1].Trackid - 1].name;
-      this.textBoxUsage.Text = EnumToString.Enum2String(Datas.Tracks[Datas.Seasons[Datas.Seasons.Count - 1].Events[Datas.Date.race - 1].Trackid - 1].fuelConsumption);
+      this.textBoxUsage.Text = EnumConvert.Enum2String(Datas.Tracks[Datas.Seasons[Datas.Seasons.Count - 1].Events[Datas.Date.race - 1].Trackid - 1].fuelConsumption);
     }
 
     protected override void ListAll()

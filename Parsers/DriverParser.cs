@@ -77,12 +77,7 @@ namespace go.Parsers
                 int startIndex5 = driverPage.IndexOf("<td", startIndex4);
                 startIndex5 = driverPage.IndexOf(">", startIndex5) + 1;
 
-                string s2 = driverPage.Substring(
-                    startIndex5,
-                    driverPage.IndexOf("<", startIndex5) - startIndex5
-                );
-
-                driver.trophies = int.Parse(s2);
+                driver.trophies = ExtractIntUntil(driverPage, startIndex5, "<");
 
                 // -------------------------------------------------
                 // GPS
@@ -93,12 +88,7 @@ namespace go.Parsers
                 int startIndex6 = driverPage.IndexOf("<td", startIndex5);
                 startIndex6 = driverPage.IndexOf(">", startIndex6) + 1;
 
-                string s3 = driverPage.Substring(
-                    startIndex6,
-                    driverPage.IndexOf("<", startIndex6) - startIndex6
-                );
-
-                driver.numberOfGps = int.Parse(s3);
+                driver.numberOfGps = ExtractIntUntil(driverPage, startIndex6, "<");
 
                 // -------------------------------------------------
                 // WINS
@@ -109,12 +99,7 @@ namespace go.Parsers
                 int startIndex7 = driverPage.IndexOf("<td", startIndex6);
                 startIndex7 = driverPage.IndexOf(">", startIndex7) + 1;
 
-                string s4 = driverPage.Substring(
-                    startIndex7,
-                    driverPage.IndexOf("<", startIndex7) - startIndex7
-                );
-
-                driver.wins = int.Parse(s4);
+                driver.wins = ExtractIntUntil(driverPage, startIndex7, "<");
 
                 // -------------------------------------------------
                 // PODIUMS
@@ -125,12 +110,7 @@ namespace go.Parsers
                 int startIndex8 = driverPage.IndexOf("<td", startIndex7);
                 startIndex8 = driverPage.IndexOf(">", startIndex8) + 1;
 
-                string s5 = driverPage.Substring(
-                    startIndex8,
-                    driverPage.IndexOf("<", startIndex8) - startIndex8
-                );
-
-                driver.podiums = int.Parse(s5);
+                driver.podiums = ExtractIntUntil(driverPage, startIndex8, "<");
 
                 // -------------------------------------------------
                 // POINTS
@@ -141,12 +121,7 @@ namespace go.Parsers
                 int startIndex9 = driverPage.IndexOf("<td", startIndex8);
                 startIndex9 = driverPage.IndexOf(">", startIndex9) + 1;
 
-                string s6 = driverPage.Substring(
-                    startIndex9,
-                    driverPage.IndexOf("<", startIndex9) - startIndex9
-                );
-
-                driver.pointsScored = int.Parse(s6);
+                driver.pointsScored = ExtractIntUntil(driverPage, startIndex9, "<");
 
                 // -------------------------------------------------
                 // POLES
@@ -157,12 +132,7 @@ namespace go.Parsers
                 int startIndex10 = driverPage.IndexOf("<td", startIndex9);
                 startIndex10 = driverPage.IndexOf(">", startIndex10) + 1;
 
-                string s7 = driverPage.Substring(
-                    startIndex10,
-                    driverPage.IndexOf("<", startIndex10) - startIndex10
-                );
-
-                driver.polePositions = int.Parse(s7);
+                driver.polePositions = ExtractIntUntil(driverPage, startIndex10, "<");
 
                 // -------------------------------------------------
                 // FASTEST LAPS
@@ -173,12 +143,7 @@ namespace go.Parsers
                 int startIndex11 = driverPage.IndexOf("<td", startIndex10);
                 startIndex11 = driverPage.IndexOf(">", startIndex11) + 1;
 
-                string s8 = driverPage.Substring(
-                    startIndex11,
-                    driverPage.IndexOf("<", startIndex11) - startIndex11
-                );
-
-                driver.fastestLaps = int.Parse(s8);
+                driver.fastestLaps = ExtractIntUntil(driverPage, startIndex11, "<");
 
                 // -------------------------------------------------
                 // AVG POINTS
@@ -279,12 +244,7 @@ namespace go.Parsers
                 int startIndex18 = driverPage.IndexOf("barLabel", startIndex17) + 8;
                 int startIndex19 = driverPage.IndexOf(">", startIndex18) + 1;
 
-                string s12 = driverPage.Substring(
-                    startIndex19,
-                    driverPage.IndexOf("%", startIndex19) - startIndex19
-                );
-
-                driver.energy = int.Parse(s12);
+                driver.energy = ExtractIntUntil(driverPage, startIndex19, "%");
 
                 // -------------------------------------------------
                 // OVERALL
@@ -295,12 +255,7 @@ namespace go.Parsers
                 int startIndex20 = driverPage.IndexOf("Overall", startIndex19) + 1;
                 int startIndex21 = driverPage.IndexOf("nowrap>", startIndex20) + 7;
 
-                string s13 = driverPage.Substring(
-                    startIndex21,
-                    driverPage.IndexOf("<", startIndex21) - startIndex21
-                );
-
-                driver.overall = int.Parse(s13);
+                driver.overall = ExtractIntUntil(driverPage, startIndex21, "<");
 
                 // -------------------------------------------------
                 // ATTRIBUTES
@@ -357,12 +312,7 @@ namespace go.Parsers
                 int startIndex59 = driverPage.IndexOf("<td", startIndex58);
                 startIndex59 = driverPage.IndexOf(">", startIndex59) + 1;
 
-                string s26 = driverPage.Substring(
-                    startIndex59,
-                    driverPage.IndexOf(" ", startIndex59) - startIndex59
-                );
-
-                driver.racesLeftOfContract = int.Parse(s26);
+                driver.racesLeftOfContract = ExtractIntUntil(driverPage, startIndex59, " ");
 
                 return driver;
             }
@@ -438,12 +388,7 @@ namespace go.Parsers
             startIndex = driverPage.IndexOf("<td", startIndex);
             startIndex = driverPage.IndexOf(">", startIndex) + 1;
 
-            string value = driverPage.Substring(
-                startIndex,
-                driverPage.IndexOf("&", startIndex) - startIndex
-            );
-
-            return int.Parse(value);
+            return ExtractIntUntil(driverPage, startIndex, "&");
         }
     }
 }

@@ -339,7 +339,7 @@ namespace go.Forms
       {
         ColumnInfo columnInfo = (ColumnInfo) this.formInfo.columnInfo[index];
         ++num;
-        this.listView1.Columns.Add(EnumToString.Enum2ShortString(columnInfo), (int) this.formInfo.columnWidths[index], this.handler.GetColumnAlignment(columnInfo));
+        this.listView1.Columns.Add(EnumConvert.Enum2ShortString(columnInfo), (int) this.formInfo.columnWidths[index], this.handler.GetColumnAlignment(columnInfo));
         switch (columnInfo)
         {
           case ColumnInfo.CarChassisLevel:

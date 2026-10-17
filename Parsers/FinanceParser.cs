@@ -29,7 +29,7 @@ namespace go.Parsers
       try
       {
         int startIndex1 = origpage.IndexOf("Date and time");
-        string[] strArray1 = origpage.Substring(startIndex1, origpage.IndexOf("</table>", startIndex1) - startIndex1).Replace("<tr", "\u00BD").Split('\u00BD');
+        string[] strArray1 = ExtractUntil(origpage, startIndex1, "</table>").Replace("<tr", "\u00BD").Split('\u00BD');
         for (int index1 = 1; index1 < strArray1.Length; ++index1)
         {
           if (!strArray1[index1].Contains("<th"))
@@ -58,7 +58,7 @@ namespace go.Parsers
                   break;
               }
             }
-            int financeItemType = (int) String2Enum.GetFinanceItemType(financeItem);
+            int financeItemType = (int) EnumConvert.GetFinanceItemType(financeItem);
             if (!(financeItem.Date > dateTime))
             {
               arrayList.AddRange((ICollection) Datas.FinanceHistory);
@@ -102,7 +102,7 @@ namespace go.Parsers
       }
       else
       {
-        month = FinanceParser.GetMonth(noget.Substring(0, 3));
+        month = GenericParser.GetMonth(noget.Substring(0, 3));
         int num = noget.IndexOf("th");
         if (num == -1)
           num = noget.IndexOf("st");
@@ -111,63 +111,16 @@ namespace go.Parsers
         if (num == -1)
           num = noget.IndexOf("rd");
         day = int.Parse(noget.Substring(4, num - 4));
-        year = int.Parse(noget.Substring(num + 2, noget.IndexOf(",", num + 2) - num - 2));
+        year = ExtractIntUntil(noget, num + 2, ",");
         startIndex2 = noget.IndexOf(",", num + 2) + 2;
       }
-      int hour = int.Parse(noget.Substring(startIndex2, noget.IndexOf(":", startIndex2) - startIndex2));
+      int hour = ExtractIntUntil(noget, startIndex2, ":");
       int startIndex3 = noget.IndexOf(":", startIndex2) + 1;
-      int minute = int.Parse(noget.Substring(startIndex3, noget.IndexOf(":", startIndex3) - startIndex3));
+      int minute = ExtractIntUntil(noget, startIndex3, ":");
       int startIndex4 = noget.IndexOf(":", startIndex3) + 1;
-      int second = int.Parse(noget.Substring(startIndex4, noget.IndexOf("<", startIndex4) - startIndex4));
+      int second = ExtractIntUntil(noget, startIndex4, "<");
       return new DateTime(year, month, day, hour, minute, second);
     }
 
-    private static int GetMonth(string month)
-    {
-      int month1;
-      switch (month)
-      {
-        case "Apr":
-          month1 = 4;
-          break;
-        case "Aug":
-          month1 = 8;
-          break;
-        case "Dec":
-          month1 = 12;
-          break;
-        case "Feb":
-          month1 = 2;
-          break;
-        case "Jan":
-          month1 = 1;
-          break;
-        case "Jul":
-          month1 = 7;
-          break;
-        case "Jun":
-          month1 = 6;
-          break;
-        case "Mar":
-          month1 = 3;
-          break;
-        case "May":
-          month1 = 5;
-          break;
-        case "Nov":
-          month1 = 11;
-          break;
-        case "Oct":
-          month1 = 10;
-          break;
-        case "Sep":
-          month1 = 9;
-          break;
-        default:
-          month1 = 0;
-          break;
-      }
-      return month1;
-    }
   }
 }

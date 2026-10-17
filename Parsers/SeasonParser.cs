@@ -26,8 +26,7 @@ namespace go.Parsers
         for (int index = 0; index < season.Events.Length; ++index)
         {
           startIndex = seasonPage.IndexOf("TrackDetails.asp", startIndex) + 20;
-          string s = seasonPage.Substring(startIndex, seasonPage.IndexOf("\"", startIndex) - startIndex);
-          season.Events[index].Trackid = int.Parse(s);
+          season.Events[index].Trackid = ExtractIntUntil(seasonPage, startIndex, "\"");
         }
         return season;
       }

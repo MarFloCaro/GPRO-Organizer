@@ -1,0 +1,44 @@
+name: Tests
+
+on:
+  push:
+  pull_request:
+    branches: [main]
+  workflow_call:
+
+permissions:
+  contents: read
+  pull-requests: write
+  checks: write
+
+jobs:
+  test:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup MSBuild
+        uses: microsoft/setup-msbuild@v2
+
+      - name: Setup NuGet
+        uses: NuGet/setup-nuget@v2
+
+      - name: Restore NuGet packages (main project)
+        run: nuget restore Go.sln
+
+      - name: Restore NuGet packages (test project)
+        run: dotnet restore Go.Tests/Go.Tests.csproj
+
+      - name: Build
+        run: msbuild Go.csproj -t:Build -p:Configuration=Debug -verbosity:minimal
+
+      - name: Run tests
+        run: dotnet test Go.Tests/Go.Tests.csproj --no-restore --verbosity normal --logger "trx;LogFileName=test-results.trx"
+
+      - name: Publish test results
+        uses: EnricoMi/publish-unit-test-result-action/windows@v2
+        if: always()
+        with:
+          files: Go.Tests/TestResults/test-results.trx
+          check_name: Test Results
+          comment_mode: always

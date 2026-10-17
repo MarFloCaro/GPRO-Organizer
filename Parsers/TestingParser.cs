@@ -39,7 +39,7 @@ namespace go.Parsers
           ArrayList arrayList = new ArrayList();
           for (; startIndex5 < num2; startIndex5 = testPage.IndexOf("<b>", startIndex5) + 3)
           {
-            string str1 = testPage.Substring(startIndex5, testPage.IndexOf("<", startIndex5) - startIndex5);
+            string str1 = ExtractUntil(testPage, startIndex5, "<");
             if (str1.StartsWith("I am satisfied"))
               arrayList.Add((object) "I am satisfied with the setup of the car");
             else if (str1.StartsWith("No comments available"))
@@ -59,9 +59,9 @@ namespace go.Parsers
             }
           }
           int startIndex7 = testPage.IndexOf("(Stint research priority: ", startIndex6) + 26;
-          string noget = testPage.Substring(startIndex7, testPage.IndexOf(")", startIndex7) - startIndex7);
+          string noget = ExtractUntil(testPage, startIndex7, ")");
           test.runs[index1] = new TestingRun();
-          test.runs[index1].priority = StringToEnum.String2Priority(noget);
+          test.runs[index1].priority = EnumConvert.String2Priority(noget);
           test.runs[index1].comments = new string[arrayList.Count];
           for (int index2 = 0; index2 < arrayList.Count; ++index2)
             test.runs[index1].comments[index2] = (string) arrayList[index2];
@@ -78,32 +78,29 @@ namespace go.Parsers
           }
         }
         int startIndex8 = testPage.IndexOf("TrackDetails.asp") + 20;
-        string s1 = testPage.Substring(startIndex8, testPage.IndexOf("\"", startIndex8) - startIndex8);
-        test.track = int.Parse(s1);
+        test.track = ExtractIntUntil(testPage, startIndex8, "\"");
         int startIndex9 = testPage.IndexOf("Current weather", startIndex8);
         int startIndex10 = testPage.IndexOf("title=", startIndex9) + 7;
-        string noget1 = testPage.Substring(startIndex10, testPage.IndexOf("\"", startIndex10) - startIndex10);
-        test.weather.skies = StringToEnum.String2Skies(noget1);
+        string noget1 = ExtractUntil(testPage, startIndex10, "\"");
+        test.weather.skies = EnumConvert.String2Skies(noget1);
         int startIndex11 = testPage.IndexOf("Temp", startIndex10) + 6;
-        string s2 = testPage.Substring(startIndex11, testPage.IndexOf("°", startIndex11) - startIndex11);
-        test.weather.temperature = int.Parse(s2);
+        test.weather.temperature = ExtractIntUntil(testPage, startIndex11, "°");
         int startIndex12 = testPage.IndexOf("Humidity", startIndex11) + 10;
-        string s3 = testPage.Substring(startIndex12, testPage.IndexOf("%", startIndex12) - startIndex12);
-        test.weather.humidity = int.Parse(s3);
+        test.weather.humidity = ExtractIntUntil(testPage, startIndex12, "%");
         int startIndex13 = testPage.IndexOf("Current points distribution", startIndex12);
         for (int index = 0; index < test.points.Length; ++index)
         {
           int startIndex14 = testPage.IndexOf("<td", startIndex13) + 3;
           int startIndex15 = testPage.IndexOf(">", startIndex14) + 1;
-          string noget2 = testPage.Substring(startIndex15, testPage.IndexOf("<", startIndex15) - startIndex15);
+          string noget2 = ExtractUntil(testPage, startIndex15, "<");
           test.points[index].power = Util.ParseDouble(noget2);
           int startIndex16 = testPage.IndexOf("<td", startIndex15) + 3;
           int startIndex17 = testPage.IndexOf(">", startIndex16) + 1;
-          string noget3 = testPage.Substring(startIndex17, testPage.IndexOf("<", startIndex17) - startIndex17);
+          string noget3 = ExtractUntil(testPage, startIndex17, "<");
           test.points[index].handling = Util.ParseDouble(noget3);
           int startIndex18 = testPage.IndexOf("<td", startIndex17) + 3;
           startIndex13 = testPage.IndexOf(">", startIndex18) + 1;
-          string noget4 = testPage.Substring(startIndex13, testPage.IndexOf("<", startIndex13) - startIndex13);
+          string noget4 = ExtractUntil(testPage, startIndex13, "<");
           test.points[index].acceleration = Util.ParseDouble(noget4);
         }
         if (testPage.IndexOf("No testing stints done", startIndex13) >= 0)
@@ -116,47 +113,37 @@ namespace go.Parsers
         for (int startIndex21 = testPage.IndexOf("<tr", startIndex19); startIndex21 < num5; startIndex21 = testPage.IndexOf("<tr", startIndex20))
         {
           int startIndex22 = testPage.IndexOf("align=\"center\">", startIndex21) + 15;
-          string s4 = testPage.Substring(startIndex22, testPage.IndexOf("/", startIndex22) - startIndex22);
+          string s4 = ExtractUntil(testPage, startIndex22, "/");
           test.runs[index5].lapsDone = int.Parse(s4);
           int startIndex23 = startIndex22 + (s4.Length + 1);
-          string s5 = testPage.Substring(startIndex23, testPage.IndexOf("<", startIndex23) - startIndex23);
-          test.runs[index5].lapLimit = int.Parse(s5);
+          test.runs[index5].lapLimit = ExtractIntUntil(testPage, startIndex23, "<");
           int startIndex24 = testPage.IndexOf("<b>", startIndex23) + 3;
-          string noget5 = testPage.Substring(startIndex24, testPage.IndexOf("s", startIndex24) - startIndex24);
-          test.runs[index5].bestTime = StringToEnum.String2Time(noget5);
+          string noget5 = ExtractUntil(testPage, startIndex24, "s");
+          test.runs[index5].bestTime = EnumConvert.String2Time(noget5);
           int startIndex25 = testPage.IndexOf("<b>", startIndex24) + 3;
-          string noget6 = testPage.Substring(startIndex25, testPage.IndexOf("s", startIndex25) - startIndex25);
-          test.runs[index5].meanTime = StringToEnum.String2Time(noget6);
+          string noget6 = ExtractUntil(testPage, startIndex25, "s");
+          test.runs[index5].meanTime = EnumConvert.String2Time(noget6);
           int startIndex26 = testPage.IndexOf("'>", startIndex25) + 2;
-          string s6 = testPage.Substring(startIndex26, testPage.IndexOf("<", startIndex26) - startIndex26);
-          test.runs[index5].setup.fWing = int.Parse(s6);
+          test.runs[index5].setup.fWing = ExtractIntUntil(testPage, startIndex26, "<");
           int startIndex27 = testPage.IndexOf("'>", startIndex26) + 2;
-          string s7 = testPage.Substring(startIndex27, testPage.IndexOf("<", startIndex27) - startIndex27);
-          test.runs[index5].setup.rWing = int.Parse(s7);
+          test.runs[index5].setup.rWing = ExtractIntUntil(testPage, startIndex27, "<");
           int startIndex28 = testPage.IndexOf("'>", startIndex27) + 2;
-          string s8 = testPage.Substring(startIndex28, testPage.IndexOf("<", startIndex28) - startIndex28);
-          test.runs[index5].setup.engine = int.Parse(s8);
+          test.runs[index5].setup.engine = ExtractIntUntil(testPage, startIndex28, "<");
           int startIndex29 = testPage.IndexOf("'>", startIndex28) + 2;
-          string s9 = testPage.Substring(startIndex29, testPage.IndexOf("<", startIndex29) - startIndex29);
-          test.runs[index5].setup.brakes = int.Parse(s9);
+          test.runs[index5].setup.brakes = ExtractIntUntil(testPage, startIndex29, "<");
           int startIndex30 = testPage.IndexOf("'>", startIndex29) + 2;
-          string s10 = testPage.Substring(startIndex30, testPage.IndexOf("<", startIndex30) - startIndex30);
-          test.runs[index5].setup.gear = int.Parse(s10);
+          test.runs[index5].setup.gear = ExtractIntUntil(testPage, startIndex30, "<");
           int startIndex31 = testPage.IndexOf("'>", startIndex30) + 2;
-          string s11 = testPage.Substring(startIndex31, testPage.IndexOf("<", startIndex31) - startIndex31);
-          test.runs[index5].setup.susp = int.Parse(s11);
+          test.runs[index5].setup.susp = ExtractIntUntil(testPage, startIndex31, "<");
           int startIndex32 = testPage.IndexOf("'>", startIndex31) + 2;
-          string noget7 = testPage.Substring(startIndex32, testPage.IndexOf("<", startIndex32) - startIndex32);
-          test.runs[index5].setup.tyres = StringToEnum.String2Tyres(noget7);
+          string noget7 = ExtractUntil(testPage, startIndex32, "<");
+          test.runs[index5].setup.tyres = EnumConvert.String2Tyres(noget7);
           int startIndex33 = testPage.IndexOf("'>", startIndex32) + 2;
-          string s12 = testPage.Substring(startIndex33, testPage.IndexOf("<", startIndex33) - startIndex33);
-          test.runs[index5].fuelStart = int.Parse(s12);
+          test.runs[index5].fuelStart = ExtractIntUntil(testPage, startIndex33, "<");
           int startIndex34 = testPage.IndexOf("nowrap>", startIndex33) + 7;
-          string s13 = testPage.Substring(startIndex34, testPage.IndexOf("%", startIndex34) - startIndex34);
-          test.runs[index5].tyresCondition = int.Parse(s13);
+          test.runs[index5].tyresCondition = ExtractIntUntil(testPage, startIndex34, "%");
           startIndex20 = testPage.IndexOf("nowrap>", startIndex34) + 7;
-          string s14 = testPage.Substring(startIndex20, testPage.IndexOf("<", startIndex20) - startIndex20);
-          test.runs[index5].fuelLeft = int.Parse(s14);
+          test.runs[index5].fuelLeft = ExtractIntUntil(testPage, startIndex20, "<");
           ++index5;
         }
         return test;

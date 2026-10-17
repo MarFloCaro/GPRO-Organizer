@@ -199,13 +199,13 @@ namespace go.Forms
                           listViewItem.SubItems.Add((index1 + 1).ToString());
                           continue;
                         case ColumnInfo.PracticeLapTime:
-                          listViewItem.SubItems.Add(EnumToString.Time2PracExportString(run.lapTime, true));
+                          listViewItem.SubItems.Add(EnumConvert.Time2PracExportString(run.lapTime, true));
                           continue;
                         case ColumnInfo.PracticeDriverMistake:
-                          listViewItem.SubItems.Add(EnumToString.Time2PracExportString(run.driverMistake, true));
+                          listViewItem.SubItems.Add(EnumConvert.Time2PracExportString(run.driverMistake, true));
                           continue;
                         case ColumnInfo.PracticeNetTime:
-                          listViewItem.SubItems.Add(EnumToString.Time2PracExportString(run.netTime, true));
+                          listViewItem.SubItems.Add(EnumConvert.Time2PracExportString(run.netTime, true));
                           continue;
                         case ColumnInfo.PracticeFrontWing:
                           listViewItem.SubItems.Add(run.setup.fWing.ToString());
@@ -226,10 +226,10 @@ namespace go.Forms
                           listViewItem.SubItems.Add(run.setup.susp.ToString());
                           continue;
                         case ColumnInfo.PracticeTyreType:
-                          listViewItem.SubItems.Add(EnumToString.Enum2String(run.setup.tyres));
+                          listViewItem.SubItems.Add(EnumConvert.Enum2String(run.setup.tyres));
                           continue;
                         case ColumnInfo.PracticeWeather:
-                          listViewItem.SubItems.Add(EnumToString.Enum2String(practise.weather.skies));
+                          listViewItem.SubItems.Add(EnumConvert.Enum2String(practise.weather.skies));
                           continue;
                         case ColumnInfo.PracticeTemperature:
                           listViewItem.SubItems.Add(practise.weather.temperature.ToString());

@@ -1,5 +1,8 @@
 ﻿using System.Reflection;
+using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
+
+[assembly: InternalsVisibleTo("Go.Tests")]
 
 [assembly: AssemblyTitle("GPRO Organizer \u00B2")]
 [assembly: AssemblyProduct("GPRO Organizer \u00B2")]

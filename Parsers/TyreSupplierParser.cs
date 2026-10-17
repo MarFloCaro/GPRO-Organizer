@@ -25,6 +25,14 @@ namespace go.Parsers
         int startIndex1 = supplierPage.IndexOf("Contract active");
         if (startIndex1 == -1)
           return tyreSupplier;
+        int h2Start = supplierPage.LastIndexOf("<h2>", startIndex1);
+        if (h2Start != -1)
+        {
+          h2Start += 4;
+          int h2End = supplierPage.IndexOf("</h2>", h2Start);
+          if (h2End != -1)
+            tyreSupplier.name = supplierPage.Substring(h2Start, h2End - h2Start).Trim();
+        }
         int startIndex2 = supplierPage.LastIndexOf("Dry performance", startIndex1);
         int startIndex3 = supplierPage.IndexOf("lvl", startIndex2);
         int startIndex4;

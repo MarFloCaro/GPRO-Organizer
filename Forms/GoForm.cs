@@ -26,6 +26,7 @@ namespace go.Forms
     protected MenuItem menuItemChooseColumns = new MenuItem();
     protected MenuItem menuItemExportToCSV = new MenuItem();
 
+
     public GoForm() => this.InitializeComponent();
 
     public GoForm(string formName)
@@ -69,7 +70,7 @@ namespace go.Forms
       for (int index = 0; index < this.formInfo.columnInfo.Count && index < this.formInfo.columnWidths.Count; ++index)
       {
         ColumnInfo columnInfo = (ColumnInfo) this.formInfo.columnInfo[index];
-        this.listView1.Columns.Add(EnumToString.Enum2ShortString(columnInfo), (int) this.formInfo.columnWidths[index], Datas.FormHandler.GetColumnAlignment(columnInfo));
+        this.listView1.Columns.Add(EnumConvert.Enum2ShortString(columnInfo), (int) this.formInfo.columnWidths[index], Datas.FormHandler.GetColumnAlignment(columnInfo));
       }
     }
 
@@ -290,7 +291,7 @@ namespace go.Forms
                         case ColumnInfo.DriverSalary:
                           if (flag4)
                           {
-                            listViewItem.SubItems.Add(EnumToString.Wage2String(driver5.salary));
+                            listViewItem.SubItems.Add(EnumConvert.Wage2String(driver5.salary));
                             continue;
                           }
                           listViewItem.SubItems.Add("-");
@@ -418,7 +419,7 @@ namespace go.Forms
                         case ColumnInfo.StaffSalary:
                           if (season.Events[index1].isStaffUpdated)
                           {
-                            listViewItem.SubItems.Add(EnumToString.Wage2String(season.Events[index1].Staff.salary));
+                            listViewItem.SubItems.Add(EnumConvert.Wage2String(season.Events[index1].Staff.salary));
                             continue;
                           }
                           listViewItem.SubItems.Add("-");
@@ -434,7 +435,7 @@ namespace go.Forms
                         case ColumnInfo.StintTyreType:
                           if (race.CalcTyres != null && race.CalcTyres.Length > index2)
                           {
-                            listViewItem.SubItems.Add(EnumToString.Enum2String(race.CalcTyres[index2].tyres));
+                            listViewItem.SubItems.Add(EnumConvert.Enum2String(race.CalcTyres[index2].tyres));
                             continue;
                           }
                           listViewItem.SubItems.Add("-");
@@ -723,7 +724,7 @@ namespace go.Forms
                         case ColumnInfo.PitReason:
                           if (race.PitStops != null && race.PitStops.Length > index3)
                           {
-                            listViewItem.SubItems.Add(EnumToString.Enum2String(race.PitStops[index3].pitstopreason));
+                            listViewItem.SubItems.Add(EnumConvert.Enum2String(race.PitStops[index3].pitstopreason));
                             continue;
                           }
                           listViewItem.SubItems.Add("-");
@@ -755,7 +756,7 @@ namespace go.Forms
                         case ColumnInfo.PitTime:
                           if (race.PitStops != null && race.PitStops.Length > index3)
                           {
-                            listViewItem.SubItems.Add(EnumToString.Time2String(race.PitStops[index3].pitTime, true));
+                            listViewItem.SubItems.Add(EnumConvert.Time2String(race.PitStops[index3].pitTime, true));
                             continue;
                           }
                           listViewItem.SubItems.Add("-");
@@ -809,6 +810,12 @@ namespace go.Forms
     {
       if (found)
         return;
+      if (trackid < 0 || trackid >= Datas.Tracks.Length)
+      {
+        found = true;
+        item.SubItems.Add("?");
+        return;
+      }
       found = true;
       switch (column)
       {
@@ -816,19 +823,19 @@ namespace go.Forms
           item.SubItems.Add(Datas.Tracks[trackid].name);
           break;
         case ColumnInfo.TrackDownForce:
-          item.SubItems.Add(EnumToString.Enum2String(Datas.Tracks[trackid].downforce));
+          item.SubItems.Add(EnumConvert.Enum2String(Datas.Tracks[trackid].downforce));
           break;
         case ColumnInfo.TrackOvertaking:
-          item.SubItems.Add(EnumToString.Enum2String(Datas.Tracks[trackid].overtaking));
+          item.SubItems.Add(EnumConvert.Enum2String(Datas.Tracks[trackid].overtaking));
           break;
         case ColumnInfo.TrackSuspensionRigidity:
-          item.SubItems.Add(EnumToString.Enum2String(Datas.Tracks[trackid].suspensionRigidity));
+          item.SubItems.Add(EnumConvert.Enum2String(Datas.Tracks[trackid].suspensionRigidity));
           break;
         case ColumnInfo.TrackFuelConsumption:
-          item.SubItems.Add(EnumToString.Enum2String(Datas.Tracks[trackid].fuelConsumption));
+          item.SubItems.Add(EnumConvert.Enum2String(Datas.Tracks[trackid].fuelConsumption));
           break;
         case ColumnInfo.TrackTyreWear:
-          item.SubItems.Add(EnumToString.Enum2String(Datas.Tracks[trackid].tyreWear));
+          item.SubItems.Add(EnumConvert.Enum2String(Datas.Tracks[trackid].tyreWear));
           break;
         case ColumnInfo.TrackLapLength:
           item.SubItems.Add(Datas.Tracks[trackid].lapDistance.ToString());
@@ -861,7 +868,7 @@ namespace go.Forms
           item.SubItems.Add(Datas.Tracks[trackid].numberOfCorners.ToString());
           break;
         case ColumnInfo.TrackGrip:
-          item.SubItems.Add(EnumToString.Enum2String(Datas.Tracks[trackid].grip));
+          item.SubItems.Add(EnumConvert.Enum2String(Datas.Tracks[trackid].grip));
           break;
         default:
           found = false;
@@ -1203,9 +1210,8 @@ namespace go.Forms
       this.ListAll();
       this.UpdateColumnSizes();
       this.UpdateBoxVisibilities();
-      if (this.formInfo.columnInfo.Count != 0)
-        return;
-      this.menuItemChooseColumns_Click((object) null, (EventArgs) null);
+      if (this.formInfo.columnInfo.Count == 0)
+        this.menuItemChooseColumns_Click(null, null);
     }
 
     protected virtual void UpdateBoxVisibilities()

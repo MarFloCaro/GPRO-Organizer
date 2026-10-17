@@ -7,6 +7,7 @@
 using go.Utils;
 using System;
 using System.Globalization;
+using System.Text;
 
 #nullable disable
 namespace go.Parsers
@@ -16,10 +17,10 @@ namespace go.Parsers
     protected static string GetRidOfLinks(string noget)
     {
       string[] strArray = noget.Split('<', '>');
-      string ridOfLinks = "";
+      StringBuilder sb = new StringBuilder();
       for (int index = 0; index < strArray.Length; index += 2)
-        ridOfLinks += strArray[index];
-      return ridOfLinks;
+        sb.Append(strArray[index]);
+      return sb.ToString();
     }
 
     public static void HandleError(string message, Exception e, string page)
@@ -49,6 +50,69 @@ namespace go.Parsers
       return !flag ? num2 : -num2;
     }
 
-    public static TimeSpan ParseTimeSpan(string noget) => StringToEnum.String2Time(noget);
+    public static int GetMoneyAmount(string noget, string error)
+    {
+      int num1 = noget.IndexOf("$") + 1;
+      bool flag1 = false;
+      if (noget[num1] == '-')
+      {
+        flag1 = true;
+        ++num1;
+      }
+      bool flag2 = true;
+      if (noget.IndexOf("<", num1) > 0)
+        flag2 = false;
+      noget = noget.Substring(num1, (flag2 ? noget.Length : noget.IndexOf("<", num1)) - num1);
+      int num2;
+      try
+      {
+        num2 = int.Parse(noget, NumberStyles.AllowThousands, (IFormatProvider) new CultureInfo("da-DK"));
+      }
+      catch
+      {
+        Errlog.AddToLog("Could not parse int \"" + noget + " as " + error);
+        throw;
+      }
+      return !flag1 ? num2 : -num2;
+    }
+
+    public static int GetMonth(string month)
+    {
+      switch (month)
+      {
+        case "Jan": return 1;
+        case "Feb": return 2;
+        case "Mar": return 3;
+        case "Apr": return 4;
+        case "May": return 5;
+        case "Jun": return 6;
+        case "Jul": return 7;
+        case "Aug": return 8;
+        case "Sep": return 9;
+        case "Oct": return 10;
+        case "Nov": return 11;
+        case "Dec": return 12;
+        default: return 0;
+      }
+    }
+
+    public static TimeSpan ParseTimeSpan(string noget) => EnumConvert.String2Time(noget);
+
+    public static string ExtractUntil(string source, int startIndex, string delimiter)
+    {
+      int endIndex = source.IndexOf(delimiter, startIndex);
+      if (endIndex < 0)
+        return source.Substring(startIndex);
+      return source.Substring(startIndex, endIndex - startIndex);
+    }
+
+    public static int ExtractIntUntil(string source, int startIndex, string delimiter)
+    {
+      string value = ExtractUntil(source, startIndex, delimiter);
+      if (int.TryParse(value, out int result))
+        return result;
+      Errlog.AddToLog("ExtractIntUntil: could not parse \"" + value + "\" as int (delimiter: \"" + delimiter + "\")");
+      throw new FormatException("Could not parse \"" + value + "\" as int");
+    }
   }
 }

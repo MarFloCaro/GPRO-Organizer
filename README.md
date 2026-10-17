@@ -3,6 +3,7 @@
 ![Release](https://img.shields.io/github/v/release/MarFloCaro/GPRO-Organizer?style=for-the-badge)
 ![Downloads](https://img.shields.io/github/downloads/MarFloCaro/GPRO-Organizer/latest/total?style=for-the-badge&color=purple)
 ![Last Commit](https://img.shields.io/github/last-commit/MarFloCaro/GPRO-Organizer?style=for-the-badge)
+![Tests](https://img.shields.io/github/actions/workflow/status/MarFloCaro/GPRO-Organizer/tests.yml?branch=main&style=for-the-badge&label=Tests)
 
 GPRO Organizer is a community-maintained desktop companion tool for [GPRO](https://gpro.net) players.
 

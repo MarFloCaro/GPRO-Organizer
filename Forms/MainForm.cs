@@ -3288,7 +3288,7 @@ namespace go.Forms
             this.label14.Size = new Size(56, 16);
             this.label14.TabIndex = 1;
             this.label14.Text = "Weather:";
-            this.listViewPractice.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
+            this.listViewPractice.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
             this.listViewPractice.Columns.AddRange(new ColumnHeader[11]
             {
         this.columnHeader1,
@@ -3307,7 +3307,7 @@ namespace go.Forms
             this.listViewPractice.HideSelection = false;
             this.listViewPractice.Location = new Point(0, 32);
             this.listViewPractice.Name = "listViewPractice";
-            this.listViewPractice.Scrollable = false;
+            this.listViewPractice.Scrollable = true;
             this.listViewPractice.Size = new Size(797, 136);
             this.listViewPractice.TabIndex = 0;
             this.listViewPractice.UseCompatibleStateImageBehavior = false;
@@ -4528,7 +4528,9 @@ namespace go.Forms
         private void MniAllTracksClick(object sender, EventArgs e)
         {
             Cursor previousCursor = Cursor.Current;
-            Cursor.Current = Cursors.AppStarting;
+            Cursor.Current = Cursors.WaitCursor;
+            this.statusBarPanel3.Text = "Updating tracks...";
+            Application.DoEvents();
 
             try
             {
@@ -4574,6 +4576,7 @@ namespace go.Forms
             finally
             {
                 Cursor.Current = previousCursor;
+                this.statusBarPanel3.Text = "Ready";
             }
         }
 
@@ -4592,38 +4595,39 @@ namespace go.Forms
             if (System.IO.File.Exists(filename))
                 System.IO.File.Copy(filename, filename.Replace(".dat", ".bak"), true);
             string tempFileName = Path.GetTempFileName();
-            Stream serializationStream = (Stream)new FileStream(tempFileName, FileMode.Create, FileAccess.Write, FileShare.None);
-            binaryFormatter.Serialize(serializationStream, (object)13);
-            binaryFormatter.Serialize(serializationStream, (object)20);
-            binaryFormatter.Serialize(serializationStream, (object)Datas.Communications.managerName);
-            binaryFormatter.Serialize(serializationStream, (object)Datas.Communications.teamName);
-            binaryFormatter.Serialize(serializationStream, (object)Datas.Date);
-            binaryFormatter.Serialize(serializationStream, (object)2);
-            binaryFormatter.Serialize(serializationStream, (object)Datas.Car);
-            binaryFormatter.Serialize(serializationStream, (object)5);
-            binaryFormatter.Serialize(serializationStream, (object)Datas.Driver);
-            binaryFormatter.Serialize(serializationStream, (object)2);
-            binaryFormatter.Serialize(serializationStream, (object)Datas.CarHistory);
-            binaryFormatter.Serialize(serializationStream, (object)4);
-            binaryFormatter.Serialize(serializationStream, (object)Datas.OldDrivers);
-            binaryFormatter.Serialize(serializationStream, (object)21);
-            binaryFormatter.Serialize(serializationStream, (object)Datas.Seasons);
-            binaryFormatter.Serialize(serializationStream, (object)1);
-            binaryFormatter.Serialize(serializationStream, (object)Datas.TrackNotes);
-            binaryFormatter.Serialize(serializationStream, (object)1);
-            binaryFormatter.Serialize(serializationStream, (object)Datas.FinanceHistory);
-            binaryFormatter.Serialize(serializationStream, (object)1);
-            binaryFormatter.Serialize(serializationStream, (object)Datas.Staff);
-            binaryFormatter.Serialize(serializationStream, (object)1);
-            binaryFormatter.Serialize(serializationStream, (object)Datas.StaffHistory);
-            binaryFormatter.Serialize(serializationStream, (object)1);
-            binaryFormatter.Serialize(serializationStream, (object)Datas.TechnicalDirector);
-            binaryFormatter.Serialize(serializationStream, (object)1);
-            binaryFormatter.Serialize(serializationStream, (object)Datas.OldTechnicalDirectors);
-            binaryFormatter.Serialize(serializationStream, (object)1);
-            binaryFormatter.Serialize(serializationStream, (object)Datas.Manager);
-            binaryFormatter.Serialize(serializationStream, (object)Datas.WarnWrongTyres);
-            serializationStream.Close();
+            using (Stream serializationStream = (Stream)new FileStream(tempFileName, FileMode.Create, FileAccess.Write, FileShare.None))
+            {
+                binaryFormatter.Serialize(serializationStream, (object)13);
+                binaryFormatter.Serialize(serializationStream, (object)20);
+                binaryFormatter.Serialize(serializationStream, (object)Datas.Communications.managerName);
+                binaryFormatter.Serialize(serializationStream, (object)Datas.Communications.teamName);
+                binaryFormatter.Serialize(serializationStream, (object)Datas.Date);
+                binaryFormatter.Serialize(serializationStream, (object)2);
+                binaryFormatter.Serialize(serializationStream, (object)Datas.Car);
+                binaryFormatter.Serialize(serializationStream, (object)5);
+                binaryFormatter.Serialize(serializationStream, (object)Datas.Driver);
+                binaryFormatter.Serialize(serializationStream, (object)2);
+                binaryFormatter.Serialize(serializationStream, (object)Datas.CarHistory);
+                binaryFormatter.Serialize(serializationStream, (object)4);
+                binaryFormatter.Serialize(serializationStream, (object)Datas.OldDrivers);
+                binaryFormatter.Serialize(serializationStream, (object)21);
+                binaryFormatter.Serialize(serializationStream, (object)Datas.Seasons);
+                binaryFormatter.Serialize(serializationStream, (object)1);
+                binaryFormatter.Serialize(serializationStream, (object)Datas.TrackNotes);
+                binaryFormatter.Serialize(serializationStream, (object)1);
+                binaryFormatter.Serialize(serializationStream, (object)Datas.FinanceHistory);
+                binaryFormatter.Serialize(serializationStream, (object)1);
+                binaryFormatter.Serialize(serializationStream, (object)Datas.Staff);
+                binaryFormatter.Serialize(serializationStream, (object)1);
+                binaryFormatter.Serialize(serializationStream, (object)Datas.StaffHistory);
+                binaryFormatter.Serialize(serializationStream, (object)1);
+                binaryFormatter.Serialize(serializationStream, (object)Datas.TechnicalDirector);
+                binaryFormatter.Serialize(serializationStream, (object)1);
+                binaryFormatter.Serialize(serializationStream, (object)Datas.OldTechnicalDirectors);
+                binaryFormatter.Serialize(serializationStream, (object)1);
+                binaryFormatter.Serialize(serializationStream, (object)Datas.Manager);
+                binaryFormatter.Serialize(serializationStream, (object)Datas.WarnWrongTyres);
+            }
             System.IO.File.Copy(tempFileName, filename, true);
             System.IO.File.Delete(tempFileName);
             this.statusBarPanel3.Text = "data saved";
@@ -4640,10 +4644,11 @@ namespace go.Forms
                 {
                     Binder = (SerializationBinder) new TypeBinder()
                 };
-                Stream serializationStream =
-                    (Stream) new FileStream("tracks.dat", FileMode.Open, FileAccess.Read, FileShare.Read);
-                Datas.Tracks = (Track[]) binaryFormatter.Deserialize(serializationStream);
-                serializationStream.Close();
+                using (Stream serializationStream =
+                    (Stream) new FileStream("tracks.dat", FileMode.Open, FileAccess.Read, FileShare.Read))
+                {
+                    Datas.Tracks = (Track[]) binaryFormatter.Deserialize(serializationStream);
+                }
             }
             catch (FileNotFoundException e)
             {
@@ -4886,7 +4891,6 @@ namespace go.Forms
                             break;
                     }
                     Datas.INDEX_CURRENTSEASON = Datas.Seasons.Count - 1;
-                    goFile.Close();
                     if (num2 < 2)
                     {
                         Season20 season20 = Datas.Seasons.FirstOrDefault<Season20>((Func<Season20, bool>)(season => season.Season == 3));
@@ -5300,6 +5304,15 @@ namespace go.Forms
                     Datas.Communications.teamName = teamName;
                     if (Datas.Date.season <= 0)
                         return;
+
+                    if (this.HasUnknownTracks())
+                    {
+                        MessageBox.Show((IWin32Window)this,
+                            "One or more tracks for this season are unknown to GO.\nPlease update the tracks using the Tools → Update tracks menu.",
+                            "Unknown track", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                        return;
+                    }
+
                     int index11 = Datas.Date.race == 18 ? 16 : Datas.Date.race - 1;
                     if (Datas.Date.race == 18)
                     {
@@ -5338,6 +5351,10 @@ namespace go.Forms
                     int num = (int)MessageBox.Show("There has been an unidentified error while reading your go.dat file.\nIt can be found at " + (Datas.KeepDataWithApp ? "the program location" : this.GetDefaultFileName()) + " If you save any data, your old data will be lost. Please make a backup of your data file before proceeding \nand contact gpro.organizer@gmail.com for help", "Critical error during startup", MessageBoxButtons.OK, MessageBoxIcon.Hand);
                     Errlog.AddToLog("LoadData: " + ex.Message);
                 }
+                finally
+                {
+                    goFile.Close();
+                }
             }
 
             UpdateStatusBarText("Data loaded");
@@ -5345,6 +5362,9 @@ namespace go.Forms
 
         private void FillTyreSupplierTab(TyreSupplier supplier)
         {
+            this.groupBox11.Text = string.IsNullOrEmpty(supplier.name)
+                ? "Tyre Supplier"
+                : "Tyre Supplier — " + supplier.name;
             this.textBoxDryPerformance.Text = supplier.dryPerf.ToString();
             this.textBoxWetPerformance.Text = supplier.wetPerf.ToString();
             this.textBoxPeakTemperature.Text = supplier.peakTemp.ToString();
@@ -5446,7 +5466,15 @@ namespace go.Forms
                 
                 this.menuItemCurrentSeason.Enabled = true;
                 this.menuItemPitStrategy.Enabled = true;
-        
+
+                if (this.HasUnknownTracks())
+                {
+                    MessageBox.Show((IWin32Window)this,
+                        "One or more tracks for this season are unknown to GO.\nPlease update the tracks using the Tools → Update tracks menu.",
+                        "Unknown track", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    return;
+                }
+
                 if (Datas.Date.race == 18)
                 {
                     Datas.NextRace = -1;
@@ -5457,13 +5485,13 @@ namespace go.Forms
                     var currentEvent =
                         Datas.Seasons[Datas.INDEX_CURRENTSEASON]
                             .Events[Datas.Date.race - 1];
-               
+
                     Datas.NextRace = currentEvent.Trackid - 1;
-        
+
                     this.statusBarPanel2.Text =
                         "Next race: " + Datas.Tracks[Datas.NextRace].name;
                 }
-        
+
                 this.UpdateSeasonStats();
             }
             catch (Exception ex)
@@ -5518,7 +5546,10 @@ namespace go.Forms
 
                 this.FillCarWearData();
 
-                this.UpdateSeasonStats();
+                if (!this.HasUnknownTracks())
+                {
+                    this.UpdateSeasonStats();
+                }
                 this.FillTitleBar();
 
                 if (Datas.TechnicalDirector.id > 0)
@@ -5584,8 +5615,8 @@ namespace go.Forms
                 {
                     Datas.Seasons[Datas.INDEX_CURRENTSEASON].Events[Datas.Date.race - 1].Tyresupplier = tyreSupplier;
                     this.DataChanged();
-                    this.FillTyreSupplierTab(tyreSupplier);
                 }
+                this.FillTyreSupplierTab(tyreSupplier);
                 this.statusBarPanel3.Text = "Tyre supplier downloaded";
                 return true;
             }
@@ -6090,6 +6121,19 @@ label_10:
             return true;
         }
 
+        private bool HasUnknownTracks()
+        {
+            if (Datas.Seasons.Count <= Datas.INDEX_CURRENTSEASON || Datas.Seasons[Datas.INDEX_CURRENTSEASON] == null)
+                return false;
+            foreach (var evt in Datas.Seasons[Datas.INDEX_CURRENTSEASON].Events)
+            {
+                int trackIndex = evt.Trackid - 1;
+                if (trackIndex < 0 || trackIndex >= Datas.Tracks.Length)
+                    return true;
+            }
+            return false;
+        }
+
         private void UpdateSeason()
         {
             try
@@ -6116,14 +6160,14 @@ label_10:
                 for (int index = 0; index < Datas.Seasons[Datas.INDEX_CURRENTSEASON].Events.Length; ++index)
                 {
                     ListViewItem listViewItem = new ListViewItem((index + 1).ToString());
-                    try
+                    int trackIndex = Datas.Seasons[Datas.INDEX_CURRENTSEASON].Events[index].Trackid - 1;
+                    if (trackIndex < 0 || trackIndex >= Datas.Tracks.Length)
                     {
-                        listViewItem.SubItems.Add(Datas.Tracks[Datas.Seasons[Datas.INDEX_CURRENTSEASON].Events[index].Trackid - 1].name);
+                        listViewItem.SubItems.Add("?");
                     }
-                    catch (IndexOutOfRangeException ex)
+                    else
                     {
-                        int num = (int)MessageBox.Show((IWin32Window)this, "One of the tracks for this season is unknown to GO \n You must update the tracks using the Tools -> Update tracks menu \n If you are running Vista it may be necessary to run GO as administrator", "Error", MessageBoxButtons.OK, MessageBoxIcon.Hand);
-                        break;
+                        listViewItem.SubItems.Add(Datas.Tracks[trackIndex].name);
                     }
                     if (Datas.Seasons[Datas.INDEX_CURRENTSEASON].Events[index].isCarUpdated)
                         listViewItem.SubItems.Add("updated");
@@ -6139,7 +6183,9 @@ label_10:
                         listViewItem.SubItems.Add("-");
                     if (Datas.Seasons[Datas.INDEX_CURRENTSEASON].Events[index].Practise.runs[0].netTime > TimeSpan.Zero)
                     {
-                        this.comboBoxPrac.Items.Add((object)Datas.Tracks[Datas.Seasons[Datas.INDEX_CURRENTSEASON].Events[index].Trackid - 1].name);
+                        this.comboBoxPrac.Items.Add(trackIndex >= 0 && trackIndex < Datas.Tracks.Length
+                            ? (object)Datas.Tracks[trackIndex].name
+                            : (object)"?");
                         listViewItem.SubItems.Add("updated");
                     }
                     else
@@ -6195,9 +6241,9 @@ label_10:
                 {
           financeItem.Date.ToString(),
           financeItem.Description,
-          EnumToString.Wage2String(financeItem.BalanceBefore),
-          EnumToString.Wage2String(financeItem.Amount),
-          EnumToString.Wage2String(financeItem.BalanceAfter)
+          EnumConvert.Wage2String(financeItem.BalanceBefore),
+          EnumConvert.Wage2String(financeItem.Amount),
+          EnumConvert.Wage2String(financeItem.BalanceAfter)
                 }));
             }
         }
@@ -6389,7 +6435,7 @@ label_10:
             this.textBoxEnergy.Text = Datas.Driver.energy.ToString();
             this.textBoxWeight.Text = Datas.Driver.weight.ToString();
             this.textBoxAge.Text = Datas.Driver.age.ToString();
-            this.textBoxSalary.Text = EnumToString.Wage2String(Datas.Driver.salary);
+            this.textBoxSalary.Text = EnumConvert.Wage2String(Datas.Driver.salary);
             this.textBoxContract.Text = Datas.Driver.racesLeftOfContract.ToString();
             this.FavoriteTracksView.Items.Clear();
             foreach (int favoriteTrack in Datas.Driver.favoriteTracks)
@@ -6489,7 +6535,7 @@ label_10:
             this.textBoxTDNumGps.Text = Datas.TechnicalDirector.numberOfGps.ToString();
             this.textBoxTDOverall.Text = Datas.TechnicalDirector.overall.ToString();
             this.textBoxTDPitCoordination.Text = Datas.TechnicalDirector.pitCoordination.ToString();
-            this.textBoxTDSalary.Text = EnumToString.Wage2String(Datas.TechnicalDirector.salary);
+            this.textBoxTDSalary.Text = EnumConvert.Wage2String(Datas.TechnicalDirector.salary);
             this.textBoxTDTrophies.Text = Datas.TechnicalDirector.trophies.ToString();
             this.textBoxTDWins.Text = Datas.TechnicalDirector.wins.ToString();
             if (Datas.TechnicalDirector.history.historyList.Count < 2)
@@ -6586,26 +6632,26 @@ label_10:
                 this.listViewTesting.Items.Add(new ListViewItem((index + 1).ToString())
                 {
                     SubItems = {
-            EnumToString.Time2String(test.runs[index].meanTime, true),
-            EnumToString.Time2String(test.runs[index].bestTime, true),
+            EnumConvert.Time2String(test.runs[index].meanTime, true),
+            EnumConvert.Time2String(test.runs[index].bestTime, true),
             test.runs[index].lapLimit.ToString(),
             test.runs[index].lapsDone.ToString(),
             test.runs[index].fuelStart.ToString(),
             test.runs[index].tyresCondition.ToString() + "%",
             test.runs[index].fuelLeft.ToString(),
-            EnumToString.Enum2String(test.runs[index].priority),
+            EnumConvert.Enum2String(test.runs[index].priority),
             test.runs[index].setup.fWing.ToString(),
             test.runs[index].setup.rWing.ToString(),
             test.runs[index].setup.engine.ToString(),
             test.runs[index].setup.brakes.ToString(),
             test.runs[index].setup.gear.ToString(),
             test.runs[index].setup.susp.ToString(),
-            EnumToString.Enum2String(test.runs[index].setup.tyres)
+            EnumConvert.Enum2String(test.runs[index].setup.tyres)
           }
                 });
             this.testTemp.Text = test.weather.temperature.ToString();
             this.testHumidity.Text = test.weather.humidity.ToString();
-            this.testWeather.Text = EnumToString.Enum2String(test.weather.skies);
+            this.testWeather.Text = EnumConvert.Enum2String(test.weather.skies);
         }
 
         private void FillSponsorTab(SponsorState sponsor)
@@ -6647,7 +6693,7 @@ label_10:
                             sponsor.negotiations[index].amountPerRace.ToString(),
                             sponsor.negotiations[index].duration.ToString(),
                             sponsor.negotiations[index].progress.ToString() + "%",
-                            EnumToString.Enum2String(sponsor.negotiations[index].priority)
+                            EnumConvert.Enum2String(sponsor.negotiations[index].priority)
                         }
                     });
             }
@@ -6667,9 +6713,9 @@ label_10:
             this.textBoxBra.Text = strat.setup.brakes.ToString();
             this.textBoxGear.Text = strat.setup.gear.ToString();
             this.textBoxSusp.Text = strat.setup.susp.ToString();
-            this.textBoxTyresStart.Text = EnumToString.Enum2String(strat.startTyres);
-            this.textBoxTyresRain.Text = EnumToString.Enum2String(strat.rainTyres);
-            this.textBoxTyresDry.Text = EnumToString.Enum2String(strat.dryTyres);
+            this.textBoxTyresStart.Text = EnumConvert.Enum2String(strat.startTyres);
+            this.textBoxTyresRain.Text = EnumConvert.Enum2String(strat.rainTyres);
+            this.textBoxTyresDry.Text = EnumConvert.Enum2String(strat.dryTyres);
             this.textBoxWaitRain.Text = strat.pitAfterRain.ToString();
             if (strat.pitAfterRain == 1)
                 this.labelWaitRain.Text = "lap";
@@ -6687,7 +6733,7 @@ label_10:
             this.textBoxPitIfSolvableProblem.Text = strat.pitIfSolvableProblem ? "Yes" : "No";
             this.textBoxPitLimit.Text = strat.pitLapLimit.ToString();
             this.checkBoxRefuel.Checked = strat.dontrefuelOnTechnicalProblems;
-            this.textBoxStartStrategy.Text = EnumToString.Enum2String(strat.startStrategy);
+            this.textBoxStartStrategy.Text = EnumConvert.Enum2String(strat.startStrategy);
         }
 
         private void FillWeatherTab(RaceWeather wf)
@@ -6696,10 +6742,10 @@ label_10:
                 return;
             this.textBoxPracT.Text = wf.pracWeather.temperature.ToString();
             this.textBoxPracH.Text = wf.pracWeather.humidity.ToString();
-            this.textBoxPracW.Text = EnumToString.Enum2String(wf.pracWeather.skies);
+            this.textBoxPracW.Text = EnumConvert.Enum2String(wf.pracWeather.skies);
             this.textBoxQualT.Text = wf.qualWeather.temperature.ToString();
             this.textBoxQualH.Text = wf.qualWeather.humidity.ToString();
-            this.textBoxQualW.Text = EnumToString.Enum2String(wf.qualWeather.skies);
+            this.textBoxQualW.Text = EnumConvert.Enum2String(wf.qualWeather.skies);
             this.textBoxForecast1t.Text = wf.forecast.minTemp[0].ToString() + "° - " + wf.forecast.maxTemp[0].ToString() + "°";
             this.textBoxForecast1h.Text = wf.forecast.minHum[0].ToString() + " - " + wf.forecast.maxHum[0].ToString();
             this.textBoxForecast1r.Text = wf.forecast.minRain[0].ToString() + "%";
@@ -6738,7 +6784,7 @@ label_10:
             this.listViewQualify1.Items.Clear();
             this.listViewQualify2.Items.Clear();
             if (q1.time > TimeSpan.Zero)
-                this.listViewQualify1.Items.Add(new ListViewItem(EnumToString.Time2String(q1.time, true))
+                this.listViewQualify1.Items.Add(new ListViewItem(EnumConvert.Time2String(q1.time, true))
                 {
                     SubItems = {
             q1.setup.fWing.ToString(),
@@ -6747,13 +6793,13 @@ label_10:
             q1.setup.brakes.ToString(),
             q1.setup.gear.ToString(),
             q1.setup.susp.ToString(),
-            EnumToString.Enum2String(q1.setup.tyres),
-            EnumToString.Enum2String(q1.risk)
+            EnumConvert.Enum2String(q1.setup.tyres),
+            EnumConvert.Enum2String(q1.risk)
           }
                 });
             if (!(q2.time > TimeSpan.Zero))
                 return;
-            ListViewItem listViewItem = new ListViewItem(EnumToString.Time2String(q2.time, true));
+            ListViewItem listViewItem = new ListViewItem(EnumConvert.Time2String(q2.time, true));
             listViewItem.SubItems.Add(q2.setup.fWing.ToString());
             listViewItem.SubItems.Add(q2.setup.rWing.ToString());
             listViewItem.SubItems.Add(q2.setup.engine.ToString());
@@ -6764,8 +6810,8 @@ label_10:
                 listViewItem.SubItems.Add("Unknown");
             else
                 listViewItem.SubItems.Add(q2.fuel.ToString());
-            listViewItem.SubItems.Add(EnumToString.Enum2String(q2.setup.tyres));
-            listViewItem.SubItems.Add(EnumToString.Enum2String(q2.risk));
+            listViewItem.SubItems.Add(EnumConvert.Enum2String(q2.setup.tyres));
+            listViewItem.SubItems.Add(EnumConvert.Enum2String(q2.risk));
             this.listViewQualify2.Items.Add(listViewItem);
         }
 
@@ -6855,19 +6901,19 @@ label_10:
                     this.listViewPractice.Items.Add(new ListViewItem((index + 1).ToString())
                     {
                         SubItems = {
-              EnumToString.Time2String(prac.runs[index].lapTime, true),
-              EnumToString.Time2String(prac.runs[index].driverMistake, true),
-              EnumToString.Time2String(prac.runs[index].netTime, true),
+              EnumConvert.Time2String(prac.runs[index].lapTime, true),
+              EnumConvert.Time2String(prac.runs[index].driverMistake, true),
+              EnumConvert.Time2String(prac.runs[index].netTime, true),
               prac.runs[index].setup.fWing.ToString(),
               prac.runs[index].setup.rWing.ToString(),
               prac.runs[index].setup.engine.ToString(),
               prac.runs[index].setup.brakes.ToString(),
               prac.runs[index].setup.gear.ToString(),
               prac.runs[index].setup.susp.ToString(),
-              EnumToString.Enum2String(prac.runs[index].setup.tyres)
+              EnumConvert.Enum2String(prac.runs[index].setup.tyres)
             }
                     });
-                this.textBoxPracWeather.Text = EnumToString.Enum2String(prac.weather.skies);
+                this.textBoxPracWeather.Text = EnumConvert.Enum2String(prac.weather.skies);
                 this.textBoxPracTemp.Text = prac.weather.temperature.ToString();
                 this.textBoxPracHum.Text = prac.weather.humidity.ToString();
                 Datas.OkToFillPractice = true;
@@ -6890,8 +6936,8 @@ label_10:
             this.textBoxStaffEngineering.Text = newStaff.engineeringWorkshop.ToString();
             this.textBoxStaffAlloy.Text = newStaff.alloyAndChemicalLab.ToString();
             this.textBoxStaffCommercial.Text = newStaff.commercial.ToString();
-            this.textBoxStaffSalary.Text = EnumToString.Wage2String(newStaff.salary);
-            this.textBoxStaffFacilities.Text = EnumToString.Wage2String(newStaff.maintenance);
+            this.textBoxStaffSalary.Text = EnumConvert.Wage2String(newStaff.salary);
+            this.textBoxStaffFacilities.Text = EnumConvert.Wage2String(newStaff.maintenance);
             this.ColorTextBox(oldStaff.overall, newStaff.overall, ref this.textBoxStaffOverall, ref this.toolTipStaffOverall);
             this.ColorTextBox(oldStaff.experience, newStaff.experience, ref this.textBoxStaffExperience, ref this.toolTipStaffExperience);
             this.ColorTextBox(oldStaff.motivation, newStaff.motivation, ref this.textBoxStaffMotivation, ref this.toolTipStaffMotivation);
@@ -7080,7 +7126,10 @@ label_10:
         private void LoadButton_Click(object sender, EventArgs e)
         {
             this.LoadData();
-            this.UpdateSeasonStats();
+            if (!this.HasUnknownTracks())
+            {
+                this.UpdateSeasonStats();
+            }
         }
 
         private void menuItemAllTracks_Click(object sender, EventArgs e) => new AllTracks().Show();
@@ -7398,7 +7447,7 @@ label_10:
                 this.notifyIconGO.Visible = true;
                 this.Hide();
             }
-            catch (NullReferenceException ex)
+            catch (NullReferenceException)
             {
             }
         }

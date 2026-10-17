@@ -108,7 +108,7 @@ namespace go.Parsers
       int num8 = page.IndexOf("Downforce:</TD>") + 15;
       int startIndex8 = page.IndexOf(">", num8 + 1) + 1;
       string noget1 = page.Substring(startIndex8, page.IndexOf("<", startIndex8 + 1) - startIndex8);
-      trackPage.downforce = StringToEnum.String2Downforce(noget1);
+      trackPage.downforce = EnumConvert.String2Downforce(noget1);
       int num9 = page.IndexOf("Lap distance:</TD>") + 18;
       int startIndex9 = page.IndexOf(">", num9 + 1) + 1;
       int startIndex10 = page.IndexOf(".", startIndex9);
@@ -135,7 +135,7 @@ namespace go.Parsers
       int num11 = page.IndexOf("Overtaking:</TD>") + 16;
       int startIndex11 = page.IndexOf(">", num11 + 1) + 1;
       string noget2 = page.Substring(startIndex11, page.IndexOf("<", startIndex11 + 1) - startIndex11);
-      trackPage.overtaking = StringToEnum.String2Overtaking(noget2);
+      trackPage.overtaking = EnumConvert.String2Overtaking(noget2);
       int num12 = page.IndexOf("Average speed:</TD>") + 19;
       int startIndex12 = page.IndexOf(">", num12 + 1) + 1;
       int startIndex13 = page.IndexOf(".", startIndex12);
@@ -163,11 +163,11 @@ namespace go.Parsers
       int num15 = page.IndexOf("Suspension rigidity:</TD>") + 25;
       int startIndex14 = page.IndexOf(">", num15 + 1) + 1;
       string noget3 = page.Substring(startIndex14, page.IndexOf("<", startIndex14 + 1) - startIndex14);
-      trackPage.suspensionRigidity = StringToEnum.String2Suspension(noget3);
+      trackPage.suspensionRigidity = EnumConvert.String2Suspension(noget3);
       int num16 = page.IndexOf("Fuel consumption:</TD>") + 22;
       int startIndex15 = page.IndexOf(">", num16 + 1) + 1;
       string noget4 = page.Substring(startIndex15, page.IndexOf("<", startIndex15 + 1) - startIndex15);
-      trackPage.fuelConsumption = StringToEnum.String2Fuel(noget4);
+      trackPage.fuelConsumption = EnumConvert.String2Fuel(noget4);
       int num17 = page.IndexOf("Number of corners:</TD>") + 23;
       int startIndex16 = page.IndexOf(">", num17 + 1) + 1;
       page.Substring(startIndex16, page.IndexOf("<", startIndex16 + 1) - startIndex16);
@@ -175,11 +175,11 @@ namespace go.Parsers
       int num18 = page.IndexOf("Tyre wear:</TD>") + 14;
       int startIndex17 = page.IndexOf(">", num18 + 1) + 1;
       string noget5 = page.Substring(startIndex17, page.IndexOf("<", startIndex17 + 1) - startIndex17);
-      trackPage.tyreWear = StringToEnum.String2TyreWear(noget5);
+      trackPage.tyreWear = EnumConvert.String2TyreWear(noget5);
       int num19 = page.IndexOf("Grip level:</TD>") + 15;
       int startIndex18 = page.IndexOf(">", num19 + 1) + 1;
       string noget6 = page.Substring(startIndex18, page.IndexOf("<", startIndex18 + 1) - startIndex18);
-      trackPage.grip = StringToEnum.String2Grip(noget6);
+      trackPage.grip = EnumConvert.String2Grip(noget6);
       int num20 = page.IndexOf("Time in/out of pits:</TD>") + 25;
       int startIndex19 = page.IndexOf(">", num20 + 1) + 1;
       int startIndex20 = page.IndexOf(".", startIndex19);

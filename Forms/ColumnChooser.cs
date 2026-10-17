@@ -41,13 +41,13 @@ namespace go.Forms
       for (int index = 0; index < columnInfo.Count && index < this.formInfo.columnWidths.Count; ++index)
         this.listViewChosen.Items.Add(new ListViewItem(new string[2]
         {
-          EnumToString.Enum2String((ColumnInfo) columnInfo[index]),
+          EnumConvert.Enum2String((ColumnInfo) columnInfo[index]),
           ((int) this.formInfo.columnWidths[index]).ToString()
         }));
       foreach (ColumnInfo availableColumn in Datas.FormHandler.GetAvailableColumns(formName))
         this.listViewOptions.Items.Add(new ListViewItem(new string[2]
         {
-          EnumToString.Enum2String(availableColumn),
+          EnumConvert.Enum2String(availableColumn),
           "-1"
         }));
     }
@@ -219,11 +219,18 @@ namespace go.Forms
 
     private void buttonOk_Click(object sender, EventArgs e)
     {
+      if (this.listViewChosen.Items.Count == 0)
+      {
+        MessageBox.Show(this, "Please select at least one column.", "No columns",
+          MessageBoxButtons.OK, MessageBoxIcon.Warning);
+        this.DialogResult = DialogResult.None;
+        return;
+      }
       ArrayList arrayList1 = new ArrayList();
       ArrayList arrayList2 = new ArrayList();
       foreach (ListViewItem listViewItem in this.listViewChosen.Items)
       {
-        arrayList1.Add((object) StringToEnum.String2ColumnType(listViewItem.SubItems[0].Text));
+        arrayList1.Add((object) EnumConvert.String2ColumnType(listViewItem.SubItems[0].Text));
         arrayList2.Add((object) int.Parse(listViewItem.SubItems[1].Text));
       }
       this.formInfo.columnInfo = arrayList1;

@@ -42,7 +42,7 @@ namespace go.Forms
       this.linkLabel1.Size = new Size(236, 23);
       this.linkLabel1.TabIndex = 1;
       this.linkLabel1.TabStop = true;
-      this.linkLabel1.Text = "http://www.mbjerg.dk/gpro";
+      this.linkLabel1.Text = "https://www.mbjerg.dk/gpro";
       this.linkLabel1.LinkClicked += new LinkLabelLinkClickedEventHandler(this.linkLabel1_LinkClicked);
       this.buttonOk.DialogResult = DialogResult.Cancel;
       this.buttonOk.Font = new Font("Microsoft Sans Serif", 8f);
@@ -91,7 +91,7 @@ namespace go.Forms
     private void VisitLink2()
     {
       this.linkLabel1.LinkVisited = true;
-      Process.Start("http://www.mbjerg.dk/gpro");
+      Process.Start("https://www.mbjerg.dk/gpro");
     }
 
     private void buttonUpdate_Click(object sender, EventArgs e)

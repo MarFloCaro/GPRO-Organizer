@@ -4,6 +4,7 @@
  
  
 
+using go.Enums;
 using go.Utils;
 using System;
 using System.Drawing;
@@ -31,17 +32,6 @@ namespace go.Forms
     private Button button1;
     private ContextMenu contextMenu1;
     private MenuItem menuItemExportToCSV;
-    private int INDEX_CHASSIS;
-    private int INDEX_ENGINE = 1;
-    private int INDEX_FRONTWING = 2;
-    private int INDEX_REARWING = 3;
-    private int INDEX_UNDERBODY = 4;
-    private int INDEX_SIDEPODS = 5;
-    private int INDEX_COOLING = 6;
-    private int INDEX_GEARBOX = 7;
-    private int INDEX_BRAKES = 8;
-    private int INDEX_SUSPENSION = 9;
-    private int INDEX_ELECTRONICS = 10;
 
     public CarWearForm()
     {
@@ -61,58 +51,58 @@ namespace go.Forms
               Car2 endcar = raceEvent20.Endcar;
               if (endcar.frontWing.wear - startcar.frontWing.wear > 0)
               {
-                ++partsWearArray[this.INDEX_FRONTWING].wear[startcar.frontWing.level - 1].a;
-                partsWearArray[this.INDEX_FRONTWING].wear[startcar.frontWing.level - 1].b += endcar.frontWing.wear - startcar.frontWing.wear;
+                ++partsWearArray[(int)CarPartType.FrontWing].wear[startcar.frontWing.level - 1].a;
+                partsWearArray[(int)CarPartType.FrontWing].wear[startcar.frontWing.level - 1].b += endcar.frontWing.wear - startcar.frontWing.wear;
               }
               if (endcar.rearWing.wear - startcar.rearWing.wear > 0)
               {
-                ++partsWearArray[this.INDEX_REARWING].wear[startcar.rearWing.level - 1].a;
-                partsWearArray[this.INDEX_REARWING].wear[startcar.rearWing.level - 1].b += endcar.rearWing.wear - startcar.rearWing.wear;
+                ++partsWearArray[(int)CarPartType.RearWing].wear[startcar.rearWing.level - 1].a;
+                partsWearArray[(int)CarPartType.RearWing].wear[startcar.rearWing.level - 1].b += endcar.rearWing.wear - startcar.rearWing.wear;
               }
               if (endcar.brakes.wear - startcar.brakes.wear > 0)
               {
-                ++partsWearArray[this.INDEX_BRAKES].wear[startcar.brakes.level - 1].a;
-                partsWearArray[this.INDEX_BRAKES].wear[startcar.brakes.level - 1].b += endcar.brakes.wear - startcar.brakes.wear;
+                ++partsWearArray[(int)CarPartType.Brakes].wear[startcar.brakes.level - 1].a;
+                partsWearArray[(int)CarPartType.Brakes].wear[startcar.brakes.level - 1].b += endcar.brakes.wear - startcar.brakes.wear;
               }
               if (endcar.chassis.wear - startcar.chassis.wear > 0)
               {
-                ++partsWearArray[this.INDEX_CHASSIS].wear[startcar.chassis.level - 1].a;
-                partsWearArray[this.INDEX_CHASSIS].wear[startcar.chassis.level - 1].b += endcar.chassis.wear - startcar.chassis.wear;
+                ++partsWearArray[(int)CarPartType.Chassis].wear[startcar.chassis.level - 1].a;
+                partsWearArray[(int)CarPartType.Chassis].wear[startcar.chassis.level - 1].b += endcar.chassis.wear - startcar.chassis.wear;
               }
               if (endcar.cooling.wear - startcar.cooling.wear > 0)
               {
-                ++partsWearArray[this.INDEX_COOLING].wear[startcar.cooling.level - 1].a;
-                partsWearArray[this.INDEX_COOLING].wear[startcar.cooling.level - 1].b += endcar.cooling.wear - startcar.cooling.wear;
+                ++partsWearArray[(int)CarPartType.Cooling].wear[startcar.cooling.level - 1].a;
+                partsWearArray[(int)CarPartType.Cooling].wear[startcar.cooling.level - 1].b += endcar.cooling.wear - startcar.cooling.wear;
               }
               if (endcar.electronics.wear - startcar.electronics.wear > 0)
               {
-                ++partsWearArray[this.INDEX_ELECTRONICS].wear[startcar.electronics.level - 1].a;
-                partsWearArray[this.INDEX_ELECTRONICS].wear[startcar.electronics.level - 1].b += endcar.electronics.wear - startcar.electronics.wear;
+                ++partsWearArray[(int)CarPartType.Electronics].wear[startcar.electronics.level - 1].a;
+                partsWearArray[(int)CarPartType.Electronics].wear[startcar.electronics.level - 1].b += endcar.electronics.wear - startcar.electronics.wear;
               }
               if (endcar.engine.wear - startcar.engine.wear > 0)
               {
-                ++partsWearArray[this.INDEX_ENGINE].wear[startcar.engine.level - 1].a;
-                partsWearArray[this.INDEX_ENGINE].wear[startcar.engine.level - 1].b += endcar.engine.wear - startcar.engine.wear;
+                ++partsWearArray[(int)CarPartType.Engine].wear[startcar.engine.level - 1].a;
+                partsWearArray[(int)CarPartType.Engine].wear[startcar.engine.level - 1].b += endcar.engine.wear - startcar.engine.wear;
               }
               if (endcar.gearBox.wear - startcar.gearBox.wear > 0)
               {
-                ++partsWearArray[this.INDEX_GEARBOX].wear[startcar.gearBox.level - 1].a;
-                partsWearArray[this.INDEX_GEARBOX].wear[startcar.gearBox.level - 1].b += endcar.gearBox.wear - startcar.gearBox.wear;
+                ++partsWearArray[(int)CarPartType.Gearbox].wear[startcar.gearBox.level - 1].a;
+                partsWearArray[(int)CarPartType.Gearbox].wear[startcar.gearBox.level - 1].b += endcar.gearBox.wear - startcar.gearBox.wear;
               }
               if (endcar.sidepods.wear - startcar.sidepods.wear > 0)
               {
-                ++partsWearArray[this.INDEX_SIDEPODS].wear[startcar.sidepods.level - 1].a;
-                partsWearArray[this.INDEX_SIDEPODS].wear[startcar.sidepods.level - 1].b += endcar.sidepods.wear - startcar.sidepods.wear;
+                ++partsWearArray[(int)CarPartType.Sidepods].wear[startcar.sidepods.level - 1].a;
+                partsWearArray[(int)CarPartType.Sidepods].wear[startcar.sidepods.level - 1].b += endcar.sidepods.wear - startcar.sidepods.wear;
               }
               if (endcar.suspension.wear - startcar.suspension.wear > 0)
               {
-                ++partsWearArray[this.INDEX_SUSPENSION].wear[startcar.suspension.level - 1].a;
-                partsWearArray[this.INDEX_SUSPENSION].wear[startcar.suspension.level - 1].b += endcar.suspension.wear - startcar.suspension.wear;
+                ++partsWearArray[(int)CarPartType.Suspension].wear[startcar.suspension.level - 1].a;
+                partsWearArray[(int)CarPartType.Suspension].wear[startcar.suspension.level - 1].b += endcar.suspension.wear - startcar.suspension.wear;
               }
               if (endcar.underbody.wear - startcar.underbody.wear > 0)
               {
-                ++partsWearArray[this.INDEX_UNDERBODY].wear[startcar.underbody.level - 1].a;
-                partsWearArray[this.INDEX_UNDERBODY].wear[startcar.underbody.level - 1].b += endcar.underbody.wear - startcar.underbody.wear;
+                ++partsWearArray[(int)CarPartType.Underbody].wear[startcar.underbody.level - 1].a;
+                partsWearArray[(int)CarPartType.Underbody].wear[startcar.underbody.level - 1].b += endcar.underbody.wear - startcar.underbody.wear;
               }
             }
           }
@@ -122,17 +112,17 @@ namespace go.Forms
         this.listView1.Items.Add(new ListViewItem((index + 1).ToString())
         {
           SubItems = {
-            this.GetSubItemText(partsWearArray[this.INDEX_CHASSIS].wear[index]),
-            this.GetSubItemText(partsWearArray[this.INDEX_ENGINE].wear[index]),
-            this.GetSubItemText(partsWearArray[this.INDEX_FRONTWING].wear[index]),
-            this.GetSubItemText(partsWearArray[this.INDEX_REARWING].wear[index]),
-            this.GetSubItemText(partsWearArray[this.INDEX_UNDERBODY].wear[index]),
-            this.GetSubItemText(partsWearArray[this.INDEX_SIDEPODS].wear[index]),
-            this.GetSubItemText(partsWearArray[this.INDEX_COOLING].wear[index]),
-            this.GetSubItemText(partsWearArray[this.INDEX_GEARBOX].wear[index]),
-            this.GetSubItemText(partsWearArray[this.INDEX_BRAKES].wear[index]),
-            this.GetSubItemText(partsWearArray[this.INDEX_SUSPENSION].wear[index]),
-            this.GetSubItemText(partsWearArray[this.INDEX_ELECTRONICS].wear[index])
+            this.GetSubItemText(partsWearArray[(int)CarPartType.Chassis].wear[index]),
+            this.GetSubItemText(partsWearArray[(int)CarPartType.Engine].wear[index]),
+            this.GetSubItemText(partsWearArray[(int)CarPartType.FrontWing].wear[index]),
+            this.GetSubItemText(partsWearArray[(int)CarPartType.RearWing].wear[index]),
+            this.GetSubItemText(partsWearArray[(int)CarPartType.Underbody].wear[index]),
+            this.GetSubItemText(partsWearArray[(int)CarPartType.Sidepods].wear[index]),
+            this.GetSubItemText(partsWearArray[(int)CarPartType.Cooling].wear[index]),
+            this.GetSubItemText(partsWearArray[(int)CarPartType.Gearbox].wear[index]),
+            this.GetSubItemText(partsWearArray[(int)CarPartType.Brakes].wear[index]),
+            this.GetSubItemText(partsWearArray[(int)CarPartType.Suspension].wear[index]),
+            this.GetSubItemText(partsWearArray[(int)CarPartType.Electronics].wear[index])
           }
         });
     }

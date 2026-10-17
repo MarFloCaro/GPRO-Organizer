@@ -11,8 +11,6 @@ namespace go.Forms
 {
     public class Logon : Form
     {
-        private static bool _isLoginSuccessful;
-
         public TextBox boxUsername;
         public TextBox boxPassword;
 
@@ -35,6 +33,7 @@ namespace go.Forms
 
             boxUsername.Text = Datas.SettingsUsername;
             boxPassword.Text = Datas.SettingsPassword;
+            _rememberPasswordCheckBox.Checked = Datas.Communications.rememberPassword;
 
             _comms = comms;
 
@@ -188,7 +187,7 @@ namespace go.Forms
         {
             //Datas.Communications.rememberPassword = false;
             RegistryKey subKey1 = Registry.CurrentUser.CreateSubKey("Software\\go");
-            Datas.SettingsUsername = (string)subKey1.GetValue("Username");
+            Datas.SettingsUsername = (subKey1.GetValue("Username") as string) ?? "";
             string cipherText = (string)subKey1.GetValue("Password");
             if (cipherText != null)
             {
@@ -197,6 +196,7 @@ namespace go.Forms
                     try
                     {
                         Datas.SettingsPassword = EncDec.Decrypt(cipherText, "phdsp98q4tæqæræosalæx-lkdsvjipo.LKLDUSFÆIREp98 w3rp98y<ÆH æFp9843æiohfp9y<ftg");
+                        Datas.Communications.rememberPassword = true;
                     }
                     catch (Exception ex)
                     {
@@ -205,7 +205,7 @@ namespace go.Forms
                     }
                 }
             }
-            if ((string)subKey1.GetValue("AutoCheck") == "Yes")
+            if ((subKey1.GetValue("AutoCheck") as string) == "Yes")
             {
                 Datas.AutoCheck = true;
                 //this.CheckVersion();

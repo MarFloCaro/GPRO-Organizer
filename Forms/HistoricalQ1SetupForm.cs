@@ -275,7 +275,7 @@ namespace go.Forms
                       listViewItem.SubItems.Add(qualify1.setup.susp.ToString());
                       continue;
                     case ColumnInfo.Q1SetupTyreType:
-                      listViewItem.SubItems.Add(EnumToString.Enum2String(qualify1.setup.tyres));
+                      listViewItem.SubItems.Add(EnumConvert.Enum2String(qualify1.setup.tyres));
                       continue;
                     case ColumnInfo.Q1SetupWeatherTemp:
                       listViewItem.SubItems.Add(qualify1.weather.temperature.ToString());
@@ -284,10 +284,10 @@ namespace go.Forms
                       listViewItem.SubItems.Add(qualify1.weather.humidity.ToString());
                       continue;
                     case ColumnInfo.Q1SetupWeatherSkies:
-                      listViewItem.SubItems.Add(EnumToString.Enum2String(qualify1.weather.skies));
+                      listViewItem.SubItems.Add(EnumConvert.Enum2String(qualify1.weather.skies));
                       continue;
                     case ColumnInfo.Q1Time:
-                      listViewItem.SubItems.Add(EnumToString.Time2PracExportString(qualify1.time, true));
+                      listViewItem.SubItems.Add(EnumConvert.Time2PracExportString(qualify1.time, true));
                       continue;
                     default:
                       listViewItem.SubItems.Add("-");
