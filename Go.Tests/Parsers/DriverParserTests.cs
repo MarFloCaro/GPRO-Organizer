@@ -26,84 +26,84 @@ namespace go.Tests.Parsers
         public void GetDriver_ParsesTrophies()
         {
             var driver = DriverParser.GetDriver(_driverPage, 1);
-            Assert.Equal(0, driver.trophies);
+            Assert.Equal(2, driver.trophies);
         }
 
         [Fact]
         public void GetDriver_ParsesNumberOfGps()
         {
             var driver = DriverParser.GetDriver(_driverPage, 1);
-            Assert.Equal(143, driver.numberOfGps);
+            Assert.Equal(95, driver.numberOfGps);
         }
 
         [Fact]
         public void GetDriver_ParsesWins()
         {
             var driver = DriverParser.GetDriver(_driverPage, 1);
-            Assert.Equal(11, driver.wins);
+            Assert.Equal(7, driver.wins);
         }
 
         [Fact]
         public void GetDriver_ParsesPodiums()
         {
             var driver = DriverParser.GetDriver(_driverPage, 1);
-            Assert.Equal(18, driver.podiums);
+            Assert.Equal(12, driver.podiums);
         }
 
         [Fact]
         public void GetDriver_ParsesPointsScored()
         {
             var driver = DriverParser.GetDriver(_driverPage, 1);
-            Assert.Equal(190, driver.pointsScored);
+            Assert.Equal(130, driver.pointsScored);
         }
 
         [Fact]
         public void GetDriver_ParsesPolePositions()
         {
             var driver = DriverParser.GetDriver(_driverPage, 1);
-            Assert.Equal(11, driver.polePositions);
+            Assert.Equal(5, driver.polePositions);
         }
 
         [Fact]
         public void GetDriver_ParsesFastestLaps()
         {
             var driver = DriverParser.GetDriver(_driverPage, 1);
-            Assert.Equal(4, driver.fastestLaps);
+            Assert.Equal(3, driver.fastestLaps);
         }
 
         [Fact]
         public void GetDriver_ParsesOverall()
         {
             var driver = DriverParser.GetDriver(_driverPage, 1);
-            Assert.Equal(133, driver.overall);
+            Assert.Equal(118, driver.overall);
         }
 
         [Fact]
         public void GetDriver_ParsesSalary()
         {
             var driver = DriverParser.GetDriver(_driverPage, 1);
-            Assert.Equal(610326, driver.salary);
+            Assert.Equal(520150, driver.salary);
         }
 
         [Fact]
         public void GetDriver_ParsesRacesLeftOfContract()
         {
             var driver = DriverParser.GetDriver(_driverPage, 1);
-            Assert.Equal(10, driver.racesLeftOfContract);
+            Assert.Equal(14, driver.racesLeftOfContract);
         }
 
         [Fact]
         public void GetDriver_ParsesConcentration()
         {
             var driver = DriverParser.GetDriver(_driverPage, 1);
-            Assert.Equal(172, driver.concentration);
+            Assert.Equal(155, driver.concentration);
         }
 
         [Fact]
         public void GetDriver_ParsesTalent()
         {
             var driver = DriverParser.GetDriver(_driverPage, 1);
-            Assert.Equal(201, driver.talent);
+            Assert.Equal(180, driver.talent);
         }
 
         [Fact]
@@ -117,28 +117,28 @@ namespace go.Tests.Parsers
         public void GetDriver_ParsesExperience()
         {
             var driver = DriverParser.GetDriver(_driverPage, 1);
-            Assert.Equal(156, driver.experience);
+            Assert.Equal(140, driver.experience);
         }
 
         [Fact]
         public void GetDriver_ParsesTechnicalInsight()
         {
             var driver = DriverParser.GetDriver(_driverPage, 1);
-            Assert.Equal(152, driver.technicalInsight);
+            Assert.Equal(138, driver.technicalInsight);
         }
 
         [Fact]
         public void GetDriver_ParsesStamina()
         {
             var driver = DriverParser.GetDriver(_driverPage, 1);
-            Assert.Equal(150, driver.stamina);
+            Assert.Equal(142, driver.stamina);
         }
 
         [Fact]
         public void GetDriver_ParsesCharisma()
         {
             var driver = DriverParser.GetDriver(_driverPage, 1);
-            Assert.Equal(59, driver.charisma);
+            Assert.Equal(45, driver.charisma);
         }
 
         [Fact]
@@ -152,7 +152,7 @@ namespace go.Tests.Parsers
         public void GetDriver_ParsesEnergy()
         {
             var driver = DriverParser.GetDriver(_driverPage, 1);
-            Assert.Equal(59, driver.energy);
+            Assert.Equal(72, driver.energy);
         }
 
         [Fact]

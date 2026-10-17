@@ -102,12 +102,12 @@ namespace go.Tests.Parsers
         public void ParseRace_DriverEnergy_AllValues()
         {
             var race = RaceAnalysisParser.ParseRace(_racePage, raceEvent: null);
-            Assert.Equal(100, race.DriverEnergy.BeforeQ1);
-            Assert.Equal(98, race.DriverEnergy.AfterQ1);
-            Assert.Equal(98, race.DriverEnergy.BeforeQ2);
-            Assert.Equal(96, race.DriverEnergy.AfterQ2);
-            Assert.Equal(100, race.DriverEnergy.BeforeRace);
-            Assert.Equal(39, race.DriverEnergy.AfterRace);
+            Assert.Equal(95, race.DriverEnergy.BeforeQ1);
+            Assert.Equal(92, race.DriverEnergy.AfterQ1);
+            Assert.Equal(92, race.DriverEnergy.BeforeQ2);
+            Assert.Equal(88, race.DriverEnergy.AfterQ2);
+            Assert.Equal(95, race.DriverEnergy.BeforeRace);
+            Assert.Equal(45, race.DriverEnergy.AfterRace);
         }
 
         [Fact]
@@ -238,7 +238,7 @@ namespace go.Tests.Parsers
         public void ParseRace_Finances_EndPositionMoney()
         {
             var race = RaceAnalysisParser.ParseRace(_racePage, raceEvent: null);
-            Assert.Equal(11484615, race.Finances.endPositionMoney);
+            Assert.Equal(9187692, race.Finances.endPositionMoney);
         }
 
         [Fact]
@@ -252,56 +252,56 @@ namespace go.Tests.Parsers
         public void ParseRace_Finances_QualPositionMoney()
         {
             var race = RaceAnalysisParser.ParseRace(_racePage, raceEvent: null);
-            Assert.Equal(960000, race.Finances.qualPositionMoney);
+            Assert.Equal(768000, race.Finances.qualPositionMoney);
         }
 
         [Fact]
         public void ParseRace_Finances_SponsorMoney()
         {
             var race = RaceAnalysisParser.ParseRace(_racePage, raceEvent: null);
-            Assert.Equal(2348234, race.Finances.sponsorMoney);
+            Assert.Equal(1878587, race.Finances.sponsorMoney);
         }
 
         [Fact]
         public void ParseRace_Finances_DriverSalary()
         {
             var race = RaceAnalysisParser.ParseRace(_racePage, raceEvent: null);
-            Assert.Equal(-610326, race.Finances.driverSalary);
+            Assert.Equal(-520150, race.Finances.driverSalary);
         }
 
         [Fact]
         public void ParseRace_Finances_StaffSalary()
         {
             var race = RaceAnalysisParser.ParseRace(_racePage, raceEvent: null);
-            Assert.Equal(-466470, race.Finances.staffSalary);
+            Assert.Equal(-385200, race.Finances.staffSalary);
         }
 
         [Fact]
         public void ParseRace_Finances_FacilityCost()
         {
             var race = RaceAnalysisParser.ParseRace(_racePage, raceEvent: null);
-            Assert.Equal(-546700, race.Finances.facilityCost);
+            Assert.Equal(-472800, race.Finances.facilityCost);
         }
 
         [Fact]
         public void ParseRace_Finances_TyresContractCost()
         {
             var race = RaceAnalysisParser.ParseRace(_racePage, raceEvent: null);
-            Assert.Equal(-2510000, race.Finances.tyresContractCost);
+            Assert.Equal(-2008000, race.Finances.tyresContractCost);
         }
 
         [Fact]
         public void ParseRace_Finances_Total()
         {
             var race = RaceAnalysisParser.ParseRace(_racePage, raceEvent: null);
-            Assert.Equal(11797879, race.Finances.total);
+            Assert.Equal(8448129, race.Finances.total);
         }
 
         [Fact]
         public void ParseRace_Finances_CurrentBalance()
         {
             var race = RaceAnalysisParser.ParseRace(_racePage, raceEvent: null);
-            Assert.Equal(104271932, race.Finances.currentBalance);
+            Assert.Equal(83217546, race.Finances.currentBalance);
         }
 
         [Fact]

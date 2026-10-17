@@ -48,13 +48,13 @@ namespace go.Tests.Parsers
         {
             var result = FinanceParser.UpdateFinancialHistory(_financePage);
 
-            Assert.Equal(-2510000, ((FinanceItem)result[0]).Amount);
-            Assert.Equal(-546700, ((FinanceItem)result[1]).Amount);
-            Assert.Equal(-466470, ((FinanceItem)result[2]).Amount);
-            Assert.Equal(2348234, ((FinanceItem)result[3]).Amount);
-            Assert.Equal(11484615, ((FinanceItem)result[4]).Amount);
-            Assert.Equal(-100000, ((FinanceItem)result[5]).Amount);
-            Assert.Equal(-400000, ((FinanceItem)result[6]).Amount);
+            Assert.Equal(-2008000, ((FinanceItem)result[0]).Amount);
+            Assert.Equal(-472800, ((FinanceItem)result[1]).Amount);
+            Assert.Equal(-385200, ((FinanceItem)result[2]).Amount);
+            Assert.Equal(1878587, ((FinanceItem)result[3]).Amount);
+            Assert.Equal(9187692, ((FinanceItem)result[4]).Amount);
+            Assert.Equal(-80000, ((FinanceItem)result[5]).Amount);
+            Assert.Equal(-320000, ((FinanceItem)result[6]).Amount);
         }
 
         [Fact]
@@ -62,9 +62,9 @@ namespace go.Tests.Parsers
         {
             var result = FinanceParser.UpdateFinancialHistory(_financePage);
 
-            Assert.Equal(50781932, ((FinanceItem)result[0]).BalanceBefore);
-            Assert.Equal(51328632, ((FinanceItem)result[1]).BalanceBefore);
-            Assert.Equal(49446868, ((FinanceItem)result[3]).BalanceBefore);
+            Assert.Equal(40578081, ((FinanceItem)result[0]).BalanceBefore);
+            Assert.Equal(41050881, ((FinanceItem)result[1]).BalanceBefore);
+            Assert.Equal(39557494, ((FinanceItem)result[3]).BalanceBefore);
         }
 
         [Fact]
@@ -72,9 +72,9 @@ namespace go.Tests.Parsers
         {
             var result = FinanceParser.UpdateFinancialHistory(_financePage);
 
-            Assert.Equal(48271932, ((FinanceItem)result[0]).BalanceAfter);
-            Assert.Equal(50781932, ((FinanceItem)result[1]).BalanceAfter);
-            Assert.Equal(51795102, ((FinanceItem)result[3]).BalanceAfter);
+            Assert.Equal(38570081, ((FinanceItem)result[0]).BalanceAfter);
+            Assert.Equal(40578081, ((FinanceItem)result[1]).BalanceAfter);
+            Assert.Equal(41436081, ((FinanceItem)result[3]).BalanceAfter);
         }
 
         [Fact]
