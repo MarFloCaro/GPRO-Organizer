@@ -16,7 +16,7 @@ namespace go.Utils
     public static byte[] Encrypt(byte[] clearData, byte[] Key, byte[] IV)
     {
       using (MemoryStream memoryStream = new MemoryStream())
-      using (Rijndael rijndael = Rijndael.Create())
+      using (Aes rijndael = Aes.Create())
       {
         rijndael.Key = Key;
         rijndael.IV = IV;
@@ -96,7 +96,7 @@ namespace go.Utils
         (byte) 101,
         (byte) 118
       }))
-      using (Rijndael rijndael = Rijndael.Create())
+      using (Aes rijndael = Aes.Create())
       {
         rijndael.Key = passwordDeriveBytes.GetBytes(32);
         rijndael.IV = passwordDeriveBytes.GetBytes(16);
@@ -118,7 +118,7 @@ namespace go.Utils
     public static byte[] Decrypt(byte[] cipherData, byte[] Key, byte[] IV)
     {
       using (MemoryStream memoryStream = new MemoryStream())
-      using (Rijndael rijndael = Rijndael.Create())
+      using (Aes rijndael = Aes.Create())
       {
         rijndael.Key = Key;
         rijndael.IV = IV;
@@ -198,7 +198,7 @@ namespace go.Utils
         (byte) 101,
         (byte) 118
       }))
-      using (Rijndael rijndael = Rijndael.Create())
+      using (Aes rijndael = Aes.Create())
       {
         rijndael.Key = passwordDeriveBytes.GetBytes(32);
         rijndael.IV = passwordDeriveBytes.GetBytes(16);
