@@ -97,5 +97,22 @@ namespace go.Parsers
     }
 
     public static TimeSpan ParseTimeSpan(string noget) => EnumConvert.String2Time(noget);
+
+    public static string ExtractUntil(string source, int startIndex, string delimiter)
+    {
+      int endIndex = source.IndexOf(delimiter, startIndex);
+      if (endIndex < 0)
+        return source.Substring(startIndex);
+      return source.Substring(startIndex, endIndex - startIndex);
+    }
+
+    public static int ExtractIntUntil(string source, int startIndex, string delimiter)
+    {
+      string value = ExtractUntil(source, startIndex, delimiter);
+      if (int.TryParse(value, out int result))
+        return result;
+      Errlog.AddToLog("ExtractIntUntil: could not parse \"" + value + "\" as int (delimiter: \"" + delimiter + "\")");
+      throw new FormatException("Could not parse \"" + value + "\" as int");
+    }
   }
 }
