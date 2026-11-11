@@ -366,18 +366,13 @@
     </BootstrapperPackage>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="car.ico" />
-  </ItemGroup>
-  <ItemGroup>
     <None Include="Data\tracks.dat">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-      <Link>tracks.dat</Link>
+      <TargetPath>tracks.dat</TargetPath>
     </None>
-  </ItemGroup>
-  <ItemGroup>
     <None Include="Data\README.txt">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-      <Link>README.txt</Link>
+      <TargetPath>README.txt</TargetPath>
     </None>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
