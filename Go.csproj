@@ -366,6 +366,9 @@
     </BootstrapperPackage>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="car.ico" />
+  </ItemGroup>
+  <ItemGroup>
     <None Include="Data\tracks.dat">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
       <TargetPath>tracks.dat</TargetPath>
